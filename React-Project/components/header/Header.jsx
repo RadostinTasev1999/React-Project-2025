@@ -33,7 +33,7 @@ const callsToAction = [
   { name: 'Contact sales', href: '#', icon: PhoneIcon },
 ]
 
-export default function Example() {
+export default function HeaderComponent() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
