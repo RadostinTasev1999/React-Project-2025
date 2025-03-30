@@ -1,6 +1,8 @@
 
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Link } from 'react-router'
+import { UserContext } from '../../contexts/UserContext'
+
 
 import {
   Dialog,
@@ -25,7 +27,7 @@ import {
 
 
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon,DeviceTabletIcon,SpeakerWaveIcon } from '@heroicons/react/20/solid'
-
+//import { UserContext } from '../../contexts/UserContext'
 
 const products = [
     { name: 'Headsets', to: '/headsets', icon: SpeakerWaveIcon },
@@ -41,7 +43,9 @@ const products = [
 
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  
+    
+    const { accessToken } = useContext(UserContext)
+
     return (
         <header className="bg-white">
           <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
@@ -120,15 +124,30 @@ export default function Header() {
                 About
               </Link>
             </PopoverGroup>
-            <div className="hidden lg:flex ml-8 lg:gap-x-4">
-              <Link to="/login" className="text-sm/6 font-semibold text-blue-500">
-                Log in
-              </Link>
-              <br />
-              <Link to="/register" className="text-sm/6 font-semibold text-blue-500">
-                Register
-              </Link>
-            </div>
+            { accessToken
+                  ?
+                  (
+              <div className="hidden lg:flex ml-8 lg:gap-x-4">
+                <Link to="/login" className="text-sm/6 font-semibold text-blue-500">
+                  Log in
+                </Link>
+                <br />
+                <Link to="/register" className="text-sm/6 font-semibold text-blue-500">
+                  Register
+                </Link>
+              </div>
+                  )
+                  :
+                  (
+                 <div className="hidden lg:flex ml-8 lg:gap-x-4">
+                   <Link to="/logout" className="text-sm/6 font-semibold text-blue-500">
+                      Log out
+                   </Link>
+                </div>
+                  )
+            
+
+            }
           </nav>
           <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
             <div className="fixed inset-0 z-10" />
@@ -172,35 +191,7 @@ export default function Header() {
                         ))}
                       </DisclosurePanel>
                     </Disclosure>
-                    <a
-                      href="#"
-                      className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-                    >
-                      Features
-                    </a>
-                    <a
-                      href="#"
-                      className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-                    >
-                      Marketplace
-                    </a>
-                    <a
-                      href="#"
-                      className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-                    >
-                      Company
-                    </a>
-                  </div>
-                  <div className="py-6">
-                    <Link to="/login"
-                     
-                    >
-                      Log in
-                    </Link>
-                    <Link to="/register">
-                      Register
-                    </Link>
-                  </div>
+                  </div>   
                 </div>
               </div>
             </DialogPanel>
