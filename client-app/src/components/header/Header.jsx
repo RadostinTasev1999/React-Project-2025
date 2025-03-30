@@ -1,4 +1,7 @@
+
 import { useState } from 'react'
+import { Link } from 'react-router'
+
 import {
   Dialog,
   DialogPanel,
@@ -25,11 +28,11 @@ import { ChevronDownIcon, PhoneIcon, PlayCircleIcon,DeviceTabletIcon,SpeakerWave
 
 
 const products = [
-    { name: 'Headsets', description: 'Get a better understanding of your traffic', href: '#', icon: SpeakerWaveIcon },
-    { name: 'Teams panels', description: 'Speak directly to your customers', href: '#', icon: DeviceTabletIcon },
-    { name: 'Speakerphones', description: 'Your customers’ data will be safe and secure', href: '#', icon: SpeakerWaveIcon },
-    { name: 'Desk phones', description: 'Connect with third-party tools', href: '#', icon: PhoneIcon },
-    { name: 'Teams Rooms', description: 'Build strategic funnels that will convert', href: '#', icon: DeviceTabletIcon },
+    { name: 'Headsets', to: '/headsets', icon: SpeakerWaveIcon },
+    { name: 'Teams panels', to: '/panels', icon: DeviceTabletIcon },
+    { name: 'Speakerphones', to: '/speakerphones', icon: SpeakerWaveIcon },
+    { name: 'Desk phones', to: '/desk-phones', icon: PhoneIcon },
+    { name: 'Teams Rooms', to: '/teams-rooms', icon: DeviceTabletIcon },
   ]
   const callsToAction = [
     { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
@@ -43,14 +46,14 @@ export default function Header() {
         <header className="bg-white">
           <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
             <div className="flex lg:flex-1">
-              <a href="#" className="-m-1.5 p-1.5">
+              <Link to={products.to} className="-m-1.5 p-1.5">
                 <span className="sr-only">Your Company</span>
                 <img
                   alt=""
-                  src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+                  src="https://redmondmag.com/-/media/ECG/redmondmag/Images/introimages/1211red_teamslogo.jpg"
                   className="h-8 w-auto"
                 />
-              </a>
+              </Link>
             </div>
             <div className="flex lg:hidden">
               <button
@@ -65,7 +68,7 @@ export default function Header() {
             <PopoverGroup className="hidden lg:flex lg:gap-x-12">
               <Popover className="relative">
                 <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900">
-                  Product
+                  Categories
                   <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400" />
                 </PopoverButton>
     
@@ -83,11 +86,11 @@ export default function Header() {
                           <item.icon aria-hidden="true" className="size-6 text-gray-600 group-hover:text-indigo-600" />
                         </div>
                         <div className="flex-auto">
-                          <a href={item.href} className="block font-semibold text-gray-900">
+                          <Link to={item.to} className="block font-semibold text-gray-900">
                             {item.name}
                             <span className="absolute inset-0" />
-                          </a>
-                          <p className="mt-1 text-gray-600">{item.description}</p>
+                          </Link>
+                          {/* <p className="mt-1 text-gray-600">{item.description}</p> */}
                         </div>
                       </div>
                     ))}
@@ -107,20 +110,24 @@ export default function Header() {
                 </PopoverPanel>
               </Popover>
     
-              <a href="#" className="text-sm/6 font-semibold text-gray-900">
+              <Link to="/features" className="text-sm/6 font-semibold text-gray-900">
                 Features
-              </a>
-              <a href="#" className="text-sm/6 font-semibold text-gray-900">
-                Marketplace
-              </a>
-              <a href="#" className="text-sm/6 font-semibold text-gray-900">
-                Company
-              </a>
+              </Link>
+              <Link to="/news" className="text-sm/6 font-semibold text-gray-900">
+                News
+              </Link>
+              <Link to="/about" className="text-sm/6 font-semibold text-gray-900">
+                About
+              </Link>
             </PopoverGroup>
-            <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-              <a href="#" className="text-sm/6 font-semibold text-gray-900">
-                Log in <span aria-hidden="true">&rarr;</span>
-              </a>
+            <div className="hidden lg:flex ml-8 lg:gap-x-4">
+              <Link to="/login" className="text-sm/6 font-semibold text-blue-500">
+                Log in
+              </Link>
+              <br />
+              <Link to="/register" className="text-sm/6 font-semibold text-blue-500">
+                Register
+              </Link>
             </div>
           </nav>
           <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
@@ -185,12 +192,14 @@ export default function Header() {
                     </a>
                   </div>
                   <div className="py-6">
-                    <a
-                      href="#"
-                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
+                    <Link to="/login"
+                     
                     >
                       Log in
-                    </a>
+                    </Link>
+                    <Link to="/register">
+                      Register
+                    </Link>
                   </div>
                 </div>
               </div>
