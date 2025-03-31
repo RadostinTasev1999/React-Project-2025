@@ -20,7 +20,7 @@ import { useId } from 'react'
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0">
             <h2 className="text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">Microsoft Teams Rooms Forum</h2>
-            <p className="mt-2 text-lg/8 text-gray-600">Space for how-to-discussions and sharing best practices.</p>
+            <p className="mt-2 text-lg/8 text-gray-600">Community space for sharing user experience.</p>
           </div>
           <div className="image">
             
@@ -30,6 +30,8 @@ import { useId } from 'react'
            <br/>
           <article className="flex flex-col md:flex-row h-screen md:justify-between">
               <div className="flex-1 overflow-auto p-4">
+                <h2><b>Categories</b></h2>
+                <br />
               <ul role="list" className="divide-y divide-gray-100">
                 {
                   products.map((product) => {
@@ -37,19 +39,11 @@ import { useId } from 'react'
                    return  (
                      <li  className="flex justify-between gap-x-6 py-5">
                        <div key={product._id} className="flex min-w-0 gap-x-4">
-                         <img alt="" src={product.imageUrl} className="size-12 flex-none rounded-full bg-gray-50" />
+                         <img alt="" src={product.imageUrl} className="size-16 flex-none rounded-full bg-gray-50" />
                          <div className="min-w-0 flex-auto">
                            <p className="text-sm/6 font-semibold text-gray-900">{product.name}</p>
                          </div>
                          <br/>
-                         <div className="mt-1 flex items-center gap-x-1.5">
-
-                         <Button variant="contained">
-                         <Link to={product.to}>
-                              See Posts
-                         </Link>
-                         </Button>
-                         </div>
                        </div>
                        
                      </li>
