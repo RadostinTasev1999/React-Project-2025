@@ -1,14 +1,36 @@
+import { useContext } from "react"
+import { useRegister } from "../../api/authApi"
+import { UserContext } from "../../contexts/UserContext"
+import { useNavigate } from "react-router"
+
 export default function Register() {
+
+
+  const navigate = useNavigate();
+  const {register} = useRegister()
+  const {userLoginHandler} = useContext(UserContext)
+
+  const onRegister = async(formData) => {
+
+    const {email,username,password} = Object.fromEntries(formData)
+
+    const repeatPassword = formData.get('re-password')
+
+    console.log('Form data is:', email, username,password,repeatPassword)
+
+    const authData = await register(email,username,password,repeatPassword)
+
+    console.log('Auth Data is:', authData)
+
+    userLoginHandler(authData)
+
+    navigate('/');
+
+  }
+
     return (
       <>
-        {/*
-          This example requires updating your template:
-  
-          ```
-          <html class="h-full bg-white">
-          <body class="h-full">
-          ```
-        */}
+        
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <img
@@ -22,7 +44,7 @@ export default function Register() {
           </div>
   
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form action="#" method="POST" className="space-y-6">
+            <form action={onRegister} className="space-y-6">
               <div>
                 <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
                   Email address
