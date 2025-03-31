@@ -6,6 +6,7 @@ export default function Login() {
 
 const { login }  = useLogin()
 const { userLoginHandler } = useUserContext();
+// we access the values of userLoginHandler inside the UserContext 
 const navigate = useNavigate()
 
 const loginAction = async(formData) => {
@@ -19,8 +20,8 @@ const loginAction = async(formData) => {
         console.log('AuthData after login is:', authData)
         
         userLoginHandler(authData)
-
-        navigate(-1)
+        
+        navigate('/')
     } catch (error) {
         throw new Error(error.message)
     }
