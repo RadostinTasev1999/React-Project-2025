@@ -8,6 +8,10 @@ export const UserContext = createContext({
     userLoginHandler: () => null,
     userLogoutHandler: () => null
 });
+/*
+Here we define the shared data that we want to provide across the component tree.
+
+*/
 
 export function useUserContext(){
 

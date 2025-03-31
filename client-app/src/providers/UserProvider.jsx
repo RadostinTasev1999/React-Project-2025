@@ -9,7 +9,13 @@ export default function UserProvider(
 
 
     const userLoginHandler = (resultData) => {
+        console.log('UserLoginHandler result data is:', resultData)
         setAuthData(resultData)
+        // We have saved the authData to localStorage and updated 
+        // the authData state property
+
+        // invoking setter function will trigger a re-render of the
+        // component
     };
 
     const userLogoutHandler = () => {
@@ -21,12 +27,23 @@ export default function UserProvider(
             {children}
         </UserContext.Provider>
     )
+    /*
+    When stateProperty authData is changed, this will trigger a re-render of any
+    components that consume the UserContext, including all the children inside
+    the UserCOntext.Provider
+    */
 
     /*
-        Provider component is special component that is used to make the 
-        context value available to any child components that need it.
-        We wrap the component tree and define a value prop, that will be
-        passed down to the child components.
-        
+    UserContext.Provider - allows you to provide values to all components
+                           in its child tree that need access to this data.
     */
+    /*
+    authData = {
+    _id: '',
+    email: '',
+    username: '',
+    accessToken: '',
+    }
+    */
+
 }

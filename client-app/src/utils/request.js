@@ -10,10 +10,18 @@ const request = async (method, url, data, options = {}) => {
             headers: {
                 'Content-Type':'application/json',
                 ...options.headers
+               
             },
             body: JSON. stringify(data)
         }
     }
+
+     /*
+                headers: {
+                    'X-Authorization': accessToken,
+                    ...options.headers
+                }
+     */
 
     const response = await fetch(url,options);
 

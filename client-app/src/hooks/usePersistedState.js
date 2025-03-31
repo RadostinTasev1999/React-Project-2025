@@ -16,11 +16,14 @@ export default function usePersistedState(stateKey, inititalState) {
 
         const persistedStateData = JSON.parse(persistedState)
 
+        console.log('PersistedStateData is:', persistedStateData)
         return persistedStateData
 
     });
 
         const setPersistedState = (input) => {
+
+            console.log('Input in setPersistedState is:', input)
             
             const data = typeof input === 'function'
                     ?
@@ -32,7 +35,8 @@ export default function usePersistedState(stateKey, inititalState) {
 
         localStorage.setItem(stateKey, persistedData)
 
-
+        console.log('persistedData is:', persistedData)
+        
         setState(persistedData)
 
         };
