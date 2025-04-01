@@ -4,7 +4,11 @@ import request from "../utils/request";
 
 export default function useAuth() {
 
-    const { accessToken, ...authData } = useContext(UserContext)
+    const { 
+        accessToken,
+        email,
+        _id,
+     } = useContext(UserContext)
 
     const requestWrapper = useCallback((method,url, data, options = {}) => {
 
@@ -27,15 +31,15 @@ export default function useAuth() {
         get: requestWrapper.bind(null,'GET'),
         post: requestWrapper.bind(null,'POST'),
         put: requestWrapper.bind(null,'PUT'),
+        patch:requestWrapper.bind(null,'PATCH'),
         delete: requestWrapper.bind(null,'DELETE')
     }),[requestWrapper])
 
     return {
-        ...authData,
         accessToken,
-        email: authData.email,
-        userId:authData._id,
-        isAuthenticated: !!authData.accessToken,
+        email: email,
+        userId:_id,
+        isAuthenticated: !!accessToken,
         request: requestObject
     }
 }
