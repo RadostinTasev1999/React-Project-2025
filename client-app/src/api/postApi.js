@@ -1,17 +1,18 @@
 import { useEffect,useState } from "react";
 import useAuth from "../hooks/useAuth"
-import request from "../utils/request";
+
 
 const baseUrl = 'http://localhost:3030/data/posts'
 
 export const usePosts = () => {
 
+    const {request} = useAuth()
     const [posts,setPosts] = useState([]);
 
     useEffect(() => {
         request.get(baseUrl)
             .then((posts) => setPosts(posts))
-    },[])
+    },[request])
 
     return {
         posts
@@ -21,12 +22,13 @@ export const usePosts = () => {
 
 export const usePost = (postId) => {
 
+    const {request} = useAuth()
     const [post,setPost] = useState({})
 
     useEffect(() => {
         request.get(`${baseUrl}/${postId}`)
             .then((response) => setPost(response))
-    },[postId])
+    },[postId,request])
    
     
         return {
