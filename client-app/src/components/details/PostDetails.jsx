@@ -6,7 +6,7 @@ import { useNavigate } from "react-router"
 import { useDeletePost } from "../../api/postApi"
 import CommentsShow from "../comments-show/CommentsShow"
 import CommentsCreate from "../comments-create/CreateComment"
-import { useCreateComments } from "../../api/commentApi"
+
 
 export default function PostDetails(){
     
@@ -14,13 +14,14 @@ export default function PostDetails(){
 
     const { post } = usePost(postId)
     // http://localhost:3030/data/posts/0ac05014-08cc-4635-867a-cd87f28549be
-    const { email } = useAuth()
+    const { isAuthenticated } = useAuth()
     const { userId } = useAuth()
     const { deletePost } = useDeletePost()
-    const { create } = useCreateComments()
+  
+    
     const navigate = useNavigate()
 
-
+  console.log('isAuthenticated in PostDetails component:', isAuthenticated)
     //console.log('Post is:',post)
 
     const isOwner = userId === post._ownerId
@@ -37,22 +38,6 @@ export default function PostDetails(){
         
     }
 
-    const onCreateComment = async(event) => {
-
-        event.preventDefault();
-
-        const formData = new FormData(event.target)
-            console.log('Test')
-        const { username, comment } = Object.fromEntries(formData)
-
-        const postComment = await create({username,comment},postId)
-
-        console.log('Posted Comment:', postComment)
-
-      
-        
-    }
-
     return (
         <>
          <div className="overflow-hidden bg-white py-24 sm:py-32">
@@ -60,7 +45,7 @@ export default function PostDetails(){
       <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-56 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
           <div className="lg:pt-4 lg:pr-8">
             <div className="lg:max-w-lg">
-              <h2 className="text-base/7 font-semibold text-indigo-600">{email}</h2>
+              {/* <h2 className="text-base/7 font-semibold text-indigo-600">{email}</h2> */}
               <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">
                 {post.title}
               </p>
@@ -90,10 +75,17 @@ export default function PostDetails(){
                         </div>
                 ) : null    
         }
-     <CommentsCreate
-        onCreate={onCreateComment}
-     />
-      <CommentsShow />
+     <CommentsShow  />
+     {
+      isAuthenticated 
+            ?
+      <CommentsCreate/>
+            :
+
+            null
+     }
+     
+      
         </div>
         </>
     )
