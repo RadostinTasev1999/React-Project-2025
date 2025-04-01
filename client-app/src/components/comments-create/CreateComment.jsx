@@ -1,16 +1,58 @@
-export default function CommentsCreate(
-    {onCreateComment}
-) {
+import { useCreateComments } from "../../api/commentApi"
+import {  useParams } from "react-router"
+import { Navigate } from "react-router"
+import { Link } from "react-router"
+import useAuth from "../../hooks/useAuth"
+import { v4 as uuid } from 'uuid'
 
+export default function CommentsCreate(
     
+) {
+    const { postId } = useParams()
+    const {create} = useCreateComments()
+    const { userId } = useAuth()
+    const { email } = useAuth()
+
+   // const navigate = useNavigate()
+
+    const onCreateComment = async(formData) => {
+        const { username, comment} = Object.fromEntries(formData)
+        window.alert('Comment form submitted!')
+        console.log(
+            {
+                username,
+                comment
+            }
+        )
+
+        const payload = {
+            _id:uuid(),
+            username,
+            comment,
+            _ownerId:userId,
+            postId,
+            author:{
+                email
+            }
+        }
+
+        console.log('Payload is:', payload)
+
+        const createComment = await create(payload)
+
+        console.log('Created comment is:', createComment)
+
+        window.location.reload()
+
+    }
 
 
     return (
         <>
-            <form onSubmit={onCreateComment} className="w-1/2 ml-36 pt-18 ">
+            <form action={onCreateComment} className="w-1/2 ml-36 pt-18 ">
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">
-                        <h2 className="text-base/7 font-semibold text-gray-900">Create Comment</h2>
+                        <h2 className="text-base/7 font-semibold text-gray-900">Post a Comment</h2>
                         <p className="mt-1 text-sm/6 text-gray-600">
                             Share your experience and thoughts on the topic.
                         </p>
@@ -55,14 +97,11 @@ export default function CommentsCreate(
 
                 {/* Buttons section */}
                 <div className="mt-6 flex items-center justify-end gap-x-6">
-                    <button type="button" className="text-sm/6 font-semibold text-gray-900">
-                        Cancel
-                    </button>
                     <button
                         type="submit"
                         className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                        Save
+                        Post
                     </button>
                 </div>
             </form>
