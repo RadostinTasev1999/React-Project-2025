@@ -9,7 +9,7 @@ export default function UserProvider(
 
 
     const userLoginHandler = (resultData) => {
-        console.log('UserLoginHandler result data is:', resultData)
+        
         setAuthData(resultData)
         // We have saved the authData to localStorage and updated 
         // the authData state property
