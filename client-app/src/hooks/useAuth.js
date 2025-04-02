@@ -21,7 +21,7 @@ export default function useAuth() {
                 }
             };
 
-            console.log('accessToken:', accessToken)
+            
 
             return request.baseRequest(method, url, data, accessToken ? authOption : options);
             
