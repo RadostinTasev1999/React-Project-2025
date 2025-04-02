@@ -11,10 +11,7 @@ export const useLogin = () => {
             password
         }
 
-        console.log('Payload is:', payload)
-
           const response = await request.post(`${baseUrl}/login`,payload)
-          console.log('Response data is:', response)
 
           return response
     }
@@ -42,8 +39,6 @@ export const useRegister = () => {
         }
 
         const response = await request.post(`${baseUrl}/register`, payload)
-
-        console.log('Response data is:', response)
 
         return response
     }
