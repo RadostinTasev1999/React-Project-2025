@@ -10,15 +10,11 @@ export default function EditPost() {
     const { post } = usePost(postId)
     const { edit } = useEditPost()
 
-    const onEditHandler = async(formData) => {
+    const onEditHandler = (formData) => {
            
         const data = Object.fromEntries(formData)
 
-        console.log('Data is:', data)
-
-        const editPost = await edit(data,postId)
-
-        console.log('Edited post is:', editPost)
+        edit(data,postId)
 
         navigate(`/posts/${postId}/details`)
 
@@ -47,7 +43,7 @@ export default function EditPost() {
                     <form action={onEditHandler} className="space-y-6">
                         <div>
                             <label htmlFor="title" className="block text-sm/6 font-medium text-gray-900">
-                                Device OEM
+                                Title
                             </label>
                             <div className="mt-2">
                                 <input
@@ -58,7 +54,7 @@ export default function EditPost() {
                                     autoComplete="Title..."
                                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                     defaultValue={post.title}
-                               />
+                                />
                             </div>
                         </div>
                         <div>
@@ -108,7 +104,7 @@ export default function EditPost() {
                             </button>
                             <br />
                             <button
-                                
+
                                 onClick={onCancel}
                                 className="flex w-full justify-center rounded-md bg-white px-4 py-2 text-sm/6 font-semibold text-black shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 border"
                             >
@@ -116,11 +112,8 @@ export default function EditPost() {
                             </button>
                         </div>
                     </form>
-
-
                 </div>
             </div>
         </>
     )
-    
 }
