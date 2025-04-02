@@ -10,8 +10,4 @@ export default function AuthGuard() {
     }
 
     return <Outlet />
-    /*
-    Renders the matching child route of a parent route or nothing if no child route matches.
-    */
-
 }
