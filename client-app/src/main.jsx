@@ -9,8 +9,3 @@ createRoot(document.getElementById('root')).render(
     </BrowserRouter>
    
 )
-
-/*
-BrowserRouter is a component from React Router, a library used for handling routing in React applications.
-It enables navigation within a single-page application (SPA) without reloading the entire page.
-*/
