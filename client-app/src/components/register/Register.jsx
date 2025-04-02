@@ -2,29 +2,106 @@ import { useContext } from "react"
 import { useRegister } from "../../api/authApi"
 import { UserContext } from "../../contexts/UserContext"
 import { useNavigate } from "react-router"
+import { useState } from "react"
 
 export default function Register() {
 
-
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   const navigate = useNavigate();
   const {register} = useRegister()
   const {userLoginHandler} = useContext(UserContext)
 
+  // create formData state property and declare the form initial values
+  const [formData,setFormData] = useState({
+    email:'',
+    username: '',
+    password: '',
+    're-password':''
+  })
+
+  // create errors state property
+  const [errors,setErrors] = useState({})
+
+  const handleChange = (event) => {
+    event.preventDefault()
+
+    const { name,value } = event.target
+
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value
+    }))
+
+  }
+
+
+  // create validation function
+
+  const validateForm = (data) => {
+
+    let errors = {};
+ 
+
+    if (!data.email.trim()) {
+      errors.email = 'Email is required'
+    }else if(!isValidEmail(data.email)){
+        errors.email = 'Invalid email format'
+    }
+
+    if (!data.username.trim()) {
+        errors.username = 'Username is required'
+    } else if(data.username.length < 5 ){
+      errors.username = 'Username must be at least  5 characters'
+    }
+    if (!data.password.trim()) {
+        errors.password = 'Password is required'
+    }else if (data.password.length < 10 ) {
+        errors.password = 'Password must be at least 10 characters long!'
+    }
+
+    if (!data['re-password'].trim()) {
+        errors['re-password'] = 'Repeat password is required'
+    }
+
+    return errors
+  }
+
+  // implement email validation logic
+
+  const isValidEmail = (email) => {
+    // basic email validation
+    return emailRegex.test(email)
+  }
+
+
   const onRegister = async(formData) => {
 
-    const {email,username,password} = Object.fromEntries(formData)
+    const data = Object.fromEntries(formData)
 
-    const repeatPassword = formData.get('re-password')
+    const validationErrors = validateForm(data)
 
-    console.log('Form data is:', email, username,password,repeatPassword)
+    if (Object.keys(validationErrors).length === 0) {
+        
+        const {email,username,password} = data
 
-    const authData = await register(email,username,password,repeatPassword)
+        const repeatPassword = formData.get('re-password')
+        try {
+          const authData = await register(email,username,password,repeatPassword)
 
-    console.log('Auth Data is:', authData)
+          userLoginHandler(authData)
 
-    userLoginHandler(authData)
+          navigate('/');
 
-    navigate('/');
+        } catch (error) {
+          window.alert(error.message)
+          navigate('/register')
+        }
+
+        
+    }else {
+      setErrors(validationErrors)
+    }
+    
 
   }
 
@@ -56,8 +133,11 @@ export default function Register() {
                     type="email"
                     required
                     autoComplete="email"
+                    value={formData.email}
+                    onChange={handleChange}
                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   />
+                  {errors.email && <span className="border-red-500">{errors.email}</span>}
                 </div>
               </div>
 
@@ -72,8 +152,11 @@ export default function Register() {
                     type="text"
                     required
                     autoComplete="username"
+                    value={formData.username}
+                    onChange={handleChange}
                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   />
+                  {errors.username && <span className="border-red-500">{errors.username}</span>}
                 </div>
               </div>
   
@@ -90,8 +173,11 @@ export default function Register() {
                     type="password"
                     required
                     autoComplete="current-password"
+                    value={formData.password}
+                    onChange={handleChange}
                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   />
+                  {errors.password && <span className="border-red-500">{errors.password}</span>}
                 </div>
               </div>
             
@@ -107,9 +193,12 @@ export default function Register() {
                     name="re-password"
                     type="password"
                     required
+                    value={formData['re-password']}
+                    onChange={handleChange}
                     autoComplete="re-password"
                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   />
+                  {errors['re-password'] && <span className="border-red-500">{errors['re-password']}</span>}
                 </div>
               </div>
 
@@ -118,17 +207,12 @@ export default function Register() {
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                  Sign in
+                  Register
                 </button>
               </div>
             </form>
   
-            <p className="mt-10 text-center text-sm/6 text-gray-500">
-              Not a member?{' '}
-              <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                Start a 14 day free trial
-              </a>
-            </p>
+           
           </div>
         </div>
       </>
