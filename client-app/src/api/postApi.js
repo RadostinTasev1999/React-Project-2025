@@ -6,12 +6,15 @@ const baseUrl = 'http://localhost:3030/data/posts'
 
 export const usePosts = () => {
 
-    const {request} = useAuth()
+    const { request } = useAuth()
+    
     const [posts,setPosts] = useState([]);
 
     useEffect(() => {
+
         request.get(baseUrl)
             .then((posts) => setPosts(posts))
+
     },[request])
 
     return {
@@ -23,11 +26,14 @@ export const usePosts = () => {
 export const usePost = (postId) => {
 
     const {request} = useAuth()
+
     const [post,setPost] = useState({})
 
     useEffect(() => {
+
         request.get(`${baseUrl}/${postId}`)
             .then((response) => setPost(response))
+
     },[postId,request])
    
     
@@ -43,9 +49,9 @@ export const useEditPost = () => {
 
     const edit = (formData,postId) => {
 
-        const editPost =  request.put(`${baseUrl}/${postId}`,formData)
+    request.put(`${baseUrl}/${postId}`,formData)
 
-        return editPost
+        
     }
 
     return {
@@ -59,9 +65,9 @@ export const useCreatePost = () => {
 
     const create = async(postData) => {
        
-       const fetchPost = await request.post(baseUrl,postData)
+    await request.post(baseUrl,postData)
 
-       return fetchPost
+    
     };
 
     return {
@@ -76,7 +82,7 @@ export const useDeletePost = () => {
 
     const deletePost = async(postId) => 
 
-         await request.delete(`${baseUrl}/${postId}`);
+    await request.delete(`${baseUrl}/${postId}`);
     
     return {
         deletePost
