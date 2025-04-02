@@ -1,6 +1,8 @@
+
 import { useLogin } from '../../api/authApi'
 import { useUserContext } from '../../contexts/UserContext'
 import { useNavigate } from 'react-router';
+
 
 export default function Login() {
 
@@ -9,19 +11,21 @@ const { userLoginHandler } = useUserContext();
 // we access the values of userLoginHandler inside the UserContext 
 const navigate = useNavigate()
 
+  
+
 const loginAction = async(formData) => {
     
     const {email,password} = Object.fromEntries(formData)
-
-    console.log('Values are:', email,password)
+    
     try {
         const authData = await login(email,password)
 
-        console.log('AuthData after login is:', authData)
+       
         
         userLoginHandler(authData)
         
         navigate('/')
+
     } catch (error) {
         throw new Error(error.message)
     }
@@ -56,6 +60,7 @@ const loginAction = async(formData) => {
                     required
                     autoComplete="email"
                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                    
                   />
                 </div>
               </div>
@@ -65,11 +70,7 @@ const loginAction = async(formData) => {
                   <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
                     Password
                   </label>
-                  <div className="text-sm">
-                    <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                      Forgot password?
-                    </a>
-                  </div>
+                  
                 </div>
                 <div className="mt-2">
                   <input
@@ -79,6 +80,7 @@ const loginAction = async(formData) => {
                     required
                     autoComplete="current-password"
                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                   
                   />
                 </div>
               </div>
@@ -93,12 +95,7 @@ const loginAction = async(formData) => {
               </div>
             </form>
   
-            <p className="mt-10 text-center text-sm/6 text-gray-500">
-              Not a member?{' '}
-              <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                Start a 14 day free trial
-              </a>
-            </p>
+            
           </div>
         </div>
       </>
