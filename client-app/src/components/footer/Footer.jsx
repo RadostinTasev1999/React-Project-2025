@@ -3,7 +3,7 @@ export default function footer(){
     return (
         <>
          (
-    <footer className="bg-gray-800 text-white py-8 border-t-4 border-teal-500">
+    <footer className="bg-gray-800 text-white py-8 border-t-4 border-teal-500 bg-gradient-to-r from-teal-500 via-blue-500 to-purple-500">
       <div className="container mx-auto px-6 sm:px-12">
         <div className="flex flex-wrap justify-between">
           
@@ -25,7 +25,7 @@ export default function footer(){
         </div>
 
         {/* Bottom Section: Copyright */}
-        <div className="mt-8 border-t border-gray-700 pt-4 text-center text-sm">
+        <div className="mt-8 border-t border-gray-700 pt-4 text-center text-sm ">
           <p>&copy; 2025 TechForum. All rights reserved.</p>
         </div>
       </div>
