@@ -31,7 +31,7 @@ export default function Header() {
 
     return (
         <header className="bg-white">
-          <nav aria-label="Global" className=" mx-auto flex w-full items-center justify-between p-4 lg:px-8 bg-gradient-to-r from-teal-500 via-blue-500 to-purple-500 border-b-4 border-teal-500 shadow-lg">
+          <nav aria-label="Global" className=" mx-auto flex w-full items-center justify-between p-1.5 lg:px-8 bg-gradient-to-r from-teal-500 via-blue-500 to-purple-500 border-b-4 border-teal-500">
             <div className="flex lg:flex-1 ml-2">
               <Link to="/" className="-m-1.5 p-1.5">
                 <span className="sr-only">Teams Devices Forum</span>
@@ -44,7 +44,7 @@ export default function Header() {
             </div>
             
             <PopoverGroup className="hidden lg:flex lg:gap-x-12">
-              <Link to="/posts" className="text-sm font-semibold hover:text-teal-200 transition-all">
+              <Link to="/posts" className="text-white italic font-semibold hover:text-teal-200 transition-all">
                 All Posts
               </Link>
               
@@ -53,13 +53,13 @@ export default function Header() {
                   ?
                   (
               <div className="hidden lg:flex ml-8 lg:gap-x-4">
-                <Link onClick={onLogout} className="text-sm font-semibold hover:text-teal-200 transition-all">
+                <Link onClick={onLogout} className="text-white italic font-semibold hover:text-teal-200 transition-all">
                   Log out
                 </Link>
-                <Link to="/create" className="text-sm font-semibold hover:text-teal-200 transition-all">
+                <Link to="/create" className="text-white italic font-semibold hover:text-teal-200 transition-all">
                     Create Post
                 </Link>
-                <Link to="/admin" className="text-sm font-semibold hover:text-teal-200 transition-all">
+                <Link to="/admin" className="text-white italic font-semibold hover:text-teal-200 transition-all">
                 Admin
               </Link>
               </div>
@@ -67,11 +67,11 @@ export default function Header() {
                   :
                   (
               <div className="hidden lg:flex ml-8 mr-6 lg:gap-x-4">
-                <Link to="/login" className="text-sm font-semibold hover:text-teal-200 transition-all">
+                <Link to="/login" className="text-white italic font-semibold hover:text-teal-200 transition-all">
                   Log in
                 </Link>
                 <br />
-                <Link to="/register" className="text-sm font-semibold hover:text-teal-200 transition-all">
+                <Link to="/register" className="text-white italic font-semibold hover:text-teal-200 transition-all">
                   Register
                 </Link>
               </div>
