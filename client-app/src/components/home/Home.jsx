@@ -36,7 +36,7 @@ import images from '../../resources/images/images'
           </div>
             <article className="flex flex-col md:flex-row h-screen md:justify-between mt-6">
               <div className="flex-1 overflow-auto p-4">
-                <h2 className="text-3xl sm:text-4xl font-semibold text-gray-900 mb-4 mt-8 tracking-wide"><b>Topic Categories</b></h2>
+                <h2 className="text-3xl sm:text-4xl font-semibold text-gray-900 mb-4 mt-8 tracking-wide"><b>Categories</b></h2>
                 <br />
               <ul role="list" className="divide-y divide-gray-100">
                 {
