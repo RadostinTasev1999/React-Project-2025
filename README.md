@@ -20,28 +20,28 @@ Features included:
 # Project structure:
 
 /src
-  /api             # Custom react hooks for authentication / CRUD operations on comments and  posts collections
+  /api               # Custom react hooks for authentication / CRUD operations on comments and  posts collections
 
-  /components         # UI components, including admin,catalog,create-comment,edit-comment,show-comment,create,details,edit,footer,guards,header,home,login,register,policy
+  /components        # UI components
   
-  /contexts           # Added UserContext.jsx to create UseContext object, in order to define the shared data that we want to provide across the component tree.
+  /contexts          # Added UserContext.jsx to create UseContext object, in order to define the shared data that we want to provide across the component tree.
 
-  /hooks              # useAuth (returns properties from UserContext object and request property which modifies the option object and conditionally passes properties to request method.) and usePersistedState (custom state hook which defines the logic of the setter function and returns the new state)
+  /hooks             # useAuth and usePersistedState (custom React hooks)
 
-  /providers              # UserProvider (defines callbacks which pass authentication data to setter function of the state property to update state. Returns UserContext.Provider and pass state properties and functions to all components in the child tree)
+  /providers         # UserProvider 
  
-  /utils            # date.js - function which accepts raw date and uses moment.js methods to format date and return the formatted date
-  request.js - function which accepts method, url, data, options properties and modifies the options object and fetches the database by using fetch() method and finally performs validation on the response object and conditionally returns it.
+  /utils             #  date.js - function which accepts raw date and uses moment.js methods to format date and return the formatted date
+                       request.js - function which accepts method, url, data, options properties and modifies the options object and fetches the database by using fetch() method and finally performs validation                          on the response object and conditionally returns it.
   
   /resources
-    /images           # define a function which returns an object containing a list of different device categories. Each category has url property pointing to an image URL related to this category.
+    /images          # define a function which returns an object containing a list of different device categories. Each category has url property pointing to an image URL related to this category.
 
 
-  App.css              # Tailwind CSS configuration
-  App.jsx            # Wrap components in UserProvider component in order to provide context value to its children. Define Guards and Routes to components via React Route. Use React lazy loading to dynamically import Admin component. Use Suspense react component to display fallback jsx until the component's children have finished loading.
+  /App.css           # Tailwind CSS configuration
 
- main.jsx            # Enabled client side routing via BrowserRouter component. Wrapper App component inside BrowserRouter.
+  /App.jsx           # Wrap components in UserProvider component in order to provide context value to its children. Define Guards and Routes to components via React Route. Use React lazy loading to dynamically                         import Admin component. Use Suspense react component to display fallback jsx until the component's children have finished loading.
 
+ /main.jsx           # Enabled client side routing via BrowserRouter component. Wrapper App component inside BrowserRouter.
 
 # Getting Started
 
