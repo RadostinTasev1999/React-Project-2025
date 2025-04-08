@@ -1,20 +1,57 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
 import useAuth from "../hooks/useAuth"
+import { v4 as uuid } from 'uuid';
 
 const baseUrl = 'http://localhost:3030/data/comments'
 
+// reducer function,specifies how the state gets updated
+// action is the passed property to the reduce function
+
+//{ type: 'GET_ALL', payload: result}
+function commentsReducer(state,action){
+    
+    switch(action.type) {
+        case 'GET_ALL':
+            return action.payload;;
+        case 'ADD_COMMENT':
+            return [...state,action.payload] // logic by which the state will be updated
+        
+        default:
+            return state;
+    }
+};
+/*
+{ type:'ADD_COMMENT', payload: commentData}
+*/
 
 export const useCreateComments = () => {
 
-    const { request } = useAuth();
+    const { request } = useAuth(); //  custom React hook
+    const { userId } = useAuth()
+    const {email} = useAuth()
 
-    const create = (payload) => {
+    const create = (data,postId) => {
 
-        const commentData = {
+        const payload = {
+            _id:uuid(),
+            username: data.username,
+            comment: data.comment,
+            _ownerId:userId,
+            postId,
+            author:{
+                email
+            }
+        }
+
+        const commentData = { 
             ...payload
         }
 
-         request.post(baseUrl,commentData)
+        console.log('Comment data is:', commentData)
+
+       const response =  request.post(baseUrl,commentData)
+
+       return response
 
     }
 
@@ -28,23 +65,55 @@ export const useCreateComments = () => {
 export const useComments = (postId) => {
 
     const { request } = useAuth();
+    const { accessToken } = useAuth()
+    // const { userId } = useAuth()
+    const [comments, dispatch] = useReducer(commentsReducer,[])
+    // [] - initialArg: the value from which the initial state is calculated.
+    // useReducer - returns an array with two values:
+    //              1. Current state
+    //              2. Dispatch function that lets you update the state to a 
+    //                 different value and trigger a re-render.
 
-    const [comments, setComments] = useState({})
+
+    // dispatch - function which triggers the reducer function
 
     useEffect(() => {
         
         const searchParams = new URLSearchParams({
-            where: `postId="${postId}"`
+            where: `postId="${postId}"`, // Only returns items where the postId fields equals the passed string ID
+            load: `author=_ownerId:users`
+             /*
+            author - the name of the property you want to include in the result
+            _ownerId - field in the comment (the user who made the comment)
+            users - the name of the target collection/table that _ownerId references.
+            
+            */
         })
 
-        request.get(`${baseUrl}?${searchParams.toString()}`)
-            .then((result) => setComments(result))
+        /*
+        
+        */
 
-    },[postId,request])
+            const options = {
+                headers: {
+                    'X-Authorization' : accessToken
+                }
+            }
+
+        request.get(`${baseUrl}?${searchParams.toString()}`,null,options)
+            .then((result) => dispatch({ type: 'GET_ALL', payload: result}))
+
+    },[postId,accessToken, request])
 
     return {
-        comments
+        comments,
+        addComment: (commentData) => dispatch({ type:'ADD_COMMENT', payload: commentData})
     }
+    /*
+    useComments will return a property which has a value callback function which accepts a param and invokes the dispatch method,
+    and passes an action object, including type and payload properties.
+
+    */
 
 }
 
