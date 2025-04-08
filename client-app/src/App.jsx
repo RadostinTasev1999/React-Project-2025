@@ -18,6 +18,7 @@ import { Suspense, lazy } from 'react'
 import PrivacyPolicy from './components/policy/PrivacyPolicy'
 
 const Admin = lazy(() => import('./components/admin/Admin'))
+// this expression will be invoked asynchronously, when compiler gets to this row.
 
 function App() {
  
