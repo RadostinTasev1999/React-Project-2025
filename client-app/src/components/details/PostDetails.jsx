@@ -6,16 +6,40 @@ import { useNavigate } from "react-router"
 import { useDeletePost } from "../../api/postApi"
 import CommentsShow from "../comments-show/CommentsShow"
 import CommentsCreate from "../comments-create/CreateComment"
+import { useCreateComments } from "../../api/commentApi"
+import { useComments } from "../../api/commentApi"
+import { useOptimistic } from "react" 
 
+import { v4 as uuid } from "uuid"
 
 export default function PostDetails(){
     
     const {postId} = useParams()
-
     const { post } = usePost(postId)
     const { isAuthenticated } = useAuth()
     const { userId } = useAuth()
     const { deletePost } = useDeletePost()
+    const { create } = useCreateComments()
+
+    const {comments,addComment} = useComments(postId)
+    
+    console.log('Comments are:', comments)
+    /*
+    we use object destructuring to declare the values of comments and addComment,
+    returned by the custom hook useComments.
+    */
+
+    const [optimisticComments, setOptimisticComments] = useOptimistic(comments,(state, newComment) => [...state, newComment])
+    /*
+    React hook that lets you show a different state while an async action is underway.
+    It accepts some state as an argument and returns a copy of that state.
+
+    Params:
+    state - the value to be returned initially and whenever no action is pending.
+    updateFn - function that takes the current state and the optimistic value passed to 
+    addOptimistic and returns the resulting optimistic state.
+
+    */
   
     
     const navigate = useNavigate()
@@ -29,6 +53,50 @@ export default function PostDetails(){
         navigate('/posts')
 
     }
+
+    const onCreateComment = async(formData) => {
+       // destructure form data
+      const { username, comment } = Object.fromEntries(formData)      
+     
+      // create payload object
+      const payload = {
+        username,
+        comment
+      }
+
+      // create optimisticComment object and push the username and comment from the formData
+      const newOptimisticComment = {
+        postId,
+        _id: uuid(),
+        username,
+        comment,
+        pending: true
+      }
+
+      // modify optimisticComment state by copying the current state and adding the newOptimisticComment property into the state
+      setOptimisticComments(newOptimisticComment)
+      
+
+      try {
+
+        // invoke create method, which calls the request.post() method to send a post request to the server.
+
+        const createdComment = await create(payload,postId)
+
+
+
+        addComment(createdComment)
+
+        /*
+        addComment - callback, which accepts paramenter and
+        invokes the dispatch method of the react hook useReducer and passes
+        an action object to the dispatch method as a parameter.
+
+        */
+      } catch (error) {
+        throw new Error(error)
+      }
+      }
 
 
 
@@ -71,11 +139,11 @@ export default function PostDetails(){
               ) : null
             }
           </div>
-          <CommentsShow />
+          <CommentsShow comments={optimisticComments}/>
           {
             isAuthenticated
               ?
-              <CommentsCreate />
+              <CommentsCreate createHandler={onCreateComment} />
               :
 
               null
