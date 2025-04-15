@@ -22,6 +22,10 @@ export default function Register() {
   // create errors state property
   const [errors,setErrors] = useState({})
 
+  // Synthetic event
+  /*
+  React automatically creates a synthetic event object and passes it to the event handler function
+  */
   const handleChange = (event) => {
     event.preventDefault()
 
