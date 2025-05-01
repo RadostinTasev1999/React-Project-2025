@@ -3,6 +3,7 @@ import { useRegister } from "../../api/authApi"
 import { UserContext } from "../../contexts/UserContext"
 import { useNavigate } from "react-router"
 import { useState } from "react"
+import { toast } from "react-toastify"
 
 export default function Register() {
 
@@ -94,10 +95,12 @@ export default function Register() {
 
           userLoginHandler(authData)
 
+          toast(`Welcome ${username}`, { type: 'success' })
+
           navigate('/');
 
         } catch (error) {
-          window.alert(error.message)
+          toast(error.message, { type: 'error' })
           navigate('/register')
         }
 
