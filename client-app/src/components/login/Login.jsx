@@ -2,6 +2,7 @@
 import { useLogin } from '../../api/authApi'
 import { useUserContext } from '../../contexts/UserContext'
 import { useNavigate } from 'react-router';
+import { ToastContainer, toast } from 'react-toastify'
 
 
 export default function Login() {
@@ -11,23 +12,23 @@ const { userLoginHandler } = useUserContext();
 // we access the values of userLoginHandler inside the UserContext 
 const navigate = useNavigate()
 
-  
-
 const loginAction = async(formData) => {
     
     const {email,password} = Object.fromEntries(formData)
     
     try {
-        const authData = await login(email,password)
+        const authData = await login(email,password) // Fetch DB
 
-       
-        
-        userLoginHandler(authData)
-        
+        userLoginHandler(authData) // Set authData in LocalStorage
+      
+        toast(`Welcome ${email}`, { type: 'success' })
+
+
         navigate('/')
 
     } catch (error) {
-        throw new Error(error.message)
+       toast(error.message,{ type: 'error'})
+        //throw new Error(error.message)
     }
 
 }
@@ -94,8 +95,6 @@ const loginAction = async(formData) => {
                 </button>
               </div>
             </form>
-  
-            
           </div>
         </div>
       </>
