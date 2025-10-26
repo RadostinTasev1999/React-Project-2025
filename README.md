@@ -2,15 +2,15 @@
 
 # Project Documentation - React Project
 
-Overview:
+## Overview:
 
-Project Name: React-Project 2025
-Description: 
-
-
-Purpose: Enable people to collaborate on Tech topics by discussing various product updates,bugs, fixes etc.
-Target Audience: IT pros, normal users
-Features included:
+#### Project Name: Technical Forum
+<ins>**_Description:_**</ins>  
+  
+Enable people to collaborate on Tech topics by discussing various product **updates**,**bugs**, **fixes** etc.  
+**Target Audience**: IT pros, normal users  
+  
+<ins>**_Features included_**</ins>:
 - Authentication (Login / Register / Logout)
 - Logged in users can create posts, edit own posts, delete own posts, comment on posts, edit their own comments on posts and delete own comments on posts. Logged in users also have access to Admin page and can view their user credentials (email,username).
 - Guest users can view home page, catalog page and details page and can login or register.
