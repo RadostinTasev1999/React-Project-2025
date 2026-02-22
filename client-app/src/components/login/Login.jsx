@@ -23,7 +23,6 @@ const loginAction = async(formData) => {
       
         toast(`Welcome ${email}`, { type: 'success' })
 
-
         navigate('/')
 
     } catch (error) {

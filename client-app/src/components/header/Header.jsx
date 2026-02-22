@@ -39,7 +39,7 @@ export default function Header() {
 
     return (
         <header className="bg-white">
-          <nav aria-label="Global" className=" mx-auto flex w-full items-center justify-between p-3 lg:px-8 bg-gradient-to-r from-teal-500 via-blue-500 to-purple-500 border-b-4 border-teal-500">
+          <nav aria-label="Global" id='nav-bar' className=" mx-auto flex w-full items-center justify-between p-3 lg:px-8 bg-gradient-to-r from-teal-500 via-blue-500 to-purple-500 border-b-4 border-teal-500">
             <div className="flex lg:flex-1 ml-2">
               <Link to="/" className="-m-1.5 p-1.5">
                 <span className="sr-only">Teams Devices Forum</span>
@@ -61,7 +61,7 @@ export default function Header() {
                   ?
                   (
               <div className="hidden lg:flex ml-8 lg:gap-x-4">
-                <Link onClick={onLogout} className="text-white hover:text-teal-200 transition-colors duration-300 text-[21px]">
+                <Link id='logout' onClick={onLogout} className="text-white hover:text-teal-200 transition-colors duration-300 text-[21px]">
                   Log out
                 </Link>
                 <Link to="/create" className="text-white hover:text-teal-200 transition-colors duration-300 text-[21px]">
