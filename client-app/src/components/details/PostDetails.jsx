@@ -103,7 +103,7 @@ export default function PostDetails(){
     return (
         <>
         <div className="overflow-hidden w-[85%] m-auto bg-white py-24 sm:py-32">
-          <div className="bg-white shadow-lg pt-12 pb-12 rounded-lg border-1">
+          <div className="bg-white shadow-md p-6 rounded-lg border">
             <div className="mx-auto max-w-7xl px-6 ml-26 lg:px-8">
               <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-56 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
                 <div className="lg:pt-4 lg:pr-8">

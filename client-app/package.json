@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "cd ../server & node server.js"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -20,6 +21,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-error-boundary": "^5.0.0",
+    "react-router": "^7.13.0",
     "react-toastify": "^11.0.5",
     "tailwindcss": "^4.0.17",
     "uuid": "^11.1.0"
