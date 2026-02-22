@@ -47,13 +47,12 @@ export default function  CommentsShow(
                             comments.map((comment) => (
                                  <div key={comment._id} className={`bg-gray-100 p-4 rounded-md shadow-sm mt-8 max-w-2xl ${comment.pending ? 'border border-yellow-300 bg-yellow-100 text-yellow-800' : ''}`}>                                   
                                         <span className="text-sm font-semibold  italic text-blue-500">
-                                            <p className="text-sm text-gray-600 font-sm italic"><b>User:</b> {comment.username}</p>
+                                            <p className="text-sm text-gray-700 italic mt-1"><b className="font-semibold text-gray-800 not-italic">User:</b> {comment.username}</p>
                                         </span>
                                     
                                     <span className="text-gray-700 mt-4 mb-2">
-                                        <p className="text-sm text-gray-600 font-sm italic"><b>UserId:</b> {comment.author?._id}</p>
-                                        <p className="text-sm text-gray-600 font-medium italic"><b>Email:</b> {comment.author?.email}</p>
-                                        <span className="text-xs text-gray-500">{formattedDate(comment._createdOn)}</span>
+                                        <p className="text-sm text-gray-700 italic mt-1"><b className="font-semibold text-gray-800 not-italic">Email:</b> {comment.author?.email}</p>
+                                        <span className="text-xs text-gray-500 tracking-wide">{formattedDate(comment._createdOn)}</span>
                                         <p className="mt-10"> {comment.comment}</p>
                                     </span>
                                   

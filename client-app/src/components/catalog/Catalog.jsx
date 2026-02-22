@@ -33,7 +33,7 @@ export default function Catalog() {
                                     <p className="mt-5 line-clamp-3 text-sm/6 text-gray-600">{post.description}</p>
                                 </div>
                                 <div className="relative mt-8 flex items-center gap-x-4">
-                                    <img alt="Image" src={post.image} className="size-50  w-82 h-32" />
+                                    <img alt="Image" src={post.image} className="w-full h-40 object-cover rounded-md" />
                                 </div>
                                 <Link to={`/posts/${post._id}/details`} className="px-4 py-1.5 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 mt-2">See post</Link>
 
