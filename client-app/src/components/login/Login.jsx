@@ -15,10 +15,13 @@ const navigate = useNavigate()
 const loginAction = async(formData) => {
     
     const {email,password} = Object.fromEntries(formData)
+
+    console.log("Form data is:", Object.fromEntries(formData))
+    //console.log('Form data is:', formData)
     
     try {
         const authData = await login(email,password) // Fetch DB
-
+        //console.log('authData is:', authData)
         userLoginHandler(authData) // Set authData in LocalStorage
       
         toast(`Welcome ${email}`, { type: 'success' })
@@ -26,8 +29,9 @@ const loginAction = async(formData) => {
         navigate('/')
 
     } catch (error) {
-       toast(error.message,{ type: 'error'})
-        //throw new Error(error.message)
+        toast(error.message,{ type: 'error'})
+        
+        console.log('Error is:', error)
     }
 
 }

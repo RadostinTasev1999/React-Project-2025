@@ -25,7 +25,7 @@ test('Verify "Login" button is visible', async({ page }) => {
 
 });
 
-test.only('Login with valid credentials', async({ page }) => {
+test('Login with valid credentials', async({ page }) => {
     await page.goto('http://localhost:5173/login')
 
     await page.fill('input[name="email"]', 'peter@abv.bg');
@@ -42,14 +42,61 @@ test.only('Login with valid credentials', async({ page }) => {
     expect(isLogoutButtonVisible).toBe(true);
 })
 
-// test('Verify "Create Post" link is visible after user login', async({ page }) => {
-//     await page.goto('http://localhost:5173/login')
+test('Register with valid credentials',async({ page }) => {
+    await page.goto('http://localhost:5173/register')
 
-//     await page.fill('input[name="email"]', 'peter@abv.bg');
-//     await page.fill('input[name="password"]', '123456');
-//     await page.click('button[type="submit"]');
+    await page.fill('input[name="email"]', 'radostin@gmail.com');
+    await page.fill('input[name="username"]', 'Tasev1904');
+    await page.fill('input[name="password"]', '12345678910')
+    await page.fill('input[name="re-password"]', '12345678910')
 
+    await page.click('button[type="submit"]');
 
+    await page.waitForSelector('#logout', { state: 'attached' });
 
-    
-// })
+    const logoutButton = await page.$('#logout')
+
+    const isLogoutButtonVisible = await logoutButton.isVisible();
+
+    expect(isLogoutButtonVisible).toBe(true);
+})
+
+test('Verify redirection of Logout link after user Login',async({ page }) => {
+    await page.goto('http://localhost:5173/login')
+
+     await page.fill('input[name="email"]', 'peter@abv.bg');
+     await page.fill('input[name="password"]', '123456')
+
+     await page.click('button[type="submit"]')
+
+     await page.waitForSelector('#logout', { state: 'attached' });
+
+     const logoutButton = await page.$('#logout')
+
+     await logoutButton.click();
+
+     await page.waitForSelector('nav#nav-bar',{ state:'attached' })
+
+     const loginButton = await page.$('a[href="/login"]')
+     const isLoginButtonVisible = await loginButton.isVisible();
+
+     const registerButton = await page.$('a[href="/register"]')
+     const isRegisterButtonVisible = await registerButton.isVisible();
+
+     expect(isLoginButtonVisible).toBe(true)
+     expect(isRegisterButtonVisible).toBe(true)
+})
+
+test.only('Login with invalid password', async({ page }) => {
+    await page.goto('http://localhost:5173/login')
+
+    await page.fill('input[name="email"]', 'peter@abv.bg');
+    await page.fill('input[name="password"]', '123')
+
+    await page.click('button[type="submit"]')
+
+    const errorToast = page.locator('.Toastify_toast--error');
+
+    await expect(errorToast).toBeVisible();
+    await expect(errorToast).toHaveText("Login or password don't match")
+})
