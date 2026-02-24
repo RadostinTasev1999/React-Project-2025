@@ -23,16 +23,16 @@ jobs:
                 node-version: '24.0.x'
 
             - name: Install Dependencies
-              run: npm install
+              run: cd client-app & npm install
 
             - name: Install Playwright
-              run: npm init playwright@latest
+              run: cd client-app & npm init playwright@latest
 
             - name: Build Project
-              run: cd client-app & npm run dev
+              run: cd client-app & npm run dev &
 
             - name: Start Server
-              run: cd client-app & npm run server
+              run: cd client-app & npm run server &
 
             - name: Start tests
               run: cd client-app & npm run tests
