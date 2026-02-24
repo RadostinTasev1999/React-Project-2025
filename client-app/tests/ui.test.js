@@ -87,7 +87,7 @@ test('Verify redirection of Logout link after user Login',async({ page }) => {
      expect(isRegisterButtonVisible).toBe(true)
 })
 
-test.only('Login with invalid password', async({ page }) => {
+test('Login with invalid password', async({ page }) => {
     await page.goto('http://localhost:5173/login')
 
     await page.fill('input[name="email"]', 'peter@abv.bg');
