@@ -1,0 +1,40 @@
+name: CI/CD Pipeline for Vite React app
+
+on:
+    push:
+        branches: 
+            - main
+
+jobs:
+    build_test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout the repository
+              uses: actions/checkout@v6
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v6
+              with:
+                node-version: '24.0.x'
+
+            - name: Install Dependencies
+              run: npm install
+
+            - name: Install Playwright
+              run: npm init playwright@latest
+
+            - name: Build Project
+              run: cd client-app & npm run dev
+
+            - name: Start Server
+              run: cd client-app & npm run server
+
+            - name: Start tests
+              run: cd client-app & npm run tests
+
+    
+
+
+
+
