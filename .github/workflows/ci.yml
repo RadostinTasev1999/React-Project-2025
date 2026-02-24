@@ -34,6 +34,9 @@ jobs:
               run: npx playwright install
 
             - name: Build Project
+              run: npm run build &
+
+            - name: Start app
               run: npm run dev &
 
             - name: Start Server
