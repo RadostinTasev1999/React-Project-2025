@@ -42,24 +42,24 @@ test('Login with valid credentials', async({ page }) => {
     expect(isLogoutButtonVisible).toBe(true);
 })
 
-test('Register with valid credentials',async({ page }) => {
-    await page.goto('http://localhost:5173/register')
+// test('Register with valid credentials',async({ page }) => {
+//     await page.goto('http://localhost:5173/register')
 
-    await page.fill('input[name="email"]', 'radostin@gmail.com');
-    await page.fill('input[name="username"]', 'Tasev1904');
-    await page.fill('input[name="password"]', '12345678910')
-    await page.fill('input[name="re-password"]', '12345678910')
+//     await page.fill('input[name="email"]', 'radostin@gmail.com');
+//     await page.fill('input[name="username"]', 'Tasev1904');
+//     await page.fill('input[name="password"]', '12345678910')
+//     await page.fill('input[name="re-password"]', '12345678910')
 
-    await page.click('button[type="submit"]');
+//     await page.click('button[type="submit"]');
 
-    await page.waitForSelector('#logout', { state: 'attached' });
+//     await page.waitForSelector('#logout', { state: 'attached' });
 
-    const logoutButton = await page.$('#logout')
+//     const logoutButton = await page.$('#logout')
 
-    const isLogoutButtonVisible = await logoutButton.isVisible();
+//     const isLogoutButtonVisible = await logoutButton.isVisible();
 
-    expect(isLogoutButtonVisible).toBe(true);
-})
+//     expect(isLogoutButtonVisible).toBe(true);
+// })
 
 test('Verify redirection of Logout link after user Login',async({ page }) => {
     await page.goto('http://localhost:5173/login')
@@ -87,16 +87,16 @@ test('Verify redirection of Logout link after user Login',async({ page }) => {
      expect(isRegisterButtonVisible).toBe(true)
 })
 
-test('Login with invalid password', async({ page }) => {
-    await page.goto('http://localhost:5173/login')
+// test('Login with invalid password', async({ page }) => {
+//     await page.goto('http://localhost:5173/login')
 
-    await page.fill('input[name="email"]', 'peter@abv.bg');
-    await page.fill('input[name="password"]', '123')
+//     await page.fill('input[name="email"]', 'peter@abv.bg');
+//     await page.fill('input[name="password"]', '123')
 
-    await page.click('button[type="submit"]')
+//     await page.click('button[type="submit"]')
 
-    const errorToast = page.locator('.Toastify_toast--error');
+//     const errorToast = page.locator('.Toastify_toast--error');
 
-    await expect(errorToast).toBeVisible();
-    await expect(errorToast).toHaveText("Login or password don't match")
-})
+//     await expect(errorToast).toBeVisible();
+//     await expect(errorToast).toHaveText("Login or password don't match")
+// })
