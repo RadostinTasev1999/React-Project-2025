@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "cd ../server & node server.js",
-    "tests": "npx playwright test --debug"
+    "tests": "npx playwright test"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
