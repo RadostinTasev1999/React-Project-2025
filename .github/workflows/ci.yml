@@ -30,26 +30,26 @@ jobs:
             - name: Install Dependencies
               run: npm install
 
-            # - name: Install Playwright
-            #   run: cd client-app & npm init playwright@latest
+            - name: Install Playwright
+              run: npm init playwright@latest
 
-            # - name: Build Project
-            #   run: cd client-app & npm run dev &
+            - name: Build Project
+              run: npm run dev &
 
-            # - name: Start Server
-            #   run: cd client-app & npm run server &
+            - name: Start Server
+              run: npm run server &
 
-            # - name: Start tests
-            #   run: cd client-app & npm run tests
+            - name: Start tests
+              run: npm run tests
   
-    deploy:
-        runs-on: ubuntu-latest
-        needs: build_test
+    # deploy:
+    #     runs-on: ubuntu-latest
+    #     needs: build_test
 
-        steps:
-            - name: Deploy Back-End to Render
-              uses: JorgeLNJunior/render-deploy@v1.5.0
-              with:
-                service_id: ${{ secrets.BE_SERVICE_ID}}
-                api_key: ${{ secrets.BE_RENDER_TOKEN }}
-                wait_deploy: true
+    #     steps:
+    #         - name: Deploy Back-End to Render
+    #           uses: JorgeLNJunior/render-deploy@v1.5.0
+    #           with:
+    #             service_id: ${{ secrets.BE_SERVICE_ID}}
+    #             api_key: ${{ secrets.BE_RENDER_TOKEN }}
+    #             wait_deploy: true
