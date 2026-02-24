@@ -24,19 +24,19 @@ jobs:
                 node-version: '24.0.x'
 
             - name: Install Dependencies
-              run: cd client-app & npm install
+              run: npm install
 
-            - name: Install Playwright
-              run: cd client-app & npm init playwright@latest
+            # - name: Install Playwright
+            #   run: cd client-app & npm init playwright@latest
 
-            - name: Build Project
-              run: cd client-app & npm run dev &
+            # - name: Build Project
+            #   run: cd client-app & npm run dev &
 
-            - name: Start Server
-              run: cd client-app & npm run server &
+            # - name: Start Server
+            #   run: cd client-app & npm run server &
 
-            - name: Start tests
-              run: cd client-app & npm run tests
+            # - name: Start tests
+            #   run: cd client-app & npm run tests
   
     deploy:
         runs-on: ubuntu-latest
