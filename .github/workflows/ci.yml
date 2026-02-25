@@ -45,14 +45,21 @@ jobs:
             # - name: Start tests
             #   run: npm run tests
   
-    # deploy:
-    #     runs-on: ubuntu-latest
-    #     needs: build_test
+    deploy:
+        runs-on: ubuntu-latest
+        needs: build_test
 
-    #     steps:
-    #         - name: Deploy Back-End to Render
-    #           uses: JorgeLNJunior/render-deploy@v1.5.0
-    #           with:
-    #             service_id: ${{ secrets.BE_SERVICE_ID}}
-    #             api_key: ${{ secrets.BE_RENDER_TOKEN }}
-    #             wait_deploy: true
+        steps:
+            - name: Deploy Back-End to Render
+              uses: JorgeLNJunior/render-deploy@v1.5.0
+              with:
+                service_id: ${{ secrets.BE_SERVICE_ID}}
+                api_key: ${{ secrets.BE_RENDER_TOKEN }}
+                wait_deploy: true
+
+            - name: Deploy Front-End to Render
+              uses: JorgeLNJunior/render-deploy@v1.5.0
+              with:
+                service_id: ${{ secrets.FE_SERVICE_ID}}
+                api_key: ${{ secrets. FE_RENDER_TOKEN }}
+                wait_deploy: true
