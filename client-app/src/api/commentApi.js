@@ -2,7 +2,7 @@ import { useEffect, useState, useReducer } from "react";
 import useAuth from "../hooks/useAuth"
 import { v4 as uuid } from 'uuid';
 
-const baseUrl = 'http://localhost:3030/data/comments'
+const baseUrl = 'https://server-react-project-2025.onrender.com/data/comments'
 
 // reducer function,specifies how the state gets updated
 // action is the passed property to the reduce function
