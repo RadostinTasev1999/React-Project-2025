@@ -56,7 +56,7 @@ const loginAction = async(e) => {
               className="mx-auto h-10 w-auto"
             />
             <h2 data-testid='heading' className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
-              {heading }
+              {heading}
             </h2>
           </div>
   
