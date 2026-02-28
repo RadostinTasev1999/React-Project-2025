@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify'
 
 
-export default function Login() {
+export default function Login({ onSubmit }) {
 
 const { login }  = useLogin()
 const { userLoginHandler } = useUserContext();
@@ -23,6 +23,8 @@ const loginAction = async(formData) => {
         const authData = await login(email,password) // Fetch DB
         //console.log('authData is:', authData)
         userLoginHandler(authData) // Set authData in LocalStorage
+
+        onSubmit(email,password)
       
         toast(`Welcome ${email}`, { type: 'success' })
 
@@ -51,7 +53,7 @@ const loginAction = async(formData) => {
           </div>
   
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form action={loginAction} className="space-y-6">
+            <form onSubmit={loginAction} className="space-y-6">
               <div>
                 <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
                   Email address
