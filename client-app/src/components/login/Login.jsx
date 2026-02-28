@@ -15,9 +15,14 @@ const { userLoginHandler } = useUserContext();
 // we access the values of userLoginHandler inside the UserContext 
 const navigate = useNavigate();
 
-const loginAction = async(formData) => {
+const loginAction = async(e) => {
     
-    const {email,password} = Object.fromEntries(formData)
+  e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const email = formData.get('email');
+    const password = formData.get('password');
+
 
     console.log("Form data is:", Object.fromEntries(formData))
     //console.log('Form data is:', formData)

@@ -1,10 +1,10 @@
-import { render, screen } from '@testing-library/react';
-//import userEvent from '@testing-library/user-event'
-import { expect, it } from 'vitest'
+import { render, screen, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event'
+import { expect, it, describe } from 'vitest'
 import Login from './Login'
 import { MemoryRouter } from 'react-router';
 import ReactDOM from 'react-dom/client'
-import { describe } from 'node:test';
+
 
 describe('Login Component', () => {
     it('Should display Sign in', () => {
@@ -28,6 +28,37 @@ describe('Login Component', () => {
         expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
     });
+
+//     it('Invoke loginAction with valid data', async () => {
+        
+//         const user = userEvent.setup();
+// /*
+// mock loginAction
+// */
+
+//         vi.spyOn()
+// /*
+// spyOn - observes a function’s behavior without changing it (unless you tell it to).
+// Use vi.spyOn to track function calls and arguments while preserving the original behavior.
+// */
+//         render(
+//             <MemoryRouter>
+//                 <Login onSubmit={onSubmit}/>
+//             </MemoryRouter>
+//         )
+
+//         await user.type(screen.getByLabelText(/email/i), 'admin@abv.bg')
+//         await user.type(screen.getByLabelText(/password/i), 'admin')
+//         await user.click(screen.getByRole('button'))
+    
+//         /*
+//         screen.getByLabelText() - This will search for the label that matches the given TextMatch, then find the element associated with that label.
+//         screen.getByRole() - Queries for elements with the given role
+//         */
+        
+//         expect(onSubmit).toHaveBeenCalledWith('admin@abv.bg', 'admin');
+
+//     })
 
 
 })
