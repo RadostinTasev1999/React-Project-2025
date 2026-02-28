@@ -12,6 +12,6 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/tests/setup.js',
-    include: ['src/Login.test.jsx']
+    include: ['./src/components/login/Login.test.jsx']
   }
 })

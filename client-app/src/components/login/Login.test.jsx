@@ -1,40 +1,38 @@
-import { render,screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event'
-import { describe, expect, test, vi } from 'vitest'
+import { render, screen } from '@testing-library/react';
+//import userEvent from '@testing-library/user-event'
+import { expect, it } from 'vitest'
 import Login from './Login'
 import { MemoryRouter } from 'react-router';
+import ReactDOM from 'react-dom/client'
+import { describe } from 'node:test';
+
+describe('Login Component', () => {
+    it('Should display Sign in', () => {
+        render(
+            <MemoryRouter>
+                <Login heading="Sign in"/>
+            </MemoryRouter>   
+        )
+
+        const textElement = screen.getByTestId('heading').textContent
+        
+        expect(textElement).toEqual('Sign in')
+    })
+    it('Should render email and password inputs', () => {
+        render(
+            <MemoryRouter>
+                <Login />
+            </MemoryRouter> 
+        )
+
+        expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    });
 
 
+})
 
-// -----------------------------------------------------------------------
-// describe('Login component', () => {
-//     test('should render email and password inputs', () => {
-//         render(     
-//             <MemoryRouter>
-//                 <Login />
-//             </MemoryRouter>
-//     )
-//         expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-//         expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-//     })
-//     test('calls loginAction with valid data', async() => {
-//         const handleSubmit = vi.fn()
-//         const user = userEvent.setup();git 
 
-//         render(
-//             <MemoryRouter>
-//                 <Login onSubmit={handleSubmit} />
-//             </MemoryRouter>
-//         )
-
-//         await user.type(screen.getByLabelText(/email/i), 'peter@abv.bg');
-//         await user.type(screen.getByLabelText(/password/i), '123456');
-//         await user.click(screen.getByRole('button', { type: /submit/i}));
-
-//         expect(handleSubmit).toHaveBeenCalledWith('peter@abv.bg', '123456')
-
-//     })
-// })
 /*
 screen - 
 getByText() - find by element text content
