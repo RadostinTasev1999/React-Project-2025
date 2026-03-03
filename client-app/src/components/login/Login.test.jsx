@@ -1,10 +1,31 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, } from '@testing-library/react';
 import userEvent from '@testing-library/user-event'
-import { expect, it, describe } from 'vitest'
+import { expect, it, describe, vi } from 'vitest'
 import Login from './Login'
 import { MemoryRouter } from 'react-router';
 import ReactDOM from 'react-dom/client'
+//import { useLogin } from '../../api/authApi'
 
+const mockResponse = {
+            "email": "peter@abv.bg",
+            "username": "Peter",
+            "_id": "35c62d76-8152-4626-8712-eeb96381bea8",
+            "accessToken": "fb4638389767ea3df7f2ee17a31277286d8f55880e1cc1cc5e002f6bfbf81c15"
+        }
+
+const mockPost = vi.fn().mockResolvedValue(mockResponse);
+
+vi.mock('../../utils/request.js', async (importOriginal) => {
+            const request = await importOriginal(); 
+        // helper function, which lets you import real, unmocked version of the mocked module
+
+
+            return {
+                ...request,
+                post: mockPost
+            }
+            
+        })
 
 describe('Login Component', () => {
     it('Should display Sign in', () => {
@@ -28,40 +49,77 @@ describe('Login Component', () => {
         expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
     });
+// -----------------------------------------------------------------
+   
 
-//     it('Invoke loginAction with valid data', async () => {
+    // it.only('Should return response body when submitting login form', () => {
+
+    //     const mockResponse = {
+    //         "email": "peter@abv.bg",
+    //         "username": "Peter",
+    //         "_id": "35c62d76-8152-4626-8712-eeb96381bea8",
+    //         "accessToken": "fb4638389767ea3df7f2ee17a31277286d8f55880e1cc1cc5e002f6bfbf81c15"
+    //     }
+
+    //     vi.mock('../../api/authApi.js', () => {
+    //         return {
+    //             useLogin: () => ({
+    //                 login: () => {
+    //                     return mockResponse
+    //                 }
+    //             })
+    //         }
+    //     })
+
+    //     render(
+    //         <MemoryRouter>
+    //             <Login />
+    //         </MemoryRouter>
+    //     )
+
+    //     screen.debug();
+
+    //     expect(true).toBe(true);
+    // })
+
+
+    it.only('Should call requester when submitting login form', () => {
+
+        const user = userEvent.setup();
         
-//         const user = userEvent.setup();
-// /*
-// mock loginAction
-// */
+        render(
+            <MemoryRouter>
+                <Login />
+            </MemoryRouter>
+        )
 
-//         vi.spyOn()
-// /*
-// spyOn - observes a function’s behavior without changing it (unless you tell it to).
-// Use vi.spyOn to track function calls and arguments while preserving the original behavior.
-// */
-//         render(
-//             <MemoryRouter>
-//                 <Login onSubmit={onSubmit}/>
-//             </MemoryRouter>
-//         )
+        vi.waitUntil(() => document.getElementById('login'));
 
-//         await user.type(screen.getByLabelText(/email/i), 'admin@abv.bg')
-//         await user.type(screen.getByLabelText(/password/i), 'admin')
-//         await user.click(screen.getByRole('button'))
-    
-//         /*
-//         screen.getByLabelText() - This will search for the label that matches the given TextMatch, then find the element associated with that label.
-//         screen.getByRole() - Queries for elements with the given role
-//         */
-        
-//         expect(onSubmit).toHaveBeenCalledWith('admin@abv.bg', 'admin');
+        user.type(screen.getByLabelText(/email/i), 'peter@abv.bg');
+        user.type(screen.getByLabelText(/password/i), '123456');
+        user.click(screen.getByRole('button', { type: 'submit'}))
 
-//     })
+        // Assert that post was called:
+        expect(mockPost).toHaveBeenCalled();
 
+        expect(mockPost).toHaveBeenCalledTimes(1);
+    })
 
 })
+
+/*
+test cases ideas:
+
+1. Sign in button submits form with correct data
+
+2. Check if forms validate input properly
+
+3. Confirm API is called with right values
+
+4. Handle errors like network failures
+
+
+*/
 
 
 /*

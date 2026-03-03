@@ -1,38 +1,31 @@
-
-import { useLogin } from '../../api/authApi'
 import { useUserContext } from '../../contexts/UserContext'
 import { useNavigate } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify'
-
+import { useLogin } from '../../api/authApi';
 
 export default function Login({ 
-  onSubmit,
   heading = 'Sign in'
 }) {
 
-const { login }  = useLogin()
+const { login } = useLogin()
+
 const { userLoginHandler } = useUserContext();
 // we access the values of userLoginHandler inside the UserContext 
 const navigate = useNavigate();
 
-const loginAction = async(e) => {
+const loginAction = async(formData) => {
     
-  e.preventDefault();
+  const { email, password } = Object.fromEntries(formData)
 
-    const formData = new FormData(e.target);
-    const email = formData.get('email');
-    const password = formData.get('password');
-
-
-    console.log("Form data is:", Object.fromEntries(formData))
-    //console.log('Form data is:', formData)
+  console.log('email:', email, 'password', password)
+    
     
     try {
         const authData = await login(email,password) // Fetch DB
         //console.log('authData is:', authData)
         userLoginHandler(authData) // Set authData in LocalStorage
 
-        onSubmit(email,password)
+        //onSubmit(email,password)
       
         toast(`Welcome ${email}`, { type: 'success' })
 
@@ -48,7 +41,7 @@ const loginAction = async(e) => {
 
     return (
       <>
-        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        <div id='login' className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <img
               alt="Your Company"
@@ -61,7 +54,7 @@ const loginAction = async(e) => {
           </div>
   
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form onSubmit={loginAction} className="space-y-6">
+            <form action={loginAction} className="space-y-6">
               <div>
                 <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
                   Email address
