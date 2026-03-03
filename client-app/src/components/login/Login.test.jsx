@@ -3,29 +3,26 @@ import userEvent from '@testing-library/user-event'
 import { expect, it, describe, vi } from 'vitest'
 import Login from './Login'
 import { MemoryRouter } from 'react-router';
-import ReactDOM from 'react-dom/client'
-//import { useLogin } from '../../api/authApi'
 
-const mockResponse = {
+const mockLogin = vi.hoisted(() => 
+    vi.fn().mockResolvedValue({
             "email": "peter@abv.bg",
             "username": "Peter",
             "_id": "35c62d76-8152-4626-8712-eeb96381bea8",
             "accessToken": "fb4638389767ea3df7f2ee17a31277286d8f55880e1cc1cc5e002f6bfbf81c15"
-        }
-
-const mockPost = vi.fn().mockResolvedValue(mockResponse);
-
-vi.mock('../../utils/request.js', async (importOriginal) => {
-            const request = await importOriginal(); 
-        // helper function, which lets you import real, unmocked version of the mocked module
+    })
+) 
 
 
-            return {
-                ...request,
-                post: mockPost
-            }
-            
-        })
+
+vi.mock('../../api/authApi.js', () => ({
+    useLogin: () => ({
+        login: mockLogin
+    })
+}));
+
+
+
 
 describe('Login Component', () => {
     it('Should display Sign in', () => {
@@ -50,40 +47,8 @@ describe('Login Component', () => {
         expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
     });
 // -----------------------------------------------------------------
-   
 
-    // it.only('Should return response body when submitting login form', () => {
-
-    //     const mockResponse = {
-    //         "email": "peter@abv.bg",
-    //         "username": "Peter",
-    //         "_id": "35c62d76-8152-4626-8712-eeb96381bea8",
-    //         "accessToken": "fb4638389767ea3df7f2ee17a31277286d8f55880e1cc1cc5e002f6bfbf81c15"
-    //     }
-
-    //     vi.mock('../../api/authApi.js', () => {
-    //         return {
-    //             useLogin: () => ({
-    //                 login: () => {
-    //                     return mockResponse
-    //                 }
-    //             })
-    //         }
-    //     })
-
-    //     render(
-    //         <MemoryRouter>
-    //             <Login />
-    //         </MemoryRouter>
-    //     )
-
-    //     screen.debug();
-
-    //     expect(true).toBe(true);
-    // })
-
-
-    it.only('Should call requester when submitting login form', () => {
+    it('Should call login with valid email and password on form submit',async () => {
 
         const user = userEvent.setup();
         
@@ -93,16 +58,19 @@ describe('Login Component', () => {
             </MemoryRouter>
         )
 
-        vi.waitUntil(() => document.getElementById('login'));
+       // vi.waitUntil(() => document.getElementById('login'));
 
-        user.type(screen.getByLabelText(/email/i), 'peter@abv.bg');
-        user.type(screen.getByLabelText(/password/i), '123456');
-        user.click(screen.getByRole('button', { type: 'submit'}))
+       await user.type(screen.getByLabelText(/email/i), 'peter@abv.bg');
+       await user.type(screen.getByLabelText(/password/i), '123456');
+       await user.click(screen.getByRole('button', { type: 'submit'}))
 
         // Assert that post was called:
-        expect(mockPost).toHaveBeenCalled();
+        expect(mockLogin).toHaveBeenCalled();
 
-        expect(mockPost).toHaveBeenCalledTimes(1);
+        expect(mockLogin).toHaveBeenCalledTimes(1);
+
+        expect(mockLogin).toHaveBeenCalledWith('peter@abv.bg', '123456');
+
     })
 
 })
