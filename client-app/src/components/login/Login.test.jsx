@@ -21,9 +21,6 @@ vi.mock('../../api/authApi.js', () => ({
     })
 }));
 
-
-
-
 describe('Login Component', () => {
     it('Should display Sign in', () => {
         render(
