@@ -13,9 +13,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/tests/setup.js',
     include: [
-      //'./src/components/login/Login.test.jsx'
-       './src/components/register/Register.test.jsx',
-      // './src/components/catalog/Catalog.test.jsx' 
+      './src/components/create/Create.test.jsx'
     ]
   }
 })
