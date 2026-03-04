@@ -5,11 +5,31 @@ import { MemoryRouter, Route } from 'react-router'
 import '@testing-library/jest-dom'
 import AuthGuard from '../guards/AuthGuard'
 import { Routes } from 'react-router'
-import { userEvent } from 'vitest/browser'
+import userEvent from '@testing-library/user-event'
+//import { userEvent } from 'vitest/browser'
+//import { mock } from 'node:test'
+
+const mockPost = vi.hoisted(() =>
+
+  vi.fn().mockResolvedValue({
+      "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
+      "title": "Mac Book",
+      "image": "https://sm.pcmag.com/pcmag_me/photo/default/macbook-6_hgfm.jpg",
+      "description": "MacBooks are Apple’s premium laptop lineup, recognized for their unibody aluminum construction, sleek, portable design, and high-performance M-series chips.",
+      "_createdOn": 1772647385758,
+      "_id": "a116670b-3e21-47e2-96cd-60ea088df222"
+})
+)
 
 vi.mock('../../hooks/useAuth.js', () => ({
     default: () => ({
       isAuthenticated: true
+    })
+}))
+
+vi.mock('../../api/postApi.js', () => ({
+    useCreatePost: () => ({
+        create: mockPost
     })
 }))
 
@@ -45,8 +65,11 @@ describe('Create component',() => {
 
     })
 
-    it('Should call create on form submission', async () => {
-        render(
+    it.only('Should call create function on form submission', async () => {
+        
+      const user = userEvent.setup();
+
+      render(
             <MemoryRouter initialEntries={['/create']}>
               <Routes>
                 <Route element={<AuthGuard />}>
@@ -57,11 +80,12 @@ describe('Create component',() => {
         )
 
         // Fill in input fields
-        await userEvent.fill(screen.getByLabelText(/^title$/i), 'Mac Book');
-        await userEvent.fill(screen.getByLabelText(/^image url$/i), 'https://sm.pcmag.com/pcmag_me/photo/default/macbook-6_hgfm.jpg');
-        await userEvent.fill(screen.getByLabelText(/^description$/i), 'MacBooks are Apple’s premium laptop lineup, recognized for their unibody aluminum construction, sleek, portable design, and high-performance M-series chips.')
-        await userEvent.click(screen.getByText(/^publish$/i))
+        await user.type(screen.getByLabelText(/^title$/i), 'Mac Book');
+        await user.type(screen.getByLabelText(/^image url$/i), 'https://sm.pcmag.com/pcmag_me/photo/default/macbook-6_hgfm.jpg');
+        await user.type(screen.getByLabelText(/^description$/i), 'MacBooks are Apple’s premium laptop lineup, recognized for their unibody aluminum construction, sleek, portable design, and high-performance M-series chips.')
+        await user.click(screen.getByText(/^publish$/i))
         // Assert that create has been called
-
+        expect(mockPost).toHaveBeenCalled();
+        expect(mockPost).toHaveBeenCalledWith({title: 'Mac Book', image: 'https://sm.pcmag.com/pcmag_me/photo/default/macbook-6_hgfm.jpg', description: 'MacBooks are Apple’s premium laptop lineup, recognized for their unibody aluminum construction, sleek, portable design, and high-performance M-series chips.'})
     })
 })
