@@ -23,6 +23,7 @@ export default function PostDetails(){
 
     const {comments,addComment} = useComments(postId)
     
+    console.log('Post is:', post)
     console.log('Comments are:', comments)
     /*
     we use object destructuring to declare the values of comments and addComment,
@@ -120,6 +121,7 @@ export default function PostDetails(){
                 </div>
                 <img
                   alt="Product screenshot"
+                  aria-label="product image"
                   src={post.image}
 
                   className="w-[14rem] max-w-none rounded-xl ring-1 shadow-xl ring-gray-400/10 sm:w-[28.5rem] md:-ml-4 lg:-ml-0"

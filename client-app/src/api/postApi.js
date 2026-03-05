@@ -33,10 +33,10 @@ export const usePost = (postId) => {
 
         request.get(`${baseUrl}/${postId}`)
             .then((response) => setPost(response))
-
+        
     },[postId,request])
    
-    
+
         return {
             post
         }
