@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Routes, Route } from "react-router";
 import PostDetails from "./PostDetails";
 import { usePost } from "../../api/postApi";
+import { useDeleteComment } from "../../api/commentApi";
 
 
     /*
@@ -31,12 +32,51 @@ const mockComment = {
         "_id": "00a999af-3ff4-4584-8faa-37b6a4703672"
 }
 
+const mockedComments = [
+    {
+    "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
+    "username": "Tasev",
+    "comment": "this is my comment here 123",
+    "postId": "6ae7391e-29bc-41b2-a905-36f501f925b9",
+    "author": {
+        "email": "peter@abv.bg",
+        "username": "Peter",
+        "_id": "35c62d76-8152-4626-8712-eeb96381bea8"
+    },
+    "_createdOn": 1772800104000,
+    "_id": "02aff09b-6074-4bec-8199-46088345981b"
+},
+{
+    "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
+    "username": "TasevRadostin",
+    "comment": "This is my comment 123",
+    "postId": "6ae7391e-29bc-41b2-a905-36f501f925b9",
+    "author": {
+        "email": "peter@abv.bg"
+    },
+    "_createdOn": 1772800209432,
+    "_id": "2b7562c6-2f25-48ce-b513-a1bd6cb0842f"
+}
+]
+    
+//const mockDeleteComment = vi.fn()
+
+
+
 const _id = "35c62d76-8152-4626-8712-eeb96381bea8"
 
 vi.mock('../../api/commentApi.js', () => ({
     useCreateComments:() => ({
         create: mockComment
-    })
+    }),
+    useComments: () => ({
+        comments: mockedComments,
+        addComment: vi.fn()
+    }),
+     useDeleteComment: () => ({
+        deleteComment: vi.fn()
+     })
+    
 }))
 
 vi.mock('../../hooks/useAuth.js', async(importOriginal) => {
@@ -56,12 +96,20 @@ vi.mock('../../hooks/useAuth.js', async(importOriginal) => {
     */
 vi.mock('../../api/postApi.js', async (importOriginal) => {
     const actual = await importOriginal();
+    /*
+        importOriginal() - funciton provided by Vitest that lets you import the 
+                           real unmocked version of the module         
+    */
     return {
         ...actual,
         usePost: vi.fn(() => ({
         post: mockedData
     }))
     } 
+    /*
+        usePost function will return the value provided in the callback to vi.fn()
+
+    */
 })
 
 describe('Details component', () => {
@@ -83,7 +131,9 @@ describe('Details component', () => {
         expect(screen.getByText(/Test title/i)).toBeInTheDocument();
         expect(screen.getByText(/Test description 12345678910/i)).toBeInTheDocument();
         expect(screen.getByRole('img', {name: 'product image'})).toBeInTheDocument();
-        expect(screen.getByRole('link', {name: /edit/i})).toBeInTheDocument();
-        expect(screen.getByRole('link', {name: /delete/i})).toBeInTheDocument();
+        const editLink = screen.getAllByRole('link', { name: /edit/i }).find(link => link.getAttribute('href') === `/posts/${postId}/edit`)
+        expect(editLink).toBeInTheDocument();
+        const deleteLink = screen.getAllByRole('link', { name: /delete/i }).find(link => link.getAttribute('class')?.includes('bg-blue-500'))
+        expect(deleteLink).toBeInTheDocument()
     })
 });

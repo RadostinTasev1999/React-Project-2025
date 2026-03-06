@@ -15,11 +15,11 @@ import { v4 as uuid } from "uuid"
 export default function PostDetails(){
     
     const {postId} = useParams()
-    const { post } = usePost(postId)
+    const { post } = usePost(postId) //mocked
     const { isAuthenticated } = useAuth()
-    const { userId } = useAuth()
+    const { userId } = useAuth() // mocked
     const { deletePost } = useDeletePost()
-    const { create } = useCreateComments()
+    const { create } = useCreateComments() // mocked
 
     const {comments,addComment} = useComments(postId)
     
