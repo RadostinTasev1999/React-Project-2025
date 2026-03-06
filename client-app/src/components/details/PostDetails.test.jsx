@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Routes, Route } from "react-router";
 import PostDetails from "./PostDetails";
 import { usePost } from "../../api/postApi";
-import { useDeleteComment } from "../../api/commentApi";
+//import { useDeleteComment } from "../../api/commentApi";
 
 
     /*
@@ -85,7 +85,8 @@ vi.mock('../../hooks/useAuth.js', async(importOriginal) => {
         return {
             default: () => ({
                 ...actual,
-                 userId: _id
+                 userId: _id,
+                 isAuthenticated: true
             })
             
         }
@@ -135,5 +136,15 @@ describe('Details component', () => {
         expect(editLink).toBeInTheDocument();
         const deleteLink = screen.getAllByRole('link', { name: /delete/i }).find(link => link.getAttribute('class')?.includes('bg-blue-500'))
         expect(deleteLink).toBeInTheDocument()
+
+        // Assert for Comments show section
+        expect(screen.getByRole('heading', { 'level': 2, name: /comments/i })).toBeInTheDocument();
+
+        // Assert for Comment Post Form section
+        expect(screen.getByRole('heading', { 'level': 2, 'name': /post a comment/i})).toBeInTheDocument();
+        expect(screen.getByText(/share your experience and thoughts on the topic./i)).toBeInTheDocument();
+        expect(screen.getByLabelText('Username')).toBeInTheDocument();
+        expect(screen.getByLabelText('Comment')).toBeInTheDocument();
+        expect(screen.getByRole('button', {'name': /post/i})).toBeInTheDocument();
     })
 });
