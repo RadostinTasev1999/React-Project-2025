@@ -15,41 +15,43 @@ Enable people to collaborate on Tech topics by discussing various product **upda
 - Logged in users can create posts, edit own posts, delete own posts, comment on posts, edit their own comments on posts and delete own comments on posts. Logged in users also have access to Admin page and can view their user credentials (email,username).
 - Guest users can view home page, catalog page and details page and can login or register.
 
-
-
 # Project structure:
-/.github
-  /workflows       #ci.yml - Define a GitHub Actions CI/CD worfklow, which includes jobs to build and test the 
-                             application and deploy front-end and back-end to render.com
-                                
-/client-app
- /src
-  /api               # Custom react hooks for authentication / CRUD operations on comments and  posts collections
-
-  /components        # UI components and unit-tests. Tests are co-located with the components.
-  
-  /contexts          # Added UserContext.jsx to create UseContext object, in order to define the shared data that we want to provide across the component tree.
-
-  /hooks             # useAuth and usePersistedState (custom React hooks)
-
-  /providers         # UserProvider 
-
-  /tests             #setup.js (Registers a hook that applies to all tests)
- 
-  /utils             #  date.js - function which accepts raw date and uses moment.js methods to format date and return the formatted date
-                     #  request.js - function which accepts method, url, data, options properties and modifies the options object and fetches the database by using fetch() method and finally performs validation                          on the response object and conditionally returns it.
-  
-  /resources
-    /images          # define a function which returns an object containing a list of different device categories. Each category has url property pointing to an image URL related to this category.
-
-  /tests             # UI tests - Contains playwright tests that test the UI behavior of the applicaiton     
-
-  /App.css           # Tailwind CSS configuration
-
-  /App.jsx           # Wrap components in UserProvider component in order to provide context value to its children. Define Guards and Routes to components via React Route. Use React lazy loading to dynamically                         import Admin component. Use Suspense react component to display fallback jsx until the component's children have finished loading.
-
- /main.jsx           # Enabled client side routing via BrowserRouter component. Wrapper App component inside BrowserRouter.
-
+```
+├──.github  
+│  └── workflows
+│      └── ci.yml - Define a GitHub Actions CI/CD worfklow, which includes jobs to build and test the application and deploy front-end and back-end to render.com
+│                                
+├── client-app
+│   └── src
+│       ├── api - Custom react hooks for authentication / CRUD operations on comments and  posts collections
+│       │     
+│       ├── components - UI components and unit-tests. Tests are co-located with the components.
+│       │
+│       ├── contexts - Added UserContext.jsx to create UseContext object, in order to define the shared data that we want to provide across the component tree.
+│       │
+│       ├── hooks - useAuth and usePersistedState (custom React hooks)
+│       │
+│       ├── providers - UserProvider 
+│       │ 
+│       ├── tests - setup.js (Registers a hook that applies to all tests)
+│       │
+│       ├── utils
+│           └── date.js - function which accepts raw date and uses moment.js methods to format date and return the formatted date
+│           └── request.js - function which accepts method, url, data, options properties and modifies the options object and fetches the database by using fetch() method and finally performs validation on the response object and conditionally returns it.
+│       │
+│       ├── resources
+│           └── images
+│               └── images.js - define a function which returns an object containing a list of different device categories. Each category has url property pointing to an image URL related to this category
+│
+│       ├── tests - UI tests - Contains playwright tests that test the UI behavior of the applicaiton     
+│       │
+│       ├── App.css - Tailwind CSS configuration
+│       │
+│       ├── App.jsx - Wrap components in UserProvider component in order to provide context value to its children. Define Guards and Routes to components via React Route. Use React lazy loading to dynamically import Admin component. Use Suspense react component to display fallback jsx until the component's children have finished loading.
+│       │
+│       ├── main.jsx - Enabled client side routing via BrowserRouter component. Wrapper App component inside BrowserRouter.
+│ 
+```
 # Getting Started
 
 Project set up:
