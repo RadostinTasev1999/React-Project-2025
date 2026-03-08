@@ -118,12 +118,13 @@ By Clicking on Delete Post from the Details page the post is deleted and the use
 
 # API Reference:
 
-Base URL: http://localhost:3030/
-Endpoints:
+**Base URL**: https://site-react-project-2025.onrender.com<br/>
+<br/>
+<ins>Endpoints:</ins><br/>
 
-Authentication: 'http://localhost:3030/users'
-Comments: 'http://localhost:3030/data/comments'
-Posts: 'http://localhost:3030/data/posts'
+**Authentication**: 'https://site-react-project-2025.onrender.com/users'  
+**Comments**: 'https://site-react-project-2025.onrender.com/data/comments'  
+**Posts**: 'https://site-react-project-2025.onrender.com/data/posts'  
 
 
 
