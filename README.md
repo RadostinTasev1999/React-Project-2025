@@ -58,9 +58,11 @@ Project set up:
 
 1. Install dependencies
 `npm install`
-2. Start application in root directory (client-app) by running cmdlet `npm run dev` in the terminal
-3. Start server by navigating to `cd server` folder and run `node .\server.js` in the terminal
-
+2. Navigate to Project root directory by executing `cd client-app` in the terminal
+3. Start application by executing (`npm run dev`) in the terminal.
+4. Start server by executing (`npm run server`) in the terminal
+5. Start unit tests by executing (`npm test`) in the terminal
+6. Start UI-tests by executing `npm run ui-tests` in the terminal
 
 # Usage
 
