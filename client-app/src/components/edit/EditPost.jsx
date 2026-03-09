@@ -40,7 +40,7 @@ export default function EditPost() {
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form action={onEditHandler} className="space-y-6">
+                    <form name="editForm" action={onEditHandler} className="space-y-6">
                         <div>
                             <label htmlFor="title" className="block text-sm/6 font-medium text-gray-900">
                                 Title

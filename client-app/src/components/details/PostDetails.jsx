@@ -131,7 +131,7 @@ export default function PostDetails(){
             {
               isOwner ? (
                 <div className="ml-30 mt-16 flex gap-4 justify-start">
-                  <Link to={`/posts/${postId}/edit`} className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                  <Link to={`/posts/${postId}/edit`} aria-label="Edit post" className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                     Edit
                   </Link>
                   <Link onClick={onDelete} className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">

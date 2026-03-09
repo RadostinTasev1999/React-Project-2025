@@ -22,7 +22,7 @@ export default function Header() {
 
    const onLogout = () => {
       try {
-        userLogoutHandler()
+        userLogoutHandler() // update local storage state
         toast('Logout successfull', { type: 'success' })
         navigate('/')
       } catch (error) {

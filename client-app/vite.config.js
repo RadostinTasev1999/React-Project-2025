@@ -13,7 +13,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/tests/setup.js',
     include: [
-      './src/components/admin/Admin.test.jsx'
+      './src/components/details/PostDetails.test.jsx'
     ]
   }
 })

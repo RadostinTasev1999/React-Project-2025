@@ -4,6 +4,8 @@ import { MemoryRouter, Routes, Route } from "react-router";
 import PostDetails from "./PostDetails";
 import { usePost } from "../../api/postApi";
 //import { useDeleteComment } from "../../api/commentApi";
+import userEvent from '@testing-library/user-event'
+import EditPost from "../edit/EditPost";
 
 
     /*
@@ -146,5 +148,63 @@ describe('Details component', () => {
         expect(screen.getByLabelText('Username')).toBeInTheDocument();
         expect(screen.getByLabelText('Comment')).toBeInTheDocument();
         expect(screen.getByRole('button', {'name': /post/i})).toBeInTheDocument();
+    })
+    it.only('renders edit-post form on Edit button click', async() => {
+
+        const postId = '2bb392a3-adc3-4f13-8d22-bacdfd02af7c'
+
+        render(
+            <MemoryRouter initialEntries={[`/posts/${postId}/details`]}>
+                <Routes>
+                    <Route path="/posts/:postId/details" element={<PostDetails />}/>
+                    <Route path='/posts/:postId/edit' element={<EditPost />} />
+                </Routes>
+            </MemoryRouter>
+        )
+
+        const editButton = screen.getByRole('link', {'name': /edit post/i})
+        await userEvent.click(editButton)
+        // target h2 element
+        // getBy queries are synchronous
+        const formHeading = await screen.findByRole('heading', {'level': 2, 'name': /^Edit Post$/})
+        
+        // target edit form element
+        const editForm = await screen.findByRole('form')
+
+        // target title imput
+        const titleInput = await screen.findByLabelText(/^Title$/)
+        // target Image URL input
+        const imageInput = await screen.findByLabelText(/^Image URL$/)
+        // Target description input
+        const descriptionInput = await screen.findByLabelText(/^Description$/)
+        // Target Edit button
+        const editFormButton = await screen.findByRole('button', {'name': 'Edit'})
+
+        // Target Cancel button
+        const cancelButton = await screen.findByRole('button', {'name': 'Cancel'})
+
+        // Assert:
+        expect(formHeading).toBeInTheDocument();
+        expect(formHeading.textContent).toEqual('Edit Post')
+        expect(editForm).toBeInTheDocument();
+        expect(titleInput).toBeInTheDocument();
+        expect(titleInput).toHaveValue('Test title');
+        expect(imageInput).toBeInTheDocument();
+        expect(imageInput).toHaveValue('Test image URL')
+        expect(descriptionInput).toBeInTheDocument();
+        expect(descriptionInput).toHaveValue('Test description 12345678910')
+        expect(editFormButton).toBeInTheDocument();
+        expect(cancelButton).toBeInTheDocument();
+
+        /*
+        const mockedData = {
+        "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
+        "title": "Test title",
+        "image": "Test image URL",
+        "description": "Test description 12345678910",
+        "_createdOn": 1772711227341,
+        "_id": "aa6f3aaa-7be9-4474-b0ea-7468a2d8109a"
+    }
+        */
     })
 });
