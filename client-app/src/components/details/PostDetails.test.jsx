@@ -1,6 +1,6 @@
 import { describe,expect,it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { MemoryRouter, Routes, Route } from "react-router";
+import { MemoryRouter, Routes, Route, useNavigate } from "react-router";
 import PostDetails from "./PostDetails";
 import { usePost } from "../../api/postApi";
 //import { useDeleteComment } from "../../api/commentApi";
@@ -12,6 +12,10 @@ import EditPost from "../edit/EditPost";
      MemoryRouter - Stores navigation history in memory
      initialEntries - defines the starting URL
       */
+
+const mockEditFn = vi.fn()
+
+const mockNavigate = vi.fn()
 
 const mockedData = {
         "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
@@ -105,6 +109,9 @@ vi.mock('../../api/postApi.js', async (importOriginal) => {
     */
     return {
         ...actual,
+        useEditPost: () => ({
+            edit: mockEditFn // mockEditFn = vi.fn();
+        }),
         usePost: vi.fn(() => ({
         post: mockedData
     }))
@@ -113,6 +120,15 @@ vi.mock('../../api/postApi.js', async (importOriginal) => {
         usePost function will return the value provided in the callback to vi.fn()
 
     */
+})
+
+vi.mock('react-router', async (importOriginal) => {
+    const actual = await importOriginal();
+
+    return {
+        ...actual,
+        useNavigate: () => mockNavigate
+    }
 })
 
 describe('Details component', () => {
@@ -149,7 +165,7 @@ describe('Details component', () => {
         expect(screen.getByLabelText('Comment')).toBeInTheDocument();
         expect(screen.getByRole('button', {'name': /post/i})).toBeInTheDocument();
     })
-    it.only('renders edit-post form on Edit button click', async() => {
+    it('renders edit-post form on Edit button click', async() => {
 
         const postId = '2bb392a3-adc3-4f13-8d22-bacdfd02af7c'
 
@@ -207,4 +223,59 @@ describe('Details component', () => {
     }
         */
     })
+    // Add unit test to test behavior when user clicks on Edit button in Edit form
+    it('Invokes edit function on submitting edit form', async() => {
+        const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
+
+        const user = userEvent.setup()
+
+        render(
+            <MemoryRouter initialEntries={[`/posts/${postId}/edit`]}>
+                <Routes>
+                    <Route path="/posts/:postId/edit" element={<EditPost />}/>
+                </Routes>
+            </MemoryRouter>
+        )
+
+        const titleInput = screen.getByLabelText(/^Title$/)
+        await user.type(titleInput, 'This is a test title')
+        const imageInput = screen.getByLabelText(/^Image URL$/)
+        await user.type(imageInput, 'https://d8iqbmvu05s9c.cloudfront.net/ajprhqgqg1otf7d5sm7u3brf27gv')
+        const descriptionInput = screen.getByLabelText(/^Description$/)
+        await user.type(descriptionInput, 'This is a test description')
+        const editButton = screen.getByRole('button', { 'name': /edit/i });
+        await user.click(editButton)
+
+        // Assert that edit method has been called after edit form has been submitted
+        expect(mockEditFn).toHaveBeenCalled();
+       // expect(mockEditFn).toHaveBeenCalledOnce();
+    })
+    // Add unit test to test behavior when user clicks on Cancel buttonn on Edit form
+    it.only('should navigate to post details page after clicking on cancel button', async () => {
+
+        const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
+
+        const user = await userEvent.setup();
+
+        render(
+            <MemoryRouter initialEntries={[`/posts/${postId}/edit`]}>
+                <Routes>
+                    <Route path="/posts/:postId/edit" element={<EditPost />} />
+                    <Route path="/posts/:postId/details" element={<PostDetails />}/>
+                </Routes>
+            </MemoryRouter>
+        )
+
+        const cancelButton = screen.getByRole('button', { 'name': /^Cancel$/})
+        await user.click(cancelButton)
+
+
+        // Assert navigation to post-details has happened:
+        expect(mockNavigate).toHaveBeenCalledWith(`/posts/${postId}/details`);
+
+    })
+    // Add unit-test to test behavior when user clicks on Post button on Comment form
+
+    // Add unit-test to test behavior when user clicks on Delete button in Post Details component
+
 });
