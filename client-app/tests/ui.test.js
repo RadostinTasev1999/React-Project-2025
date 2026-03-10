@@ -87,16 +87,26 @@ test('Verify redirection of Logout link after user Login',async({ page }) => {
      expect(isRegisterButtonVisible).toBe(true)
 })
 
-// test('Login with invalid password', async({ page }) => {
-//     await page.goto('http://localhost:5173/login')
+test('Login with invalid password', async({ page }) => {
+    await page.goto('http://localhost:5173/login')
 
-//     await page.fill('input[name="email"]', 'peter@abv.bg');
-//     await page.fill('input[name="password"]', '123')
+    await page.fill('input[name="email"]', 'peter@abv.bg');
+    await page.fill('input[name="password"]', '123')
 
-//     await page.click('button[type="submit"]')
+    // const response = await page.waitForResponse(res =>
+    //     res.url().includes('/login') && res.status() === 403
+    // )
 
-//     const errorToast = page.locator('.Toastify_toast--error');
+    const [response] = await Promise.all([
+        page.waitForResponse(res =>
+            res.url().includes('/login') && res.status() === 403
+        ),
+        page.click('button[type="submit"]')
+    ]);
 
-//     await expect(errorToast).toBeVisible();
-//     await expect(errorToast).toHaveText("Login or password don't match")
-// })
+    const body = await response.json();
+    const status = await response.status();
+
+    expect(body.message).toBe("Login or password don't match")
+    expect(status).toBe(403)
+})

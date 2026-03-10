@@ -25,7 +25,6 @@ const Admin = lazy(() => import('./components/admin/Admin'))
 // this expression will be invoked asynchronously, when compiler gets to this row.
 
 function App() {
- 
 
   return (
     <>
@@ -41,11 +40,11 @@ function App() {
               <Route path='/posts/:postId/details' element={<PostDetails />} />
               <Route path='/policy' element={<PrivacyPolicy />} />
 
-              <Route element={<AuthGuard />} >
-                <Route path='/create' element={<Create />} />
-                <Route path='/posts/:postId/edit' element={<EditPost />} />
-                <Route path='/posts/:postId/comment/:commentId' element={<CommentsEdit />} />
-              </Route>
+                <Route element={<AuthGuard />} >
+                  <Route path='/create' element={<Create />} />
+                  <Route path='/posts/:postId/edit' element={<EditPost />} />
+                  <Route path='/posts/:postId/comment/:commentId' element={<CommentsEdit />} />
+                </Route>
 
               <Route element={<GuestGuard />} >
                 <Route path='/login' element={<Login />} />

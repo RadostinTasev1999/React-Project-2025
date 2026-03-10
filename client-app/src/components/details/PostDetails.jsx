@@ -15,14 +15,15 @@ import { v4 as uuid } from "uuid"
 export default function PostDetails(){
     
     const {postId} = useParams()
-    const { post } = usePost(postId)
+    const { post } = usePost(postId) //mocked
     const { isAuthenticated } = useAuth()
-    const { userId } = useAuth()
+    const { userId } = useAuth() // mocked
     const { deletePost } = useDeletePost()
-    const { create } = useCreateComments()
+    const { create } = useCreateComments() // mocked
 
     const {comments,addComment} = useComments(postId)
     
+    console.log('Post is:', post)
     console.log('Comments are:', comments)
     /*
     we use object destructuring to declare the values of comments and addComment,
@@ -120,6 +121,7 @@ export default function PostDetails(){
                 </div>
                 <img
                   alt="Product screenshot"
+                  aria-label="product image"
                   src={post.image}
 
                   className="w-[14rem] max-w-none rounded-xl ring-1 shadow-xl ring-gray-400/10 sm:w-[28.5rem] md:-ml-4 lg:-ml-0"
@@ -129,7 +131,7 @@ export default function PostDetails(){
             {
               isOwner ? (
                 <div className="ml-30 mt-16 flex gap-4 justify-start">
-                  <Link to={`/posts/${postId}/edit`} className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                  <Link to={`/posts/${postId}/edit`} aria-label="Edit post" className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                     Edit
                   </Link>
                   <Link onClick={onDelete} className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">

@@ -8,6 +8,9 @@ const baseUrl = 'https://server-react-project-2025.onrender.com/data/comments'
 // action is the passed property to the reduce function
 
 //{ type: 'GET_ALL', payload: result}
+
+// { type: 'GET_ALL', payload: result}
+
 function commentsReducer(state,action){
     
     switch(action.type) {
@@ -68,11 +71,12 @@ export const useComments = (postId) => {
     const { accessToken } = useAuth()
     // const { userId } = useAuth()
     const [comments, dispatch] = useReducer(commentsReducer,[])
-    // [] - initialArg: the value from which the initial state is calculated.
-    // useReducer - returns an array with two values:
-    //              1. Current state
-    //              2. Dispatch function that lets you update the state to a 
-    //                 different value and trigger a re-render.
+   /*
+    commentsReducer - The reducer function that specifies how the state gets updated.
+    [] - initial state value / initialArg
+
+    dispatch - function that lets you update the state to a different value and trigger a re-render.
+   */
 
 
     // dispatch - function which triggers the reducer function
@@ -102,6 +106,7 @@ export const useComments = (postId) => {
 
         request.get(`${baseUrl}?${searchParams.toString()}`,null,options)
             .then((result) => dispatch({ type: 'GET_ALL', payload: result}))
+            // You need to pass the action as the only argument to the dispatch function:
 
     },[postId,accessToken, request])
 
