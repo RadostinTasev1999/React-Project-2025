@@ -1,6 +1,6 @@
 import { describe,expect,it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { MemoryRouter, Routes, Route, useNavigate } from "react-router";
+import { MemoryRouter, Routes, Route } from "react-router";
 import PostDetails from "./PostDetails";
 import { usePost } from "../../api/postApi";
 //import { useDeleteComment } from "../../api/commentApi";
@@ -15,7 +15,11 @@ import EditPost from "../edit/EditPost";
 
 const mockEditFn = vi.fn()
 
+const mockCreateFn = vi.fn();
+
 const mockNavigate = vi.fn()
+
+const mockedAddComment = vi.fn();
 
 const mockedData = {
         "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
@@ -26,17 +30,17 @@ const mockedData = {
         "_id": "aa6f3aaa-7be9-4474-b0ea-7468a2d8109a"
     }
 
-const mockComment = {
-        "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
-        "username": "Raostin",
-        "comment": "test comment",
-        "postId": "98ab6a7d-6443-4f18-93d2-cd20bb0a674e",
-        "author": {
-        "email": "peter@abv.bg"
-        },
-        "_createdOn": 1772718980591,
-        "_id": "00a999af-3ff4-4584-8faa-37b6a4703672"
-}
+// const mockComment = {
+//         "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
+//         "username": "Raostin",
+//         "comment": "test comment",
+//         "postId": "98ab6a7d-6443-4f18-93d2-cd20bb0a674e",
+//         "author": {
+//         "email": "peter@abv.bg"
+//         },
+//         "_createdOn": 1772718980591,
+//         "_id": "00a999af-3ff4-4584-8faa-37b6a4703672"
+// }
 
 const mockedComments = [
     {
@@ -73,11 +77,11 @@ const _id = "35c62d76-8152-4626-8712-eeb96381bea8"
 
 vi.mock('../../api/commentApi.js', () => ({
     useCreateComments:() => ({
-        create: mockComment
+        create: mockCreateFn
     }),
     useComments: () => ({
         comments: mockedComments,
-        addComment: vi.fn()
+        addComment: mockedAddComment
     }),
      useDeleteComment: () => ({
         deleteComment: vi.fn()
@@ -251,7 +255,7 @@ describe('Details component', () => {
        // expect(mockEditFn).toHaveBeenCalledOnce();
     })
     // Add unit test to test behavior when user clicks on Cancel buttonn on Edit form
-    it.only('should navigate to post details page after clicking on cancel button', async () => {
+    it('should navigate to post details page after clicking on cancel button', async () => {
 
         const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
 
@@ -275,7 +279,33 @@ describe('Details component', () => {
 
     })
     // Add unit-test to test behavior when user clicks on Post button on Comment form
+    it.only('should invoke create and addComment after submitting post-comment form',async () => {
+        
+        const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
+        const user = await userEvent.setup();
 
+        render(
+            <MemoryRouter initialEntries={[`/posts/${postId}/details`]}>
+                <Routes>
+                    <Route path="/posts/:postId/details" element={<PostDetails />}/>
+                </Routes>
+            </MemoryRouter>
+        )
+
+        const usernameInput = screen.getByLabelText(/^Username$/)
+        await user.type(usernameInput, 'Peter123')
+        const textArea = screen.getByLabelText(/^Comment$/)
+        await user.type(textArea, 'This is an example comment for this post')
+        const postButton = screen.getByRole('button', {'name': /^Post$/})
+        await user.click(postButton);
+
+        // Assert that create function has been called
+
+        expect(mockCreateFn).toHaveBeenCalled();
+        expect(mockedAddComment).toHaveBeenCalled();
+
+
+    })
     // Add unit-test to test behavior when user clicks on Delete button in Post Details component
 
 });
