@@ -12,6 +12,7 @@ const baseUrl = 'https://server-react-project-2025.onrender.com/data/comments'
 // { type: 'GET_ALL', payload: result}
 
 // { type:'ADD_COMMENT', payload: commentData}
+// { type: 'GET_ALL', payload: result}
 function commentsReducer(state,action){
     
     switch(action.type) {

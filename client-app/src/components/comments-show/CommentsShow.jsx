@@ -45,15 +45,15 @@ export default function  CommentsShow(
                     comments.length > 0 ?
                         
                             comments.map((comment) => (
-                                 <div key={comment._id} className={`bg-gray-100 p-4 rounded-md shadow-sm mt-8 max-w-2xl ${comment.pending ? 'border border-yellow-300 bg-yellow-100 text-yellow-800' : ''}`}>                                   
+                                 <div data-testid="comment-container" key={comment._id} className={`bg-gray-100 p-4 rounded-md shadow-sm mt-8 max-w-2xl ${comment.pending ? 'border border-yellow-300 bg-yellow-100 text-yellow-800' : ''}`}>                                   
                                         <span className="text-sm font-semibold  italic text-blue-500">
-                                            <p className="text-sm text-gray-700 italic mt-1"><b className="font-semibold text-gray-800 not-italic">User:</b> {comment.username}</p>
+                                            <p aria-label="user-paragraph" className="text-sm text-gray-700 italic mt-1"><b className="font-semibold text-gray-800 not-italic">User:</b> {comment.username}</p>
                                         </span>
                                     
                                     <span className="text-gray-700 mt-4 mb-2">
-                                        <p className="text-sm text-gray-700 italic mt-1"><b className="font-semibold text-gray-800 not-italic">Email:</b> {comment.author?.email}</p>
+                                        <p aria-label="email-paragraph" className="text-sm text-gray-700 italic mt-1"><b className="font-semibold text-gray-800 not-italic">Email:</b> {comment.author?.email}</p>
                                         <span className="text-xs text-gray-500 tracking-wide">{formattedDate(comment._createdOn)}</span>
-                                        <p className="mt-10"> {comment.comment}</p>
+                                        <p aria-label="comment-paragraph" className="mt-10">{comment.comment}</p>
                                     </span>
                                   
                                     {

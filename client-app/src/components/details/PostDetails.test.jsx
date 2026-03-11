@@ -57,17 +57,6 @@ const mockedComments = [
     },
     "_createdOn": 1772800104000,
     "_id": "02aff09b-6074-4bec-8199-46088345981b"
-},
-{
-    "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
-    "username": "TasevRadostin",
-    "comment": "This is my comment 123",
-    "postId": "6ae7391e-29bc-41b2-a905-36f501f925b9",
-    "author": {
-        "email": "peter@abv.bg"
-    },
-    "_createdOn": 1772800209432,
-    "_id": "2b7562c6-2f25-48ce-b513-a1bd6cb0842f"
 }
 ]
     
@@ -312,7 +301,7 @@ describe('Details component', () => {
 
     })
     // Add unit-test to test behavior when user clicks on Delete button in Post Details component
-    it.only('should invoke deletePost on Delete button click',async() => {
+    it('should invoke deletePost on Delete button click',async() => {
 
         const user = await userEvent.setup();
         const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
@@ -334,8 +323,45 @@ describe('Details component', () => {
         expect(mockDeletePost).toHaveBeenCalled();
         // Assert that mockNavigate has been called with '/posts'
         expect(mockNavigate).toHaveBeenCalledWith('/posts')
-
-
     })
 
+    // Add unit test to verify that after user creates a comment, the comment is rendered in details page
+
+    it.only('should render comment after post button click on comment-post form',async () => {
+
+        const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
+        const user = await userEvent.setup()
+        
+        render(
+            <MemoryRouter initialEntries={[`/posts/${postId}/details`]}>
+                <Routes>
+                    <Route path="/posts/:postId/details" element={<PostDetails />} />
+                </Routes>
+            </MemoryRouter>
+        )
+
+        //use userEvent in order to fill in post-comment form
+        const usernameInput = screen.getByLabelText(/^Username$/)
+        await user.type(usernameInput, 'Peter')
+        const commentInput = screen.getByLabelText(/^Comment$/)
+        await user.type(commentInput, 'This is an example comment')
+        const postButton = screen.getByRole('button', { 'name': /^Post$/})
+
+        await user.click(postButton)
+
+        // ------------------------------------------------------------- //
+        const commentContainer = await screen.findByTestId('comment-container')
+
+        // Assert that comment container is in the document
+        expect(commentContainer).toBeInTheDocument();
+
+        const userP = await screen.findByRole('paragraph', { 'name': 'user-paragraph'})
+        const emailP = await screen.findByRole('paragraph', { 'name': 'email-paragraph'})
+        const commentP = await screen.findByRole('paragraph', { 'name': 'comment-paragraph'})
+
+        // Assert 
+        expect(userP.textContent).toEqual('User: Tasev');
+        expect(emailP.textContent).toEqual('Email: peter@abv.bg');
+        expect(commentP.textContent).toEqual('this is my comment here 123');
+    })
 });
