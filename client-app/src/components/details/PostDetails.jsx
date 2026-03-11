@@ -134,7 +134,7 @@ export default function PostDetails(){
                   <Link to={`/posts/${postId}/edit`} aria-label="Edit post" className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                     Edit
                   </Link>
-                  <Link onClick={onDelete} className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                  <Link onClick={onDelete} aria-label="Delete post" className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                     Delete
                   </Link>
                 </div>

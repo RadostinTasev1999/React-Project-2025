@@ -21,6 +21,8 @@ const mockNavigate = vi.fn()
 
 const mockedAddComment = vi.fn();
 
+const mockDeletePost = vi.fn();
+
 const mockedData = {
         "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
         "title": "Test title",
@@ -113,6 +115,9 @@ vi.mock('../../api/postApi.js', async (importOriginal) => {
     */
     return {
         ...actual,
+        useDeletePost: () => ({
+            deletePost: mockDeletePost
+        }),
         useEditPost: () => ({
             edit: mockEditFn // mockEditFn = vi.fn();
         }),
@@ -279,7 +284,7 @@ describe('Details component', () => {
 
     })
     // Add unit-test to test behavior when user clicks on Post button on Comment form
-    it.only('should invoke create and addComment after submitting post-comment form',async () => {
+    it('should invoke create and addComment after submitting post-comment form',async () => {
         
         const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
         const user = await userEvent.setup();
@@ -307,5 +312,30 @@ describe('Details component', () => {
 
     })
     // Add unit-test to test behavior when user clicks on Delete button in Post Details component
+    it.only('should invoke deletePost on Delete button click',async() => {
+
+        const user = await userEvent.setup();
+        const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
+
+        render(
+            <MemoryRouter initialEntries={[`/posts/${postId}/details`]}> 
+            {/* The test will initialize with initial URL `/posts/${postId}/details*/}
+                <Routes>
+                    <Route path="/posts/:postId/details" element={<PostDetails />}/>
+                </Routes>
+            </MemoryRouter>
+        )
+
+        
+        const deleteButton = screen.getByRole('link', { 'name': /^Delete post$/})
+        await user.click(deleteButton)
+
+        // Assert that deletePost has been called
+        expect(mockDeletePost).toHaveBeenCalled();
+        // Assert that mockNavigate has been called with '/posts'
+        expect(mockNavigate).toHaveBeenCalledWith('/posts')
+
+
+    })
 
 });
