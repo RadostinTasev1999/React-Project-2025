@@ -327,7 +327,7 @@ describe('Details component', () => {
 
     // Add unit test to verify that after user creates a comment, the comment is rendered in details page
 
-    it.only('should render comment after post button click on comment-post form',async () => {
+    it('should render comment after post button click on comment-post form',async () => {
 
         const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
         const user = await userEvent.setup()

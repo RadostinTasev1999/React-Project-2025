@@ -44,7 +44,7 @@ export default function Header() {
               <Link to="/" className="-m-1.5 p-1.5">
                 <span className="sr-only">Teams Devices Forum</span>
                 <img
-                  alt=""
+                  alt="navigation-logo"
                   src="https://img.freepik.com/premium-photo/digital-circle-circuit-background-png-futuristic-technology_53876-1028190.jpg?ga=GA1.1.1864229510.1743587987&semt=ais_hybrid"
                   className="h-15 w-auto rounded-full"
                 />
