@@ -1,6 +1,6 @@
 import request from "../utils/request"
 
-const baseUrl = 'https://server-react-project-2025.onrender.com/users'
+const baseUrl = 'http://localhost:3030/users'
 
 export const useLogin = () => {
 
