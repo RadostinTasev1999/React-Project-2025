@@ -1,12 +1,57 @@
-import { formattedDate } from "../../utils/date"
-import { Link } from "react-router"
-import { usePosts } from "../../api/postApi"
+import { useLikePost, usePosts } from "../../api/postApi"
+import useAuth from "../../hooks/useAuth"
+import { useEffect, useState } from "react"
+import CatalogItem from "./catalog-item/CatalogItem"
 
 export default function Catalog({
     heading="Latest posts"
 }) {
 
     const { posts } = usePosts() 
+    const { userId } = useAuth()
+    const { likePost } = useLikePost()
+
+    const postIds = posts.map(el => el._id)
+
+    /*
+        ['379f35d1-96e8-4eb9-8d5f-5758a745853d', '39cd56f3-ac50-40a2-a5cd-eabba6ee559b']
+    */
+
+    console.log('PostIDs are:', postIds)
+
+    // think about how to conditionally render Like button so that post owners cannot see it
+    // think about how to get all likes for the post and render the total count of likes for the post
+
+
+    const toggleLike = async (postId) => {
+        console.log(`Post with ID: ${postId} liked!`)
+        //const [liked,setLiked] = useState(false)
+
+        try {
+            
+            await likePost(postId,userId)
+
+            // setLiked(true)
+
+        } catch (error) {
+            throw new Error(error)
+        }
+        
+        /*
+        Create a new document in the likes collection:
+        {
+            "_ownerId": "f4c03b5e-3008-4e36-94ea-365bff614b05",
+            "postId": "379f35d1-96e8-4eb9-8d5f-5758a745853d",
+            "_createdOn": 1773494295917,
+            "_id": "6dd9d2dd-8130-4290-af66-9b71963a9011"
+        }
+        */
+       // After user hits like button, hide the button
+        
+
+    }
+
+    
 
     return (
         <>
@@ -18,28 +63,7 @@ export default function Catalog({
                     </div>
                     <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                         {posts.map((post) => (
-                            <article key={post._id} className="flex max-w-xl flex-col items-start justify-between border-4 border-gray-300 rounded-xl p-6 shadow-lg bg-white">
-                                <div className="flex items-center gap-x-4 text-xs">
-                                    <time dateTime={formattedDate(posts._createdOn)} className="text-gray-500">
-                                        {formattedDate(posts._createdOn)}
-                                    </time>
-
-                                </div>
-                                <div className="group relative">
-                                    <h3 className="mt-3 text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600">
-                                        <Link to={`/posts/${post._id}/details`}>
-                                            <span className="absolute inset-0" />
-                                            {post.title}
-                                        </Link>
-                                    </h3>
-                                    <p className="mt-5 line-clamp-3 text-sm/6 text-gray-600">{post.description}</p>
-                                </div>
-                                <div className="relative mt-8 flex items-center gap-x-4">
-                                    <img alt="Image" src={post.image} className="w-full h-40 object-cover rounded-md" />
-                                </div>
-                                <Link to={`/posts/${post._id}/details`} className="px-4 py-1.5 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 mt-2">See post</Link>
-
-                            </article>
+                            <CatalogItem toggleLike={toggleLike} key={post._id} post={post}/>
 
                         ))}
                     </div>

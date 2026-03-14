@@ -17,6 +17,7 @@ export default function Create({
             image,
             description
         }
+        console.log('Payload is:', payload)
 
          await create(payload)
 
