@@ -1,7 +1,8 @@
 import { useLikePost, usePosts } from "../../api/postApi"
 import useAuth from "../../hooks/useAuth"
-import { useEffect, useState } from "react"
+import { useEffect, useId, useState } from "react"
 import CatalogItem from "./catalog-item/CatalogItem"
+import { useGetUserLikes } from "../../api/postApi"
 
 export default function Catalog({
     heading="Latest posts"
@@ -10,17 +11,39 @@ export default function Catalog({
     const { posts } = usePosts() 
     const { userId } = useAuth()
     const { likePost } = useLikePost()
+    const { fetchUserLikes } = useGetUserLikes()
+    
+    const [likedPostsIds, setLikedPostsIds] = useState(new Set());
 
     const postIds = posts.map(el => el._id)
 
-    /*
-        ['379f35d1-96e8-4eb9-8d5f-5758a745853d', '39cd56f3-ac50-40a2-a5cd-eabba6ee559b']
-    */
+    useEffect(() => {
 
-    console.log('PostIDs are:', postIds)
+        if (!userId) {
+            return;
+        }
 
-    // think about how to conditionally render Like button so that post owners cannot see it
-    // think about how to get all likes for the post and render the total count of likes for the post
+        fetchUserLikes(userId)
+            .then(response => {
+                console.log('Array consisting of likes which the logged user has done:', response)
+
+                const mappedArray = response.map(like => like.postId)
+                // we create a new array, consisting only of the postIds, which correspond to the posts which the logged user has liked
+                /*
+                    [
+                        "37ca9662-98cb-4dae-8a7f-1d1a72257971",
+                        "7436d9b4-4e92-4cfa-8ec9-710b1a5d4a83"
+                    ]
+
+                */
+
+                    setLikedPostsIds(new Set(mappedArray))
+                
+               //setLikedPosts(new Set(response.map(like => like.postId)))     
+
+            })
+    
+    },[userId])
 
 
     const toggleLike = async (postId) => {
@@ -31,7 +54,7 @@ export default function Catalog({
             
             await likePost(postId,userId)
 
-            // setLiked(true)
+            setLikedPostsIds(prev => new Set(prev).add(postId))
 
         } catch (error) {
             throw new Error(error)
@@ -63,7 +86,7 @@ export default function Catalog({
                     </div>
                     <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                         {posts.map((post) => (
-                            <CatalogItem toggleLike={toggleLike} key={post._id} post={post}/>
+                            <CatalogItem likedPostsIds={likedPostsIds} toggleLike={toggleLike} key={post._id} post={post}/>
 
                         ))}
                     </div>

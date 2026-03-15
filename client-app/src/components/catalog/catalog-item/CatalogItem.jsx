@@ -6,12 +6,13 @@ import { useCheckIfLiked } from '../../../api/postApi'
 
 export default function CatalogItem({
     post,
-    toggleLike
+    toggleLike,
+    likedPostsIds
 }) {
 
-    const { userId } = useAuth();
-    const { likes } = useGetPostsLikes(post._id) //post._id is the ID of the current post
-    const { isLiked } = useCheckIfLiked(post._id, userId)
+    const { userId } = useAuth(); // currently logged-in user _id
+    const { likes } = useGetPostsLikes(post._id) // likes array will consist of elements corresponding to the currentPost (each element in the array is a like associated to the post wiht ID postId)
+    const { isLiked } = useCheckIfLiked(post._id, userId) // if true then the currently logged in user has liked the post on which we are iterating on
     // show like button depending on whether the userId matches the ownerId in likes
 
 
@@ -41,7 +42,7 @@ export default function CatalogItem({
             <div className="flex gap-12 mt-4">
                 <Link to={`/posts/${post._id}/details`} className="px-4 py-1.5 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">See post</Link>
                 {
-                   userId && userId !== post._ownerId && !isLiked
+                   userId && userId !== post._ownerId && !isLiked && !likedPostsIds.has(post._id)
                         ?
                         <Link onClick={() => toggleLike(post._id)} className="px-4 py-1.5 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400" >Like</Link>
                         :

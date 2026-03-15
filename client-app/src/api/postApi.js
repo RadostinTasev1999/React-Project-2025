@@ -2,8 +2,8 @@ import { useEffect,useState } from "react";
 import useAuth from "../hooks/useAuth"
 
 
-const baseUrl = 'https://server-react-project-2025.onrender.com/data/posts'
-const likesUrl = 'https://server-react-project-2025.onrender.com/data/likes'
+const baseUrl = 'http://localhost:3030/data/posts'
+const likesUrl = 'http://localhost:3030/data/likes'
 
 export const usePosts = () => {
 
@@ -67,6 +67,14 @@ export const useCreatePost = () => {
     const create = async(postData) => {
        
     await request.post(baseUrl,postData)
+
+    /*
+        const payload = {
+            title,
+            image,
+            description
+        }
+    */
 
     
     };
@@ -154,6 +162,30 @@ export const useCheckIfLiked = (postId, userId) => {
 
     return {
         isLiked
+    }
+
+}
+
+export const useGetUserLikes = () => {
+
+    // example: GET /data/likes?where=_ownerId%3D%22{userId}%22
+    
+
+    const { request } = useAuth();
+    // useAuth() is called during the initialization of useGetUserLikes
+    const fetchUserLikes =  (userId) => {
+
+     // now we have access to request via closure
+        console.log('UserID is:', userId)
+     const searchParams = new URLSearchParams({
+        where: `_ownerId="${userId}"`// only returns items where the _ownerId filed equals the passed userId string
+    })
+        
+      return  request.get(`${likesUrl}?${searchParams.toString()}`)
+    }
+
+    return {
+        fetchUserLikes
     }
 
 }
