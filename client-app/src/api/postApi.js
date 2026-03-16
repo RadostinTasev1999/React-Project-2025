@@ -124,7 +124,7 @@ export const useLikePost = () => {
     }
 }
 
-export const useGetPostsLikes = (postId) => {
+export const useGetPostsLikes = (postId, refreshKey = 0) => {
     // postId: "379f35d1-96e8-4eb9-8d5f-5758a745853d"
 
     const { request } = useAuth()
@@ -134,7 +134,7 @@ export const useGetPostsLikes = (postId) => {
     useEffect(() => {
          request.get(likesUrl)
             .then((response) => setLikes(response.filter((el) => el.postId === postId)))
-    },[postId])
+    },[postId, refreshKey])
 
     return {
         likes

@@ -2,7 +2,7 @@ import { useLikePost, usePosts } from "../../api/postApi"
 import useAuth from "../../hooks/useAuth"
 import { useEffect, useId, useState } from "react"
 import CatalogItem from "./catalog-item/CatalogItem"
-import { useGetUserLikes } from "../../api/postApi"
+import { useGetUserLikes, useGetPostsLikes } from "../../api/postApi"
 
 export default function Catalog({
     heading="Latest posts"
@@ -12,8 +12,10 @@ export default function Catalog({
     const { userId } = useAuth()
     const { likePost } = useLikePost()
     const { fetchUserLikes } = useGetUserLikes()
+    const { likes } = useGetPostsLikes()
     
     const [likedPostsIds, setLikedPostsIds] = useState(new Set());
+    const [likesRefreshKey, setLikesRefreshKey] = useState(0);
 
     const postIds = posts.map(el => el._id)
 
@@ -28,18 +30,9 @@ export default function Catalog({
                 console.log('Array consisting of likes which the logged user has done:', response)
 
                 const mappedArray = response.map(like => like.postId)
-                // we create a new array, consisting only of the postIds, which correspond to the posts which the logged user has liked
-                /*
-                    [
-                        "37ca9662-98cb-4dae-8a7f-1d1a72257971",
-                        "7436d9b4-4e92-4cfa-8ec9-710b1a5d4a83"
-                    ]
-
-                */
-
-                    setLikedPostsIds(new Set(mappedArray))
                 
-               //setLikedPosts(new Set(response.map(like => like.postId)))     
+                console.log("Mapped array is:", mappedArray)
+                    setLikedPostsIds(new Set(mappedArray))     
 
             })
     
@@ -48,7 +41,6 @@ export default function Catalog({
 
     const toggleLike = async (postId) => {
         console.log(`Post with ID: ${postId} liked!`)
-        //const [liked,setLiked] = useState(false)
 
         try {
             
@@ -56,20 +48,11 @@ export default function Catalog({
 
             setLikedPostsIds(prev => new Set(prev).add(postId))
 
+            setLikesRefreshKey((state) => state + 1);
+
         } catch (error) {
             throw new Error(error)
         }
-        
-        /*
-        Create a new document in the likes collection:
-        {
-            "_ownerId": "f4c03b5e-3008-4e36-94ea-365bff614b05",
-            "postId": "379f35d1-96e8-4eb9-8d5f-5758a745853d",
-            "_createdOn": 1773494295917,
-            "_id": "6dd9d2dd-8130-4290-af66-9b71963a9011"
-        }
-        */
-       // After user hits like button, hide the button
         
 
     }
@@ -86,7 +69,7 @@ export default function Catalog({
                     </div>
                     <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                         {posts.map((post) => (
-                            <CatalogItem likedPostsIds={likedPostsIds} toggleLike={toggleLike} key={post._id} post={post}/>
+                            <CatalogItem likesRefreshKey={likesRefreshKey} likedPostsIds={likedPostsIds} toggleLike={toggleLike} key={post._id} post={post}/>
 
                         ))}
                     </div>
