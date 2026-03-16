@@ -173,7 +173,7 @@ export const useGetUserLikes = () => {
 
     const { request } = useAuth();
     // useAuth() is called during the initialization of useGetUserLikes
-    const fetchUserLikes =  (userId) => {
+    const fetchUserLikes = (userId) => {
 
      // now we have access to request via closure
         console.log('UserID is:', userId)
@@ -182,10 +182,45 @@ export const useGetUserLikes = () => {
     })
         
       return  request.get(`${likesUrl}?${searchParams.toString()}`)
+      // GET request to endpoint `http://localhost:3030/data/likes?where: `_ownerId="${userId}"`
     }
 
     return {
         fetchUserLikes
+    }
+}
+
+export const useDeletePostLike = () => {
+
+    const { request } = useAuth();
+
+    const deletePost = async (postId,userId) => {
+
+        const searchParams = new URLSearchParams({
+            where: `_ownerId="${userId}" AND postId="${postId}"`
+        })
+
+        const targetPost = await request.get(`${likesUrl}?${searchParams}`)
+
+        console.log('Target post for deletion is:',targetPost )
+        /*
+            [
+                {
+                "_ownerId": "e9debca4-878d-4140-9f4f-84868148de33",
+                "postId": "7d306467-25ea-4124-a4c2-50e80b76c63f",
+                "_createdOn": 1773677956697,
+                "_id": "69e45087-5cc9-4a10-a1e5-ad347ae33e80"
+                }
+            ]
+        */
+       const targetId = targetPost[0]._id
+       
+        request.delete(`${likesUrl}/${targetId}`)
+
+    }
+
+    return {
+        deletePost
     }
 
 }
