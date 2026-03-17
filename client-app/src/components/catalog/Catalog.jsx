@@ -4,6 +4,15 @@ import { useEffect, useState } from "react"
 import CatalogItem from "./catalog-item/CatalogItem"
 import { useGetUserLikes, useGetPostsLikes, useDeletePostLike } from "../../api/postApi"
 
+/*
+Bugs to fix:
+
+    - Dislike button dissapears after page refresh
+        - review logic on how Dislike button renders
+        - review logic on re-render of Calatog component
+    - After clicking on dislike button, Likes count remains (should decrease by 1)
+*/
+
 export default function Catalog({
     heading="Latest posts"
 }) {
@@ -22,9 +31,9 @@ export default function Catalog({
 
     const postIds = posts.map(el => el._id)
 
-    const toggleDislike = (postId) => {
+    const toggleDislike = async (postId) => {
 
-        deletePost(postId,userId)
+        await deletePost(postId,userId)
         // DELETE the document from /data/likes collection
 
         // Hide Dislike button
@@ -38,7 +47,10 @@ export default function Catalog({
           return next
         }) 
 
-        setLikesRefreshKey(key => key + 1)
+        setLikesRefreshKey((state) => state + 1)
+
+        // we want to fetch /data/likes and get a new array of elements which inlcude the postId and userId properties.
+
         
     }
 

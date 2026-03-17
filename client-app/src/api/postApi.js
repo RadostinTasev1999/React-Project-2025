@@ -157,6 +157,7 @@ export const useCheckIfLiked = (postId, userId) => {
                 if (likedPosts.length > 0) {
                     setIsLiked(true)
                 }
+                
             })
     }, [postId,userId])
 
@@ -200,7 +201,7 @@ export const useDeletePostLike = () => {
             where: `_ownerId="${userId}" AND postId="${postId}"`
         })
 
-        const targetPost = await request.get(`${likesUrl}?${searchParams}`)
+        const targetPost = await request.get(`${likesUrl}?${searchParams.toString()}`)
 
         console.log('Target post for deletion is:',targetPost )
         /*
@@ -215,7 +216,7 @@ export const useDeletePostLike = () => {
         */
        const targetId = targetPost[0]._id
        
-        request.delete(`${likesUrl}/${targetId}`)
+        await request.delete(`${likesUrl}/${targetId}`)
 
     }
 

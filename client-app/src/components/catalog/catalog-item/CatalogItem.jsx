@@ -15,10 +15,10 @@ export default function CatalogItem({
 
     const { userId } = useAuth(); // currently logged-in user _id
     const { likes } = useGetPostsLikes(post._id,likesRefreshKey) // likes array will consist of elements corresponding to the currentPost (each element in the array is a like associated to the post wiht ID postId)
-    const { isLiked } = useCheckIfLiked(post._id, userId) // if true then the currently logged in user has liked the post on which we are iterating on
+    const { isLiked } = useCheckIfLiked(post._id, userId, likesRefreshKey) // if true then the currently logged in user has liked the post on which we are iterating on
     // show like button depending on whether the userId matches the ownerId in likes
     
-    
+    console.log('isLiked prop is:', isLiked)
 
     console.log('Likes in CatalogItem component are:', likes)
 
