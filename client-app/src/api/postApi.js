@@ -142,7 +142,7 @@ export const useGetPostsLikes = (postId, refreshKey = 0) => {
 
 }
 
-export const useCheckIfLiked = (postId, userId) => {
+export const useCheckIfLiked = (postId, userId, likesRefreshKey) => {
 
     const { request } = useAuth()
 
@@ -157,9 +157,12 @@ export const useCheckIfLiked = (postId, userId) => {
                 if (likedPosts.length > 0) {
                     setIsLiked(true)
                 }
+                else {
+                    setIsLiked(false)
+                }
                 
             })
-    }, [postId,userId])
+    }, [postId,userId, likesRefreshKey])
 
     return {
         isLiked

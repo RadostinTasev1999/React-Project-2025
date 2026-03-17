@@ -26,7 +26,7 @@ export default function Catalog({
     
     const [likedPostsIds, setLikedPostsIds] = useState(new Set());
     const [likesRefreshKey, setLikesRefreshKey] = useState(0);
-    const [showDislike, setShowDislike] = useState(false)
+    
     
 
     const postIds = posts.map(el => el._id)
@@ -37,8 +37,6 @@ export default function Catalog({
         // DELETE the document from /data/likes collection
 
         // Hide Dislike button
-
-        setShowDislike(false)
 
         // remove postId from state property likedPostsIds
         setLikedPostsIds(prev => {
@@ -89,6 +87,8 @@ export default function Catalog({
                             ])
                     */  
 
+                            
+
             })
     
     },[userId])
@@ -116,8 +116,6 @@ export default function Catalog({
 
             setLikesRefreshKey((state) => state + 1);
 
-            // Logic to show Dislike button
-            setShowDislike(true)
 
         } catch (error) {
             throw new Error(error)
@@ -138,7 +136,7 @@ export default function Catalog({
                     </div>                  
                     <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                         {posts.map((post) => (
-                            <CatalogItem toggleDislike={toggleDislike} showDislike={showDislike} likesRefreshKey={likesRefreshKey} likedPostsIds={likedPostsIds} toggleLike={toggleLike} key={post._id} post={post}/>
+                            <CatalogItem toggleDislike={toggleDislike} likesRefreshKey={likesRefreshKey} likedPostsIds={likedPostsIds} toggleLike={toggleLike} key={post._id} post={post}/>
 
                         ))}
                     </div>
