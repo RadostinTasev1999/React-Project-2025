@@ -5,12 +5,16 @@ import CatalogItem from "./catalog-item/CatalogItem"
 import { useGetUserLikes, useGetPostsLikes, useDeletePostLike } from "../../api/postApi"
 
 /*
-Bugs to fix:
+Functionalities to work on:
+    - Enable users who are not comment-owners to upvote or downvote post comments
 
-    - Dislike button dissapears after page refresh
-        - review logic on how Dislike button renders
-        - review logic on re-render of Calatog component
-    - After clicking on dislike button, Likes count remains (should decrease by 1)
+Functionalities to add:
+    - add avatar to post-comment cardd
+    - remove email field from post-comments card and use the logged-in user username
+    
+Fixes TODO:
+    - Shrink the post-details post card so it has better visibility to end-users
+    - Remove Username field from post-comment card
 */
 
 export default function Catalog({

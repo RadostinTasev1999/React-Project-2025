@@ -2,7 +2,7 @@ import { useEffect, useState, useReducer } from "react";
 import useAuth from "../hooks/useAuth"
 import { v4 as uuid } from 'uuid';
 
-const baseUrl = 'https://server-react-project-2025.onrender.com/data/comments'
+const baseUrl = 'http://localhost:3030/data/comments'
 
 // reducer function,specifies how the state gets updated
 // action is the passed property to the reduce function
@@ -32,17 +32,16 @@ function commentsReducer(state,action){
 export const useCreateComments = () => {
 
     const { request } = useAuth(); //  custom React hook
-    const { userId } = useAuth()
-    const {email} = useAuth()
+    const { userId, email,username } = useAuth()
 
     const create = (data,postId) => {
 
         const payload = {
             _id:uuid(),
-            username: data.username,
             comment: data.comment,
             _ownerId:userId,
             postId,
+            username,
             author:{
                 email
             }

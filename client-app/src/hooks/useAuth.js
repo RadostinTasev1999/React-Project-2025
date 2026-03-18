@@ -9,6 +9,7 @@ export default function useAuth() {
         accessToken,
         email,
         _id,
+        username
      } = useContext(UserContext)
 
      // retrieve user authentication through UserContext object
@@ -62,6 +63,7 @@ export default function useAuth() {
         email: email,
         userId:_id,
         isAuthenticated: !!accessToken,
+        username: username,
         request: requestObject
     }
 }

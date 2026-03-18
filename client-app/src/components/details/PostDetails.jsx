@@ -22,6 +22,8 @@ export default function PostDetails(){
     const { create } = useCreateComments() // mocked
 
     const {comments,addComment} = useComments(postId)
+
+    
     
     console.log('Post is:', post)
     console.log('Comments are:', comments)
@@ -57,11 +59,10 @@ export default function PostDetails(){
 
     const onCreateComment = async(formData) => {
        // destructure form data
-      const { username, comment } = Object.fromEntries(formData)      
+      const { comment } = Object.fromEntries(formData)      
      
       // create payload object
       const payload = {
-        username,
         comment
       }
 
@@ -69,7 +70,6 @@ export default function PostDetails(){
       const newOptimisticComment = {
         postId,
         _id: uuid(),
-        username,
         comment,
         pending: true
       }
