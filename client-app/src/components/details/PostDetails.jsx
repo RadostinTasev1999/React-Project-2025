@@ -17,15 +17,15 @@ export default function PostDetails(){
     const {postId} = useParams()
     const { post } = usePost(postId) //mocked
     const { isAuthenticated } = useAuth()
-    const { userId } = useAuth() // mocked
+    const { userId, username } = useAuth() // mocked
     const { deletePost } = useDeletePost()
     const { create } = useCreateComments() // mocked
 
-    const {comments,addComment} = useComments(postId)
+    const { comments,addComment } = useComments(postId)
 
     
     
-    console.log('Post is:', post)
+   
     console.log('Comments are:', comments)
     /*
     we use object destructuring to declare the values of comments and addComment,
@@ -63,7 +63,8 @@ export default function PostDetails(){
      
       // create payload object
       const payload = {
-        comment
+        comment,
+        username
       }
 
       // create optimisticComment object and push the username and comment from the formData
@@ -71,6 +72,7 @@ export default function PostDetails(){
         postId,
         _id: uuid(),
         comment,
+        username,
         pending: true
       }
 
@@ -84,9 +86,22 @@ export default function PostDetails(){
 
         const createdComment = await create(payload,postId)
 
+        //console.log('Created comment is:', createdComment)
+        /*
+        We send POST request to http://localhost:3030/data/comments with payload: 
+        {
+            _id: string;
+            comment: any;
+            _ownerId: string;
+            postId: any;
+            username: any;
+            author: {
+                email: string;
+        };
+        */
 
 
-        addComment(createdComment)
+        addComment(createdComment) // add createdComment to current state 
 
         /*
         addComment - callback, which accepts paramenter and

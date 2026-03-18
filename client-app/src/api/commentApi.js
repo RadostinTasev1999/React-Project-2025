@@ -32,7 +32,7 @@ function commentsReducer(state,action){
 export const useCreateComments = () => {
 
     const { request } = useAuth(); //  custom React hook
-    const { userId, email,username } = useAuth()
+    const { userId, email } = useAuth()
 
     const create = (data,postId) => {
 
@@ -41,7 +41,7 @@ export const useCreateComments = () => {
             comment: data.comment,
             _ownerId:userId,
             postId,
-            username,
+            username:data.username,
             author:{
                 email
             }

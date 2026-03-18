@@ -19,7 +19,7 @@ export default function  CommentsShow(
     const { deleteComment } = useDeleteComment()
     const { username } = useAuth();
 
-    console.log('Comments are:', comments)
+    console.log('Comments in CommentsShow component are:', comments)
     
 
    const onDelete = async(commentId) => {
@@ -57,7 +57,7 @@ export default function  CommentsShow(
                                             <path fillRule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-5.5-2.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0ZM10 12a5.99 5.99 0 0 0-4.793 2.39A6.483 6.483 0 0 0 10 16.5a6.483 6.483 0 0 0 4.793-2.11A5.99 5.99 0 0 0 10 12Z" clipRule="evenodd" />
                                             </svg>
 
-                                            <p aria-label="user-paragraph" className="text-sm text-gray-700 italic mt-1">{username}</p>
+                                            <p aria-label="user-paragraph" className="text-sm text-gray-700 italic mt-1">{comment.username}</p>
                                         </span>
                                     
                                     <span className="text-gray-700 mt-4 mb-2">
