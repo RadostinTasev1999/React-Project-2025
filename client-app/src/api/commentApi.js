@@ -3,6 +3,7 @@ import useAuth from "../hooks/useAuth"
 import { v4 as uuid } from 'uuid';
 
 const baseUrl = 'http://localhost:3030/data/comments'
+const commentReactionsUrl = 'http://localhost:3030/data/commentReactions'
 
 // reducer function,specifies how the state gets updated
 // action is the passed property to the reduce function
@@ -175,5 +176,49 @@ export const useComment = (commentId) => {
     return {
         postComment
     }
+
+}
+
+export const useCreateCommentLike = () => {
+
+    const { request } = useAuth();
+
+    const create = async(data) => {
+
+        await request.post(commentReactionsUrl,data)
+
+    }
+
+    return {
+        create
+    }
+}
+
+export const useGetCommentLike = (postId,commentId,userId) => {
+    
+    const { request } = useAuth();
+
+    const [hasLiked,setHasLiked] = useState(false)
+
+        useEffect(() => {
+            const searchParams  = new URLSearchParams({
+                where: `postId=${postId} AND commentId=${commentId} AND userId=${userId}`
+            })
+
+             request.get(`${commentReactionsUrl}?${searchParams.toString()}`)
+                    .then((response) => {
+                        if (response.length > 0) {
+                            setHasLiked(true)
+                        }
+                    })
+
+        },[])
+
+        
+
+return {
+    hasLiked
+}
+    
 
 }

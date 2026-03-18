@@ -9,12 +9,12 @@ Functionalities to work on:
     - Enable users who are not comment-owners to upvote or downvote post comments
 
 Functionalities to add:
-    - add avatar to post-comment cardd
-    - remove email field from post-comments card and use the logged-in user username
+    - DONE add avatar to post-comment cardd
+    - DONE remove email field from post-comments card and use the logged-in user username
     
 Fixes TODO:
     - Shrink the post-details post card so it has better visibility to end-users
-    - Remove Username field from post-comment card
+    - DONE Remove Username field from post-comment card
 */
 
 export default function Catalog({
