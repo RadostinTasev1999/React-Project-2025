@@ -1,8 +1,9 @@
 import { useParams } from "react-router"
 import { formattedDate } from "../../utils/date"
 import useAuth from "../../hooks/useAuth"
+import { useState } from "react"
 import { Link } from "react-router"
-import { useDeleteComment, useCreateCommentLike } from "../../api/commentApi"
+import { useDeleteComment, useCreateCommentLike, useCreateCommentDislike, useGetCommentLikes, useGetCommentDislikes } from "../../api/commentApi"
 
 export default function  CommentsShow(
     {comments}
@@ -17,13 +18,20 @@ export default function  CommentsShow(
     const { userId } = useAuth()
     const { deleteComment } = useDeleteComment()
     const { username } = useAuth();
-    const { create } = useCreateCommentLike()
+    const { createLike } = useCreateCommentLike()
+    const { createDislike } = useCreateCommentDislike()
 
-    /*
-        On Each re-render get user likes on comments for post with ID: postId
-    */
+    const [counter, setCounter] = useState(0)
+
+    const { userLikes } = useGetCommentLikes(postId, userId, counter)
+    const { userDislikes } = useGetCommentDislikes(postId,userId, counter)
+    
+    console.log('User likes in CommentsShow component are:', userLikes)
+    console.log('User dislikes in CommentShow component are:', userDislikes)
 
     console.log('Comments in CommentsShow component are:', comments)
+
+    
     
     const onLikeComment = async (commentId) => {
         console.log(`Comment with ID: ${commentId} Liked!`)
@@ -35,14 +43,26 @@ export default function  CommentsShow(
             type: "like"
         }
 
-        await create(payload)
+        await createLike(payload)
+        // Create a document in collection .../data/commentReactions
         
-
+        setCounter((state) => state + 1)
 
     }
 
-    const onDislikeComment = (commentId) => {
+    const onDislikeComment = async (commentId) => {
         console.log(`Comment with ID: ${commentId} disliked!`)
+
+        const payload = {
+            commentId: commentId,
+            postId: postId,
+            userId: userId,
+            type: "dislike"
+        }
+
+        await createDislike(payload)
+
+        setCounter((state) => state + 1)
     }
 
    const onDelete = async(commentId) => {
@@ -104,21 +124,40 @@ export default function  CommentsShow(
                                                 </button>
 
                                             </div>
-                                            :
+                                                            :
 
                                             <div className="mt-6 flex items-center justify-start gap-x-6">
                                                 {/* like icon if user has not liked the comment */}
-                                                <button onClick={() => onLikeComment(comment._id)}>
-                                                    <i class="fa-regular fa-thumbs-up"></i>
-                                                </button>
-                                               
-                                               {/* like icon if the user has liked the comment  */}
-                                               {/* <i class="fa-solid fa-thumbs-up"></i> */}
+                                            {
+                                                userLikes.some((likes) => likes.commentId === comment._id)
+                                                                    ?
+                                                        <button>
+                                                            <i class="fa-solid fa-thumbs-up"></i>
+                                                        </button>   
+                                                                    :
+                                                        <button onClick={() => onLikeComment(comment._id)}>
+                                                            <i class="fa-regular fa-thumbs-up"></i>
+                                                        </button>       
+                                            }
+                                                
+                                            {
+                                                userDislikes.some((dislike) => dislike.commentId === comment._id)
+                                                                    ?
+                                                            <button>
+                                                                <i class="fa-solid fa-thumbs-down"></i>
+                                                            </button>
+                                                                    :
+                                                            <button onClick={() => onDislikeComment(comment._id)}>
+                                                                <i class="fa-regular fa-thumbs-down"></i>
+                                                            </button>     
+                                                
+                                            }   
 
                                                {/* dislike icon if user has not disliked the comment */}
-                                               <button onClick={() => onDislikeComment(comment._id)}>
-                                                    <i class="fa-regular fa-thumbs-down"></i>
-                                               </button>
+                                               
+                                               
+                                               {/* dislike icon if user has disliked comment */}
+                                               {/* <i class="fa-solid fa-thumbs-down"></i> */}
                                                
                                                {/* dislike icon if user has disliked comment */}
                                                {/* <i class="fa-solid fa-thumbs-down"></i> */}

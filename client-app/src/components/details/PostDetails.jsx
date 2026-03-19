@@ -26,7 +26,7 @@ export default function PostDetails(){
     
     
    
-    console.log('Comments are:', comments)
+    console.log('Comments in PostDetals component are:', comments)
     /*
     we use object destructuring to declare the values of comments and addComment,
     returned by the custom hook useComments.

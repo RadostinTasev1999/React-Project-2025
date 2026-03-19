@@ -109,6 +109,8 @@ export const useComments = (postId) => {
         request.get(`${baseUrl}?${searchParams.toString()}`,null,options)
             .then((result) => dispatch({ type: 'GET_ALL', payload: result}))
             // You need to pass the action as the only argument to the dispatch function:
+            // the result will be all the comments associated with post with ID postId.
+
 
     },[postId,accessToken, request])
 
@@ -183,15 +185,39 @@ export const useCreateCommentLike = () => {
 
     const { request } = useAuth();
 
-    const create = async(data) => {
+    const createLike = async(data) => {
+        /*
+        {
+            commentId: commentId,
+            postId: postId,
+            userId: userId,
+            type: "like"
+        }
+        */
 
         await request.post(commentReactionsUrl,data)
 
     }
 
     return {
-        create
+        createLike
     }
+}
+
+export const useCreateCommentDislike = () => {
+
+    const { request } = useAuth();
+
+    const createDislike = async (data) => {
+
+        await request.post(commentReactionsUrl,data)
+
+    }
+
+return {
+    createDislike
+}
+
 }
 
 export const useGetCommentLike = (postId,commentId,userId) => {
@@ -222,3 +248,55 @@ return {
     
 
 }
+
+export const useGetCommentLikes = (postId, userId, counter = 0) => {
+
+    const { request } = useAuth();
+
+    const [userLikes, setUserLikes] = useState([]);
+
+    useEffect(() => {
+
+        if (!postId || !userId) {
+            setUserLikes([]);
+            return;
+        }
+
+        const searchParams = new URLSearchParams({
+            where:`postId="${postId}" AND userId="${userId}" AND type="like"`
+        })
+
+        request.get(`${commentReactionsUrl}?${searchParams.toString()}`)
+            .then((response) => setUserLikes(response))
+
+    },[postId,userId,request,counter])
+
+    return {
+        userLikes
+    }
+
+}
+
+export const useGetCommentDislikes = (postId,userId, counter = 0) => {
+
+    const { request } = useAuth();
+
+    const [userDislikes, setUserDislikes] = useState([]);
+
+    useEffect(() => {
+
+        const searchParams = new URLSearchParams({
+            where:`postId="${postId}" AND userId="${userId}" AND type="dislike"`
+        })
+
+        request.get(`${commentReactionsUrl}?${searchParams.toString()}`)
+            .then((response) => setUserDislikes(response))
+
+    },[postId,userId,request, counter])
+
+    return {
+        userDislikes
+    }
+
+}
+
