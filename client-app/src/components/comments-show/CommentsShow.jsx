@@ -3,7 +3,7 @@ import { formattedDate } from "../../utils/date"
 import useAuth from "../../hooks/useAuth"
 import { useState } from "react"
 import { Link } from "react-router"
-import { useDeleteComment, useCreateCommentLike, useCreateCommentDislike, useGetCommentLikes, useGetCommentDislikes } from "../../api/commentApi"
+import { useDeleteComment, useCreateCommentLike, useCreateCommentDislike, useGetCommentLikes, useGetCommentDislikes, useGetTargetElement,useDeleteUserLike } from "../../api/commentApi"
 
 export default function  CommentsShow(
     {comments}
@@ -20,6 +20,8 @@ export default function  CommentsShow(
     const { username } = useAuth();
     const { createLike } = useCreateCommentLike()
     const { createDislike } = useCreateCommentDislike()
+    const { getTargetLike } = useGetTargetElement()
+    const { deleteLike } = useDeleteUserLike()
 
     const [counter, setCounter] = useState(0)
 
@@ -45,6 +47,10 @@ export default function  CommentsShow(
 
         await createLike(payload)
         // Create a document in collection .../data/commentReactions
+
+        // Check if comment dislike is present in /data/commentReactions
+        // if yes, delete dislike element from /data/commentReactions collection
+        
         
         setCounter((state) => state + 1)
 
@@ -61,6 +67,16 @@ export default function  CommentsShow(
         }
 
         await createDislike(payload)
+
+        // get ID of target element
+
+        // DELETE like from data/commentReactions collection
+       const targetId = await getTargetLike(commentId, userId)
+        
+       console.log('TargetID is:',targetId)
+
+        await deleteLike(targetId)
+
 
         setCounter((state) => state + 1)
     }

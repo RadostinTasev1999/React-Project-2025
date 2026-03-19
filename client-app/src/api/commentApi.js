@@ -300,3 +300,43 @@ export const useGetCommentDislikes = (postId,userId, counter = 0) => {
 
 }
 
+export const useGetTargetElement = () => {
+
+    const { request } = useAuth();
+
+    const getTargetLike = async (commentId, userId) => {
+
+        
+
+        const searchParams = new URLSearchParams({
+            where:`commentId="${commentId}" AND userId="${userId}" AND type="like"`
+        })
+
+         const targetElement = await request.get(`${commentReactionsUrl}?${searchParams.toString()}`)
+        
+         console.log('TargetElement is:', targetElement)
+
+         return targetElement[0]._id
+    }   
+
+    return {
+        getTargetLike
+    }
+
+}
+
+export const useDeleteUserLike = () => {
+
+    const { request } = useAuth();
+
+    const deleteLike = async (_id) => {
+        
+        await request.delete(`${commentReactionsUrl}/${_id}`)
+
+    }
+
+return {
+    deleteLike
+}
+
+}
