@@ -319,13 +319,26 @@ export const useGetTargetElement = () => {
          return targetElement[0]._id
     }   
 
+    const getTargetDislike = async (commentId, userId) => {
+
+        const searchParams = new URLSearchParams({
+            where:`commentId="${commentId}" AND userId="${userId}" AND type="dislike"`
+        })
+
+        const targetElement = await request.get(`${commentReactionsUrl}?${searchParams.toString()}`)
+
+        return targetElement[0]._id
+
+    }
+
     return {
-        getTargetLike
+        getTargetLike,
+        getTargetDislike
     }
 
 }
 
-export const useDeleteUserLike = () => {
+export const useDeleteUserReaction = () => {
 
     const { request } = useAuth();
 
@@ -335,8 +348,15 @@ export const useDeleteUserLike = () => {
 
     }
 
+    const deleteDislike = async (_id) => {
+
+        await request.delete(`${commentReactionsUrl}/${_id}`)
+
+    }
+
 return {
-    deleteLike
+    deleteLike,
+    deleteDislike
 }
 
 }
