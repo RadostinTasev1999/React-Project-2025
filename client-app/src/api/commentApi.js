@@ -313,10 +313,15 @@ export const useGetTargetElement = () => {
         })
 
          const targetElement = await request.get(`${commentReactionsUrl}?${searchParams.toString()}`)
-        
-         console.log('TargetElement is:', targetElement)
 
-         return targetElement[0]._id
+         if (targetElement.length > 0) {
+            const _id = targetElement[0]._id
+
+            return _id
+         }else{
+            return false
+         }
+        
     }   
 
     const getTargetDislike = async (commentId, userId) => {
@@ -327,8 +332,14 @@ export const useGetTargetElement = () => {
 
         const targetElement = await request.get(`${commentReactionsUrl}?${searchParams.toString()}`)
 
-        return targetElement[0]._id
+        if (targetElement.length > 0) {
 
+            const _id = targetElement[0]._id
+            
+            return _id          
+        }else {
+            return false
+        }
     }
 
     return {

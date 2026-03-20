@@ -52,7 +52,10 @@ export default function  CommentsShow(
        const targetId = await getTargetDislike(commentId, userId)
 
        // DELETE element from /data/commentReaction collection
-        await deleteDislike(targetId)
+       if (targetId) {
+            await deleteDislike(targetId)
+       }
+        
         
         setCounter((state) => state + 1)
 
@@ -74,10 +77,13 @@ export default function  CommentsShow(
        // get ID of target element from /data/commentReactions collection
        const targetId = await getTargetLike(commentId, userId)
         
+       if (targetId) {
+        await deleteLike(targetId)
+       }
        console.log('TargetID is:',targetId)
 
        // Delete document from /data/commentReactions collection with ID: commentId
-        await deleteLike(targetId)
+        
 
 
         setCounter((state) => state + 1)
