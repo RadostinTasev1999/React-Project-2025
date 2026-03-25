@@ -2,8 +2,8 @@ import { useEffect,useState } from "react";
 import useAuth from "../hooks/useAuth"
 
 
-const baseUrl = 'http://localhost:3030/data/posts'
-const likesUrl = 'http://localhost:3030/data/likes'
+const baseUrl = 'https://server-react-project-2025.onrender.com/data/posts'
+const likesUrl = 'https://server-react-project-2025.onrender.com/data/likes'
 
 export const usePosts = () => {
 

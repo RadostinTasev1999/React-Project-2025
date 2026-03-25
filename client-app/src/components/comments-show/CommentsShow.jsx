@@ -152,11 +152,14 @@ export default function  CommentsShow(
                                             </div>
 
                                                     :
+
                                                     ""
                                     }
                                      {                       
-                                                userId
+                                                userId && comment._ownerId !== userId
+
                                                     ?
+
                                             <div className="mt-6 flex items-center justify-start gap-x-6">
                                                 {/* like icon if user has not liked the comment */}
                                             {
