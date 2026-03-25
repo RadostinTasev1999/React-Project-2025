@@ -87,11 +87,11 @@ export default function CatalogItem({
                     likes.length > 0
                         ?
                     <span className="px-3 py-1 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded">
-                            Likes: {likes.length}
+                            Upvotes: {likes.length}
                     </span>
                         :
                     <span>
-                            No likes for this post
+                            No votes for this post
                     </span>
                 }
             </div>
