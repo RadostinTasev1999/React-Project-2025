@@ -1,8 +1,21 @@
 import { useLikePost, usePosts } from "../../api/postApi"
 import useAuth from "../../hooks/useAuth"
-import { useEffect, useId, useState } from "react"
+import { useEffect, useState } from "react"
 import CatalogItem from "./catalog-item/CatalogItem"
-import { useGetUserLikes } from "../../api/postApi"
+import { useGetUserLikes, useGetPostsLikes, useDeletePostLike } from "../../api/postApi"
+
+/*
+Functionalities to work on:
+    - Enable users who are not comment-owners to upvote or downvote post comments
+
+Functionalities to add:
+    - DONE add avatar to post-comment cardd
+    - DONE remove email field from post-comments card and use the logged-in user username
+    
+Fixes TODO:
+    - Shrink the post-details post card so it has better visibility to end-users
+    - DONE Remove Username field from post-comment card
+*/
 
 export default function Catalog({
     heading="Latest posts"
@@ -12,10 +25,36 @@ export default function Catalog({
     const { userId } = useAuth()
     const { likePost } = useLikePost()
     const { fetchUserLikes } = useGetUserLikes()
+    const { likes } = useGetPostsLikes()
+    const { deletePost } = useDeletePostLike()
     
     const [likedPostsIds, setLikedPostsIds] = useState(new Set());
+    const [likesRefreshKey, setLikesRefreshKey] = useState(0);
+    
+    
 
     const postIds = posts.map(el => el._id)
+
+    const toggleDislike = async (postId) => {
+
+        await deletePost(postId,userId)
+        // DELETE the document from /data/likes collection
+
+        // Hide Dislike button
+
+        // remove postId from state property likedPostsIds
+        setLikedPostsIds(prev => {
+          const next =  new Set(prev)
+          next.delete(postId)
+          return next
+        }) 
+
+        setLikesRefreshKey((state) => state + 1)
+
+        // we want to fetch /data/likes and get a new array of elements which inlcude the postId and userId properties.
+
+        
+    }
 
     useEffect(() => {
 
@@ -26,20 +65,33 @@ export default function Catalog({
         fetchUserLikes(userId)
             .then(response => {
                 console.log('Array consisting of likes which the logged user has done:', response)
-
-                const mappedArray = response.map(like => like.postId)
-                // we create a new array, consisting only of the postIds, which correspond to the posts which the logged user has liked
-                /*
-                    [
-                        "37ca9662-98cb-4dae-8a7f-1d1a72257971",
-                        "7436d9b4-4e92-4cfa-8ec9-710b1a5d4a83"
-                    ]
-
+                /*[
+                    {
+                        "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
+                        "postId": "7d306467-25ea-4124-a4c2-50e80b76c63f",
+                        "_createdOn": 1773674035721,
+                        "_id": "7e91fe27-e91f-4377-bf25-61a015c77ab5"
+                    }
+                  ]   
                 */
-
-                    setLikedPostsIds(new Set(mappedArray))
+                const mappedArray = response.map(like => like.postId)
+                /*
+                    ["7d306467-25ea-4124-a4c2-50e80b76c63f", "7d306467-25ea-4124-a4c2-50e80b76c63f"]
+                    These are the postIds for each post which the logged-in user has liked
+                    */
                 
-               //setLikedPosts(new Set(response.map(like => like.postId)))     
+                console.log("Mapped array is:", mappedArray)
+                    setLikedPostsIds(new Set(mappedArray))   
+                    /*
+                    new Set([
+                              [
+                                "7d306467-25ea-4124-a4c2-50e80b76c63f",
+                                "7d306467-25ea-4124-a4c2-50e80b76c63f"
+                              ]
+                            ])
+                    */  
+
+                            
 
             })
     
@@ -48,28 +100,30 @@ export default function Catalog({
 
     const toggleLike = async (postId) => {
         console.log(`Post with ID: ${postId} liked!`)
-        //const [liked,setLiked] = useState(false)
 
         try {
             
             await likePost(postId,userId)
+            // send POST request to endpoint "http://localhost:3030/data/likes"
 
             setLikedPostsIds(prev => new Set(prev).add(postId))
+
+            /*
+                new Set([
+                              [
+                                "7d306467-25ea-4124-a4c2-50e80b76c63f",
+                                "7d306467-25ea-4124-a4c2-50e80b76c63f",
+                                "7d306467-25ea-4124-a4c2-50e80b76c63f"
+                              ]
+                            ])
+            */
+
+            setLikesRefreshKey((state) => state + 1);
+
 
         } catch (error) {
             throw new Error(error)
         }
-        
-        /*
-        Create a new document in the likes collection:
-        {
-            "_ownerId": "f4c03b5e-3008-4e36-94ea-365bff614b05",
-            "postId": "379f35d1-96e8-4eb9-8d5f-5758a745853d",
-            "_createdOn": 1773494295917,
-            "_id": "6dd9d2dd-8130-4290-af66-9b71963a9011"
-        }
-        */
-       // After user hits like button, hide the button
         
 
     }
@@ -83,10 +137,10 @@ export default function Catalog({
                     <div className="mx-auto max-w-2xl lg:mx-0">
                         <h2 data-testid="heading" className="text-4xl font-extrabold tracking-tight text-white bg-gradient-to-r from-teal-500 via-blue-500 to-purple-500 sm:text-5xl italic shadow-lg p-6 rounded-lg text-center max-w-3xl mx-auto">{heading}</h2>
                         <p className="mt-4 text-lg text-gray-700 sm:text-xl italic tracking-tight leading-relaxed max-w-3xl mx-auto">Learn the latest product feedback and features from the community hub.</p>
-                    </div>
+                    </div>                  
                     <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                         {posts.map((post) => (
-                            <CatalogItem likedPostsIds={likedPostsIds} toggleLike={toggleLike} key={post._id} post={post}/>
+                            <CatalogItem toggleDislike={toggleDislike} likesRefreshKey={likesRefreshKey} likedPostsIds={likedPostsIds} toggleLike={toggleLike} key={post._id} post={post}/>
 
                         ))}
                     </div>

@@ -17,14 +17,16 @@ export default function PostDetails(){
     const {postId} = useParams()
     const { post } = usePost(postId) //mocked
     const { isAuthenticated } = useAuth()
-    const { userId } = useAuth() // mocked
+    const { userId, username } = useAuth() // mocked
     const { deletePost } = useDeletePost()
     const { create } = useCreateComments() // mocked
 
-    const {comments,addComment} = useComments(postId)
+    const { comments,addComment } = useComments(postId)
+
     
-    console.log('Post is:', post)
-    console.log('Comments are:', comments)
+    
+   
+    console.log('Comments in PostDetals component are:', comments)
     /*
     we use object destructuring to declare the values of comments and addComment,
     returned by the custom hook useComments.
@@ -57,20 +59,20 @@ export default function PostDetails(){
 
     const onCreateComment = async(formData) => {
        // destructure form data
-      const { username, comment } = Object.fromEntries(formData)      
+      const { comment } = Object.fromEntries(formData)      
      
       // create payload object
       const payload = {
-        username,
-        comment
+        comment,
+        username
       }
 
       // create optimisticComment object and push the username and comment from the formData
       const newOptimisticComment = {
         postId,
         _id: uuid(),
-        username,
         comment,
+        username,
         pending: true
       }
 
@@ -84,9 +86,22 @@ export default function PostDetails(){
 
         const createdComment = await create(payload,postId)
 
+        //console.log('Created comment is:', createdComment)
+        /*
+        We send POST request to http://localhost:3030/data/comments with payload: 
+        {
+            _id: string;
+            comment: any;
+            _ownerId: string;
+            postId: any;
+            username: any;
+            author: {
+                email: string;
+        };
+        */
 
 
-        addComment(createdComment)
+        addComment(createdComment) // add createdComment to current state 
 
         /*
         addComment - callback, which accepts paramenter and

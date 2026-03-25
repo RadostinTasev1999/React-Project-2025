@@ -2,7 +2,8 @@ import { useEffect, useState, useReducer } from "react";
 import useAuth from "../hooks/useAuth"
 import { v4 as uuid } from 'uuid';
 
-const baseUrl = 'http://localhost:3030/data/comments'
+const baseUrl = 'https://server-react-project-2025.onrender.com/data/comments'
+const commentReactionsUrl = 'https://server-react-project-2025.onrender.com/data/commentReactions'
 
 // reducer function,specifies how the state gets updated
 // action is the passed property to the reduce function
@@ -32,17 +33,16 @@ function commentsReducer(state,action){
 export const useCreateComments = () => {
 
     const { request } = useAuth(); //  custom React hook
-    const { userId } = useAuth()
-    const {email} = useAuth()
+    const { userId, email } = useAuth()
 
     const create = (data,postId) => {
 
         const payload = {
             _id:uuid(),
-            username: data.username,
             comment: data.comment,
             _ownerId:userId,
             postId,
+            username:data.username,
             author:{
                 email
             }
@@ -109,6 +109,8 @@ export const useComments = (postId) => {
         request.get(`${baseUrl}?${searchParams.toString()}`,null,options)
             .then((result) => dispatch({ type: 'GET_ALL', payload: result}))
             // You need to pass the action as the only argument to the dispatch function:
+            // the result will be all the comments associated with post with ID postId.
+
 
     },[postId,accessToken, request])
 
@@ -176,5 +178,196 @@ export const useComment = (commentId) => {
     return {
         postComment
     }
+
+}
+
+export const useCreateCommentLike = () => {
+
+    const { request } = useAuth();
+
+    const createLike = async(data) => {
+        /*
+        {
+            commentId: commentId,
+            postId: postId,
+            userId: userId,
+            type: "like"
+        }
+        */
+
+        await request.post(commentReactionsUrl,data)
+
+    }
+
+    return {
+        createLike
+    }
+}
+
+export const useCreateCommentDislike = () => {
+
+    const { request } = useAuth();
+
+    const createDislike = async (data) => {
+
+        await request.post(commentReactionsUrl,data)
+
+    }
+
+return {
+    createDislike
+}
+
+}
+
+export const useGetCommentLike = (postId,commentId,userId) => {
+    
+    const { request } = useAuth();
+
+    const [hasLiked,setHasLiked] = useState(false)
+
+        useEffect(() => {
+            const searchParams  = new URLSearchParams({
+                where: `postId=${postId} AND commentId=${commentId} AND userId=${userId}`
+            })
+
+             request.get(`${commentReactionsUrl}?${searchParams.toString()}`)
+                    .then((response) => {
+                        if (response.length > 0) {
+                            setHasLiked(true)
+                        }
+                    })
+
+        },[])
+
+        
+
+return {
+    hasLiked
+}
+    
+
+}
+
+export const useGetCommentLikes = (postId, userId, counter = 0) => {
+
+    const { request } = useAuth();
+
+    const [userLikes, setUserLikes] = useState([]);
+
+    useEffect(() => {
+
+        if (!postId || !userId) {
+            setUserLikes([]);
+            return;
+        }
+
+        const searchParams = new URLSearchParams({
+            where:`postId="${postId}" AND userId="${userId}" AND type="like"`
+        })
+
+        request.get(`${commentReactionsUrl}?${searchParams.toString()}`)
+            .then((response) => setUserLikes(response))
+
+    },[postId,userId,request,counter])
+
+    return {
+        userLikes
+    }
+
+}
+
+export const useGetCommentDislikes = (postId,userId, counter = 0) => {
+
+    const { request } = useAuth();
+
+    const [userDislikes, setUserDislikes] = useState([]);
+
+    useEffect(() => {
+
+        const searchParams = new URLSearchParams({
+            where:`postId="${postId}" AND userId="${userId}" AND type="dislike"`
+        })
+
+        request.get(`${commentReactionsUrl}?${searchParams.toString()}`)
+            .then((response) => setUserDislikes(response))
+
+    },[postId,userId,request, counter])
+
+    return {
+        userDislikes
+    }
+
+}
+
+export const useGetTargetElement = () => {
+
+    const { request } = useAuth();
+
+    const getTargetLike = async (commentId, userId) => {
+
+        
+
+        const searchParams = new URLSearchParams({
+            where:`commentId="${commentId}" AND userId="${userId}" AND type="like"`
+        })
+
+         const targetElement = await request.get(`${commentReactionsUrl}?${searchParams.toString()}`)
+
+         if (targetElement.length > 0) {
+            const _id = targetElement[0]._id
+
+            return _id
+         }else{
+            return false
+         }
+        
+    }   
+
+    const getTargetDislike = async (commentId, userId) => {
+
+        const searchParams = new URLSearchParams({
+            where:`commentId="${commentId}" AND userId="${userId}" AND type="dislike"`
+        })
+
+        const targetElement = await request.get(`${commentReactionsUrl}?${searchParams.toString()}`)
+
+        if (targetElement.length > 0) {
+
+            const _id = targetElement[0]._id
+            
+            return _id          
+        }else {
+            return false
+        }
+    }
+
+    return {
+        getTargetLike,
+        getTargetDislike
+    }
+
+}
+
+export const useDeleteUserReaction = () => {
+
+    const { request } = useAuth();
+
+    const deleteLike = async (_id) => {
+        
+        await request.delete(`${commentReactionsUrl}/${_id}`)
+
+    }
+
+    const deleteDislike = async (_id) => {
+
+        await request.delete(`${commentReactionsUrl}/${_id}`)
+
+    }
+
+return {
+    deleteLike,
+    deleteDislike
+}
 
 }

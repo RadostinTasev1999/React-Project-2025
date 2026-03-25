@@ -14,9 +14,6 @@ import AuthGuard from './components/guards/AuthGuard'
 import GuestGuard from './components/guards/GuestGuard'
 import Footer from './components/footer/Footer'
 import { ToastContainer, Bounce } from 'react-toastify'
-
-
-
 import { Suspense, lazy } from 'react'
 import PrivacyPolicy from './components/policy/PrivacyPolicy'
 import NotFoundPage from './components/not_found/404page'
