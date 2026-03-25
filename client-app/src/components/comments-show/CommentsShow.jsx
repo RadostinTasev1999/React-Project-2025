@@ -134,7 +134,9 @@ export default function  CommentsShow(
                                   
                                     {
                                         comment._ownerId === userId
-                                            ?
+                                                
+                                                    ?
+                                            
                                             <div className="mt-2 flex items-center justify-end gap-x-6">
 
                                                 <Link
@@ -148,8 +150,13 @@ export default function  CommentsShow(
                                                 </button>
 
                                             </div>
-                                                            :
 
+                                                    :
+                                                    ""
+                                    }
+                                     {                       
+                                                userId
+                                                    ?
                                             <div className="mt-6 flex items-center justify-start gap-x-6">
                                                 {/* like icon if user has not liked the comment */}
                                             {
@@ -186,8 +193,10 @@ export default function  CommentsShow(
                                                {/* dislike icon if user has disliked comment */}
                                                {/* <i class="fa-solid fa-thumbs-down"></i> */}
                                             </div>
-
-                                    }
+                                                     :
+                                                     
+                                                     ""
+                                        }
 
 
                                 </div>

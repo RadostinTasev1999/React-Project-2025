@@ -24,7 +24,7 @@ export default function Header() {
       try {
         userLogoutHandler() // update local storage state
         toast('Logout successfull', { type: 'success' })
-        navigate('/')
+        navigate('/posts')
       } catch (error) {
         toast(error.message, { type: 'error' })
       }
