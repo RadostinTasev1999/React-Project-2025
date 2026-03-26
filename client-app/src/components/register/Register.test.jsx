@@ -66,15 +66,15 @@ describe('Register Component', () => {
         expect(mockRegister).toHaveBeenCalled();
         expect(mockRegister).toHaveBeenCalledTimes(1);
         expect(mockRegister).toHaveBeenCalledWith('peterjohnson@gmail.com','PeterJohnson','12345678910','12345678910')
-        // expect(mockRegister).toReturnWith({
-        //     "email": "peterjohnson@gmail.com",
-        //     "username": "PeterJohnson",
-        //     "password": "12345678910",
-        //     "rePassword": "12345678910",
-        //     "_createdOn": 1772552267181,
-        //     "_id": "0d005675-77ca-4b04-81d9-6cf71f94f540",
-        //     "accessToken": "6e7cc034b9cecad4360a8bb1cf4064b08787799a1d36c6966c316a402e2fbff6"
-        // })
+        expect(mockRegister).toHaveResolvedWith({
+            "email": "peterjohnson@gmail.com",
+            "username": "PeterJohnson",
+            "password": "12345678910",
+            "rePassword": "12345678910",
+            "_createdOn": 1772552267181,
+            "_id": "0d005675-77ca-4b04-81d9-6cf71f94f540",
+            "accessToken": "6e7cc034b9cecad4360a8bb1cf4064b08787799a1d36c6966c316a402e2fbff6"
+        })
     })
 })
 // This will search for the label that matches the given TextMatch, then find the element associated with that label

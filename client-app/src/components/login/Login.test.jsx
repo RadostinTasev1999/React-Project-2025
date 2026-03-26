@@ -68,6 +68,13 @@ describe('Login Component', () => {
 
         expect(mockLogin).toHaveBeenCalledWith('peter@abv.bg', '123456');
 
+        expect(mockLogin).toHaveResolvedWith({
+            "email": "peter@abv.bg",
+            "username": "Peter",
+            "_id": "35c62d76-8152-4626-8712-eeb96381bea8",
+            "accessToken": "fb4638389767ea3df7f2ee17a31277286d8f55880e1cc1cc5e002f6bfbf81c15"
+    })
+
     })
 
 })

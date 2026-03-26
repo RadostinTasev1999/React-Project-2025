@@ -16,7 +16,6 @@ const mockAuthValue = {
     accessToken: true,
     userLoginHandler: vi.fn(),
     userLogoutHandler: vi.fn()
-
    }
 
 vi.mock('../../hooks/useAuth.js', () => ({
@@ -62,7 +61,7 @@ describe("Header Component", () => {
         */
 
     })
-    it.only('should render navigation bar with correct links for authenticated user',() => {
+    it('should render navigation bar with correct links for authenticated user',() => {
         render(
             <UserContext.Provider value={mockAuthValue}>
                 <MemoryRouter>

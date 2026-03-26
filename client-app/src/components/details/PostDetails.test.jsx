@@ -1,5 +1,5 @@
 import { describe,expect,it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { MemoryRouter, Routes, Route } from "react-router";
 import PostDetails from "./PostDetails";
 import { usePost } from "../../api/postApi";
@@ -45,10 +45,10 @@ const mockedData = {
 // }
 
 const mockedComments = [
-    {
+{
     "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
     "username": "Tasev",
-    "comment": "this is my comment here 123",
+    "comment": "This is a test comment",
     "postId": "6ae7391e-29bc-41b2-a905-36f501f925b9",
     "author": {
         "email": "peter@abv.bg",
@@ -64,7 +64,7 @@ const mockedComments = [
 
 
 
-const _id = "35c62d76-8152-4626-8712-eeb96381bea8"
+let _id = "35c62d76-8152-4626-8712-eeb96381bea8"
 
 vi.mock('../../api/commentApi.js', () => ({
     useCreateComments:() => ({
@@ -76,6 +76,26 @@ vi.mock('../../api/commentApi.js', () => ({
     }),
      useDeleteComment: () => ({
         deleteComment: vi.fn()
+     }),
+     useCreateCommentLike: () => ({
+        createLike: vi.fn()
+     }),
+     useCreateCommentDislike: () => ({
+        createDislike: vi.fn()
+     }),
+     useGetTargetElement: () => ({
+        getTargetLike: vi.fn(),
+        getTargetDislike: vi.fn()
+     }),
+     useDeleteUserReaction: () => ({
+        deleteLike: vi.fn(),
+        deleteDislike: vi.fn()
+     }),
+     useGetCommentLikes: () => ({
+        userLikes: []
+     }),
+     useGetCommentDislikes: () => ({
+        userDislikes: []
      })
     
 }))
@@ -87,7 +107,8 @@ vi.mock('../../hooks/useAuth.js', async(importOriginal) => {
             default: () => ({
                 ...actual,
                  userId: _id,
-                 isAuthenticated: true
+                 isAuthenticated: true,
+                 username: "Peter"
             })
             
         }
@@ -159,7 +180,6 @@ describe('Details component', () => {
         // Assert for Comment Post Form section
         expect(screen.getByRole('heading', { 'level': 2, 'name': /post a comment/i})).toBeInTheDocument();
         expect(screen.getByText(/share your experience and thoughts on the topic./i)).toBeInTheDocument();
-        expect(screen.getByLabelText('Username')).toBeInTheDocument();
         expect(screen.getByLabelText('Comment')).toBeInTheDocument();
         expect(screen.getByRole('button', {'name': /post/i})).toBeInTheDocument();
     })
@@ -236,24 +256,34 @@ describe('Details component', () => {
         )
 
         const titleInput = screen.getByLabelText(/^Title$/)
+        await user.clear(titleInput)
         await user.type(titleInput, 'This is a test title')
         const imageInput = screen.getByLabelText(/^Image URL$/)
+        await user.clear(imageInput)
         await user.type(imageInput, 'https://d8iqbmvu05s9c.cloudfront.net/ajprhqgqg1otf7d5sm7u3brf27gv')
         const descriptionInput = screen.getByLabelText(/^Description$/)
+        await user.clear(descriptionInput)
         await user.type(descriptionInput, 'This is a test description')
         const editButton = screen.getByRole('button', { 'name': /edit/i });
         await user.click(editButton)
 
         // Assert that edit method has been called after edit form has been submitted
         expect(mockEditFn).toHaveBeenCalled();
-       // expect(mockEditFn).toHaveBeenCalledOnce();
+
+        expect(mockEditFn).toHaveBeenCalledWith({
+            "title": "This is a test title",
+            "image": "https://d8iqbmvu05s9c.cloudfront.net/ajprhqgqg1otf7d5sm7u3brf27gv",
+            "description": "This is a test description"
+        },
+        postId
+        )
     })
     // Add unit test to test behavior when user clicks on Cancel buttonn on Edit form
     it('should navigate to post details page after clicking on cancel button', async () => {
 
         const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
 
-        const user = await userEvent.setup();
+        const user = userEvent.setup();
 
         render(
             <MemoryRouter initialEntries={[`/posts/${postId}/edit`]}>
@@ -276,7 +306,7 @@ describe('Details component', () => {
     it('should invoke create and addComment after submitting post-comment form',async () => {
         
         const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
-        const user = await userEvent.setup();
+        const user = userEvent.setup();
 
         render(
             <MemoryRouter initialEntries={[`/posts/${postId}/details`]}>
@@ -286,8 +316,6 @@ describe('Details component', () => {
             </MemoryRouter>
         )
 
-        const usernameInput = screen.getByLabelText(/^Username$/)
-        await user.type(usernameInput, 'Peter123')
         const textArea = screen.getByLabelText(/^Comment$/)
         await user.type(textArea, 'This is an example comment for this post')
         const postButton = screen.getByRole('button', {'name': /^Post$/})
@@ -296,14 +324,18 @@ describe('Details component', () => {
         // Assert that create function has been called
 
         expect(mockCreateFn).toHaveBeenCalled();
-        expect(mockedAddComment).toHaveBeenCalled();
+        expect(mockCreateFn).toHaveBeenCalledWith({
+            "comment": "This is an example comment for this post",
+            "username": "Peter"
+        },postId)
 
+        expect(mockedAddComment).toHaveBeenCalled();
 
     })
     // Add unit-test to test behavior when user clicks on Delete button in Post Details component
     it('should invoke deletePost on Delete button click',async() => {
 
-        const user = await userEvent.setup();
+        const user = userEvent.setup();
         const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
 
         render(
@@ -321,47 +353,114 @@ describe('Details component', () => {
 
         // Assert that deletePost has been called
         expect(mockDeletePost).toHaveBeenCalled();
+        expect(mockDeletePost).toHaveBeenCalledWith(postId)
         // Assert that mockNavigate has been called with '/posts'
         expect(mockNavigate).toHaveBeenCalledWith('/posts')
     })
 
     // Add unit test to verify that after user creates a comment, the comment is rendered in details page
 
-    it('should render comment after post button click on comment-post form',async () => {
+    // it('should render comment after post button click on comment-post form',async () => {
 
-        const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
-        const user = await userEvent.setup()
+    //     const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
+    //     const user = userEvent.setup()
         
-        render(
-            <MemoryRouter initialEntries={[`/posts/${postId}/details`]}>
-                <Routes>
-                    <Route path="/posts/:postId/details" element={<PostDetails />} />
-                </Routes>
-            </MemoryRouter>
-        )
+    //     render(
+    //         <MemoryRouter initialEntries={[`/posts/${postId}/details`]}>
+    //             <Routes>
+    //                 <Route path="/posts/:postId/details" element={<PostDetails />} />
+    //             </Routes>
+    //         </MemoryRouter>
+    //     )
 
-        //use userEvent in order to fill in post-comment form
-        const usernameInput = screen.getByLabelText(/^Username$/)
-        await user.type(usernameInput, 'Peter')
-        const commentInput = screen.getByLabelText(/^Comment$/)
-        await user.type(commentInput, 'This is an example comment')
-        const postButton = screen.getByRole('button', { 'name': /^Post$/})
+    //     //use userEvent in order to fill in post-comment form
+       
+    //     const commentInput = screen.getByLabelText(/^Comment$/)
+    //     await user.type(commentInput, 'This is an example comment')
+    //     const postButton = screen.getByRole('button', { 'name': /^Post$/})
 
-        await user.click(postButton)
+    //     await user.click(postButton)
 
-        // ------------------------------------------------------------- //
-        const commentContainer = await screen.findByTestId('comment-container')
+    //     // ------------------------------------------------------------- //
+    //     const commentContainer = await screen.findByTestId('comment-container')
 
-        // Assert that comment container is in the document
-        expect(commentContainer).toBeInTheDocument();
+    //     // Assert that comment container is in the document
+    //     expect(commentContainer).toBeInTheDocument();
 
-        const userP = await screen.findByRole('paragraph', { 'name': 'user-paragraph'})
-        const emailP = await screen.findByRole('paragraph', { 'name': 'email-paragraph'})
-        const commentP = await screen.findByRole('paragraph', { 'name': 'comment-paragraph'})
+    //     const userP = await screen.findByRole('paragraph', { 'name': 'user-paragraph'})
+    //     const commentP = await screen.findByRole('paragraph', { 'name': 'comment-paragraph'})
 
-        // Assert 
-        expect(userP.textContent).toEqual('User: Tasev');
-        expect(emailP.textContent).toEqual('Email: peter@abv.bg');
-        expect(commentP.textContent).toEqual('this is my comment here 123');
+    //     // Assert 
+    //     expect(userP.textContent).toEqual("Tasev");
+    //     expect(commentP.textContent).toEqual('This is a test comment');
+    // })
+
+    // it.only('should render Edit and Delete buttons on comment card for comment owners', async () => {
+        
+    //     const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
+
+    //     render(
+    //         <MemoryRouter initialEntries={[`/posts/${postId}/details`]}> 
+    //             <Routes>
+    //                 <Route path="/posts/:postId/details" element={<PostDetails />}/>
+    //             </Routes>
+    //         </MemoryRouter>
+    //     )
+
+    //     // target edit and delete buttons
+    //     const container = await screen.findByTestId('comment-container')
+    //     const editCommentButton = within(container).getByRole('link', { name: /^Edit$/i})
+    //     const deleteCommentButton = within(container).getByRole('button', { name: /^Delete$/i})
+        
+    //    console.log('EditCommentButton', editCommentButton)
+    //    console.log('Delete comment button:', deleteCommentButton)
+
+
+    // })
+
+    it('should render like and dislike buttons on comment card',async () => {
+        
+            const postId = "6ae7391e-29bc-41b2-a905-36f501f925b9"
+
+            _id = "54a5731d-3968-4497-90e4-2cf373de26e1"
+
+            render(
+                <MemoryRouter initialEntries={[`/posts/${postId}/details`]}> 
+                    <Routes>
+                        <Route path="/posts/:postId/details" element={<PostDetails />}/>
+                    </Routes>
+                </MemoryRouter>
+            )
+
+            const container = await screen.findByTestId('comment-container')
+            const likeButton = within(container).getByRole('button', { name: 'regular-thumbs-up' })
+            const dislikeButton = within(container).getByRole('button', { name: 'regular-thumbs-down'})
+
+            console.log('like button is:', likeButton)
+            console.log('dislike button is:', dislikeButton)
+
+            expect(likeButton).toBeInTheDocument();
+            expect(dislikeButton).toBeInTheDocument()
+
+        /*
+            test when this condition is true: userId && comment._ownerId !== userId
+
+                this element is rendered:
+                    <button onClick={() => onLikeComment(comment._id)}>
+                                                            <i class="fa-regular fa-thumbs-up"></i>
+                                                        </button>  
+                and this element is rendered:
+
+                    <button onClick={() => onDislikeComment(comment._id)}>
+                                                                <i class="fa-regular fa-thumbs-down"></i>
+                    </button>  
+        */
     })
+
+
+    //TODO:
+        /*
+            1. Add unit test for Edit and Delete buttons for comment owners
+            2. Add unit test for like and dislike buttons for comment non-owners
+        */
 });

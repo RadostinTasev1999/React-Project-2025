@@ -14,7 +14,7 @@ import { v4 as uuid } from "uuid"
 
 export default function PostDetails(){
     
-    const {postId} = useParams()
+    const { postId } = useParams()
     const { post } = usePost(postId) //mocked
     const { isAuthenticated } = useAuth()
     const { userId, username } = useAuth() // mocked
@@ -23,8 +23,6 @@ export default function PostDetails(){
 
     const { comments,addComment } = useComments(postId)
 
-    
-    
    
     console.log('Comments in PostDetals component are:', comments)
     /*
@@ -83,7 +81,7 @@ export default function PostDetails(){
       try {
 
         // invoke create method, which calls the request.post() method to send a post request to the server.
-
+        console.log('Payload in onCreateComment is:', payload)
         const createdComment = await create(payload,postId)
 
         //console.log('Created comment is:', createdComment)

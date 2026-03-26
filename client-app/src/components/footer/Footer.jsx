@@ -2,7 +2,6 @@ import { Link } from "react-router"
 export default function footer(){
     return (
         <>
-         (
     <footer className="bg-gray-800 text-white py-5 border-t-4 border-teal-500 bg-gradient-to-r from-teal-500 via-blue-500 to-purple-500">
       <div className="container mx-auto px-6 sm:px-12">
         <div className="flex flex-wrap justify-between">

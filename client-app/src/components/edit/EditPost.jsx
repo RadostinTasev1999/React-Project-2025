@@ -13,6 +13,7 @@ export default function EditPost() {
     const onEditHandler = (formData) => {
            
         const data = Object.fromEntries(formData)
+        console.log('Data from onEditHandler is:', data)
 
         edit(data,postId)
 

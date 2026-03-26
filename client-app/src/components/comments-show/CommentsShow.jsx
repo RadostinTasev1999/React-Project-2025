@@ -17,11 +17,11 @@ export default function  CommentsShow(
     const { postId } = useParams()
     const { userId } = useAuth()
     const { deleteComment } = useDeleteComment()
-    const { username } = useAuth();
-    const { createLike } = useCreateCommentLike()
-    const { createDislike } = useCreateCommentDislike()
-    const { getTargetLike, getTargetDislike } = useGetTargetElement()
-    const { deleteLike, deleteDislike } = useDeleteUserReaction()
+    //const { username } = useAuth();
+    const { createLike } = useCreateCommentLike() // mocked
+    const { createDislike } = useCreateCommentDislike() // mocked
+    const { getTargetLike, getTargetDislike } = useGetTargetElement() // mocked
+    const { deleteLike, deleteDislike } = useDeleteUserReaction() // mocked
 
     const [counter, setCounter] = useState(0)
 
@@ -169,7 +169,7 @@ export default function  CommentsShow(
                                                             <i class="fa-solid fa-thumbs-up"></i>
                                                         </button>   
                                                                     :
-                                                        <button onClick={() => onLikeComment(comment._id)}>
+                                                        <button aria-label="regular-thumbs-up" onClick={() => onLikeComment(comment._id)}>
                                                             <i class="fa-regular fa-thumbs-up"></i>
                                                         </button>       
                                             }
@@ -181,7 +181,7 @@ export default function  CommentsShow(
                                                                 <i class="fa-solid fa-thumbs-down"></i>
                                                             </button>
                                                                     :
-                                                            <button onClick={() => onDislikeComment(comment._id)}>
+                                                            <button aria-label="regular-thumbs-down" onClick={() => onDislikeComment(comment._id)}>
                                                                 <i class="fa-regular fa-thumbs-down"></i>
                                                             </button>     
                                                 
