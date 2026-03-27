@@ -62,7 +62,7 @@ const mockedComments = [
 }
 ]
     
-//const mockDeleteComment = vi.fn()
+const mockDeleteComment = vi.fn();
 
 
 
@@ -77,7 +77,7 @@ vi.mock('../../api/commentApi.js', () => ({
         addComment: mockedAddComment
     }),
      useDeleteComment: () => ({
-        deleteComment: vi.fn()
+        deleteComment: mockDeleteComment
      }),
      useCreateCommentLike: () => ({
         createLike: vi.fn()
@@ -478,7 +478,7 @@ describe('Details component', () => {
     })
 
     // Add unit test for rendering edit comment form after comment owner clicks on Edit button
-    it.only('should render edit-comment form after comment-author clicks on Edit button', async() => {
+    it('should render edit-comment form after comment-author clicks on Edit button', async() => {
 
             const user = userEvent.setup()
 
@@ -510,7 +510,43 @@ describe('Details component', () => {
 
     })
     // Add unit test for performing DELETE request when comment owner clicks on Delete button
+    it('should invoke deleteComment after comment author clicks on Delete button',async () => {
+        const user = userEvent.setup()
 
+        const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
+        _id = "35c62d76-8152-4626-8712-eeb96381bea8"
+
+        render(
+            <MemoryRouter initialEntries={[`/posts/${postId}/details`]}> 
+                <Routes>
+                    <Route path="/posts/:postId/details" element={<PostDetails />}/>
+                </Routes>
+            </MemoryRouter>
+        )
+
+        const container = await screen.findByTestId('comment-container')
+        const deleteButton = await within(container).findByRole('button', { name: /^Delete$/i})
+
+        
+
+        vi.spyOn(window, 'confirm').mockReturnValue(true)
+        vi.spyOn(window, 'alert').mockImplementation(() => {})
+
+        await user.click(deleteButton)
+
+        /*
+            So that line is mainly used to silence the dialog during tests while still letting you verify it was invoked.
+        */
+        expect(mockDeleteComment).toHaveBeenCalled();
+        expect(mockDeleteComment).toHaveBeenCalledWith(mockedComments[0]._id);
+
+
+    })
+
+    /*
+        TODO
+            - Add unit tests for edit-comment form functionality (Cancel / Save)
+    */
 
     //TODO:
         /*
