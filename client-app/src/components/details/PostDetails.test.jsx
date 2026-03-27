@@ -395,28 +395,30 @@ describe('Details component', () => {
     //     expect(commentP.textContent).toEqual('This is a test comment');
     // })
 
-    // it.only('should render Edit and Delete buttons on comment card for comment owners', async () => {
+    it('should render Edit and Delete buttons on comment card for comment owners', async () => {
         
-    //     const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
+        const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
+        _id = "35c62d76-8152-4626-8712-eeb96381bea8"
 
-    //     render(
-    //         <MemoryRouter initialEntries={[`/posts/${postId}/details`]}> 
-    //             <Routes>
-    //                 <Route path="/posts/:postId/details" element={<PostDetails />}/>
-    //             </Routes>
-    //         </MemoryRouter>
-    //     )
+        render(
+            <MemoryRouter initialEntries={[`/posts/${postId}/details`]}> 
+                <Routes>
+                    <Route path="/posts/:postId/details" element={<PostDetails />}/>
+                </Routes>
+            </MemoryRouter>
+        )
 
-    //     // target edit and delete buttons
-    //     const container = await screen.findByTestId('comment-container')
-    //     const editCommentButton = within(container).getByRole('link', { name: /^Edit$/i})
-    //     const deleteCommentButton = within(container).getByRole('button', { name: /^Delete$/i})
+        // target edit and delete buttons
+        const container = await screen.findByTestId('comment-container')
+        const editCommentButton = within(container).getByRole('link', { name: /^Edit$/i})
+        const deleteCommentButton = within(container).getByRole('button', { name: /^Delete$/i})
         
-    //    console.log('EditCommentButton', editCommentButton)
-    //    console.log('Delete comment button:', deleteCommentButton)
+       
+       expect(container).toBeInTheDocument();
+       expect(editCommentButton).toBeInTheDocument();
+       expect(deleteCommentButton).toBeInTheDocument();
 
-
-    // })
+    })
 
     it('should render like and dislike buttons on comment card',async () => {
         
