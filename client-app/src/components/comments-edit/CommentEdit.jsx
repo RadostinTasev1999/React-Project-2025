@@ -47,7 +47,7 @@ export default function CommentsEdit(){
 
     return (
         <>
-            <form action={onEditComment} className="w-1/2 ml-36 pt-18 ">
+            <form aria-label="edit-comment-form" action={onEditComment} className="w-1/2 ml-36 pt-18 ">
                 <div className="space-y-12 p-8 max-w-xl ml-auto p-6 bg-white shadow-lg rounded-lg">
                     <div className="border-b border-gray-900/10 pb-12">
                         <h2 className="text-base/7 font-semibold text-gray-900">Edit Comment</h2>

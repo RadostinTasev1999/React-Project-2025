@@ -2,10 +2,12 @@ import { describe,expect,it, vi } from "vitest";
 import { render, screen, within } from "@testing-library/react";
 import { MemoryRouter, Routes, Route } from "react-router";
 import PostDetails from "./PostDetails";
+import CommentsEdit from "../comments-edit/CommentEdit";
 import { usePost } from "../../api/postApi";
 //import { useDeleteComment } from "../../api/commentApi";
 import userEvent from '@testing-library/user-event'
 import EditPost from "../edit/EditPost";
+
 
 
     /*
@@ -96,6 +98,22 @@ vi.mock('../../api/commentApi.js', () => ({
      }),
      useGetCommentDislikes: () => ({
         userDislikes: []
+     }),
+     useEditComment: () => ({
+        edit: vi.fn()
+     }),
+     useComment: () => ({
+        postComment: {
+            "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
+            "comment": "This is the post Author's comment",
+            "postId": "10868510-d326-4aa8-a80e-af445207193a",
+            "username": "Peter",
+            "author": {
+              "email": "peter@abv.bg"
+            },
+            "_createdOn": 1774616376943,
+            "_id": "6f67b4fe-fa55-4854-bb9d-5518d59bac5d"
+          }
      })
     
 }))
@@ -458,6 +476,40 @@ describe('Details component', () => {
                     </button>  
         */
     })
+
+    // Add unit test for rendering edit comment form after comment owner clicks on Edit button
+    it.only('should render edit-comment form after comment-author clicks on Edit button', async() => {
+
+            const user = userEvent.setup()
+
+            const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
+            _id = "35c62d76-8152-4626-8712-eeb96381bea8"
+
+        render(
+            <MemoryRouter initialEntries={[`/posts/${postId}/details`]}> 
+                <Routes>
+                    <Route path="/posts/:postId/details" element={<PostDetails />}/>
+                    <Route path='/posts/:postId/comment/:commentId' element={<CommentsEdit />} />
+                </Routes>
+            </MemoryRouter>
+        )
+
+        const container = await screen.findByTestId('comment-container')
+        const editCommentButton = within(container).getByRole('link', { name: /^Edit$/i})
+
+        await user.click(editCommentButton)
+
+        const editCommentForm = await screen.findByRole('form', { name: 'edit-comment-form'})
+        const cancelButton = await within(editCommentForm).findByRole('button', { name: /^Cancel$/i})
+        const saveButton = await within(editCommentForm).findByRole('button', {name: /^Save$/i})
+
+        expect(editCommentForm).toBeInTheDocument();
+        expect(cancelButton).toBeInTheDocument();
+        expect(saveButton).toBeInTheDocument();
+
+
+    })
+    // Add unit test for performing DELETE request when comment owner clicks on Delete button
 
 
     //TODO:
