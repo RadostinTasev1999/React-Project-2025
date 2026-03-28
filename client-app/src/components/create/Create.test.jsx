@@ -65,7 +65,7 @@ describe('Create component',() => {
 
     })
 
-    it.only('Should call create function on form submission', async () => {
+    it('Should call create function on form submission', async () => {
         
       const user = userEvent.setup();
 
