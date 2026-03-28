@@ -2,7 +2,7 @@ import { Component } from "react";
 import request from "../../../utils/request";
 import CommentItem from "./comment-item/CommentItem";
 
-const commentsURL = 'http://localhost:3030/data/comments'
+const commentsURL = 'https://server-react-project-2025.onrender.com/data/comments'
 
 
 export default class AdminComments extends Component {
