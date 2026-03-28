@@ -449,9 +449,6 @@ describe('Details component', () => {
             const likeButton = within(container).getByRole('button', { name: 'regular-thumbs-up' })
             const dislikeButton = within(container).getByRole('button', { name: 'regular-thumbs-down'})
 
-            console.log('like button is:', likeButton)
-            console.log('dislike button is:', dislikeButton)
-
             expect(likeButton).toBeInTheDocument();
             expect(dislikeButton).toBeInTheDocument()
 
@@ -538,7 +535,7 @@ describe('Details component', () => {
     })
 
 
-    it.only('should invoke edit on submitting comment-edit form', async () => {
+    it('should invoke edit on submitting comment-edit form', async () => {
 
         const user = userEvent.setup();
 
