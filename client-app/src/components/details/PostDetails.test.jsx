@@ -34,17 +34,20 @@ const mockedData = {
         "_id": "aa6f3aaa-7be9-4474-b0ea-7468a2d8109a"
     }
 
-// const mockComment = {
-//         "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
-//         "username": "Raostin",
-//         "comment": "test comment",
-//         "postId": "98ab6a7d-6443-4f18-93d2-cd20bb0a674e",
-//         "author": {
-//         "email": "peter@abv.bg"
-//         },
-//         "_createdOn": 1772718980591,
-//         "_id": "00a999af-3ff4-4584-8faa-37b6a4703672"
-// }
+const mockedPostComment = {
+    "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
+    "username": "Tasev",
+    "comment": "This is a test comment",
+    "postId": "6ae7391e-29bc-41b2-a905-36f501f925b9",
+    "author": {
+        "email": "peter@abv.bg",
+        "username": "Peter",
+        "_id": "35c62d76-8152-4626-8712-eeb96381bea8"
+    },
+    "_createdOn": 1772800104000,
+    "_id": "02aff09b-6074-4bec-8199-46088345981b"
+}
+
 
 const mockedComments = [
 {
@@ -63,7 +66,7 @@ const mockedComments = [
 ]
     
 const mockDeleteComment = vi.fn();
-
+const mockEditComment = vi.fn();
 
 
 let _id = "35c62d76-8152-4626-8712-eeb96381bea8"
@@ -100,20 +103,10 @@ vi.mock('../../api/commentApi.js', () => ({
         userDislikes: []
      }),
      useEditComment: () => ({
-        edit: vi.fn()
+        edit: mockEditComment
      }),
      useComment: () => ({
-        postComment: {
-            "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
-            "comment": "This is the post Author's comment",
-            "postId": "10868510-d326-4aa8-a80e-af445207193a",
-            "username": "Peter",
-            "author": {
-              "email": "peter@abv.bg"
-            },
-            "_createdOn": 1774616376943,
-            "_id": "6f67b4fe-fa55-4854-bb9d-5518d59bac5d"
-          }
+        postComment: mockedPostComment
      })
     
 }))
@@ -540,9 +533,44 @@ describe('Details component', () => {
         expect(mockDeleteComment).toHaveBeenCalled();
         expect(mockDeleteComment).toHaveBeenCalledWith(mockedComments[0]._id);
 
+        
 
     })
 
+
+    it.only('should invoke edit on submitting comment-edit form', async () => {
+
+        const user = userEvent.setup();
+
+        const postId = 'aa6f3aaa-7be9-4474-b0ea-7468a2d8109a'
+        _id = "35c62d76-8152-4626-8712-eeb96381bea8"
+
+        render(
+            <MemoryRouter initialEntries={[`/posts/${postId}/details`]}> 
+                <Routes>
+                    <Route path="/posts/:postId/details" element={<PostDetails />}/>
+                    <Route path='/posts/:postId/comment/:commentId' element={<CommentsEdit />} />
+                </Routes>
+            </MemoryRouter>
+        )
+
+        const container = await screen.findByTestId('comment-container')
+        const editButton = await within(container).findByRole('link', {name: /^Edit$/i});
+
+        await user.click(editButton);
+
+        const editCommentForm = await screen.findByRole('form', {name: 'edit-comment-form'})
+        const textArea = await within(editCommentForm).findByRole('textbox', {name: 'edit-comment-input'})
+        const saveButton = await screen.findByRole('button', { name: /^Save$/i })
+
+        await user.clear(textArea)
+        await user.type(textArea, 'This is my edited comment');
+        await user.click(saveButton)
+
+        expect(mockEditComment).toHaveBeenCalled();
+        expect(mockEditComment).toHaveBeenCalledWith(mockedPostComment._id, {comment: 'This is my edited comment'})
+        expect(mockNavigate).toHaveBeenCalledWith(`/posts/${postId}/details`)
+    })  
     /*
         TODO
             - Add unit tests for edit-comment form functionality (Cancel / Save)
