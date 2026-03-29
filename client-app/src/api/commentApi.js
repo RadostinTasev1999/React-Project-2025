@@ -67,7 +67,7 @@ export const useCreateComments = () => {
 
 }
 
-export const useComments = (postId) => {
+export const useComments = (postId, key) => {
 
     const { request } = useAuth();
     const { accessToken } = useAuth()
@@ -112,7 +112,7 @@ export const useComments = (postId) => {
             // the result will be all the comments associated with post with ID postId.
 
 
-    },[postId,accessToken, request])
+    },[postId,accessToken, request, key])
 
     return {
         comments,
@@ -150,7 +150,7 @@ export const useDeleteComment = () => {
 
     const deleteComment = (commentId) => {
 
-         request.delete(`${baseUrl}/${commentId}`)
+        return request.delete(`${baseUrl}/${commentId}`)
       
     }
 

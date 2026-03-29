@@ -9,6 +9,7 @@ import CommentsCreate from "../comments-create/CreateComment"
 import { useCreateComments } from "../../api/commentApi"
 import { useComments } from "../../api/commentApi"
 import { useOptimistic } from "react" 
+import { useState } from "react"
 
 import { v4 as uuid } from "uuid"
 
@@ -21,8 +22,9 @@ export default function PostDetails(){
     const { deletePost } = useDeletePost()
     const { create } = useCreateComments() // mocked
 
-    const { comments,addComment } = useComments(postId)
-
+    const [key, setKey] = useState(0)
+    const { comments,addComment } = useComments(postId, key)
+    
    
     console.log('Comments in PostDetals component are:', comments)
     /*
@@ -102,6 +104,10 @@ export default function PostDetails(){
         addComment(createdComment) // add createdComment to current state 
 
         /*
+        after addComment, comments is new, PostDetails re-renders, and useOptimistic runs again with that new comments as the base.
+        */
+
+        /*
         addComment - callback, which accepts paramenter and
         invokes the dispatch method of the react hook useReducer and passes
         an action object to the dispatch method as a parameter.
@@ -154,7 +160,7 @@ export default function PostDetails(){
               ) : null
             }
           </div>
-          <CommentsShow comments={optimisticComments}/>
+          <CommentsShow comments={optimisticComments} setKey={setKey}/>
           {
             isAuthenticated
               ?
