@@ -1,4 +1,4 @@
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { formattedDate } from "../../utils/date"
 import useAuth from "../../hooks/useAuth"
 import { useState } from "react"
@@ -6,14 +6,17 @@ import { Link } from "react-router"
 import { useDeleteComment, useCreateCommentLike, useCreateCommentDislike, useGetCommentLikes, useGetCommentDislikes, useGetTargetElement,useDeleteUserReaction } from "../../api/commentApi"
 
 export default function  CommentsShow(
-    {comments}
+    {
+        comments,
+        setKey
+    }
 ){
 
     /*
         To fix:
             - should get username from comments
     */
-
+    const navigate = useNavigate()
     const { postId } = useParams()
     const { userId } = useAuth()
     const { deleteComment } = useDeleteComment()
@@ -94,10 +97,10 @@ export default function  CommentsShow(
     const confirmAlert = window.confirm('Are you sure you want to delete this comment?')
 
     if (confirmAlert) {
-        deleteComment(commentId)
-        window.location.reload()
+        await deleteComment(commentId) // DELETE comment from server
+        setKey(state => state + 1) // re-run useEffect in useComments hook
 
-        alert('Comment deleted successfully!')
+        // alert('Comment deleted successfully!')
     }else{
         alert('Comment deletion was canceled')
     }
