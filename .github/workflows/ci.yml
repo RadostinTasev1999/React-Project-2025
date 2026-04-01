@@ -4,11 +4,11 @@ name: CI/CD Pipeline for Vite React app
 on:
     push:
         branches: 
-            - main
+            - staging
 
     pull_request:
         branches:
-            - main
+            - staging
 
 jobs:
     build_test:
