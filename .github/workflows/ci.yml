@@ -1,0 +1,65 @@
+# Test comment
+name: CI/CD Pipeline for Vite React app
+
+on:
+    push:
+        branches: 
+            - main
+
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    build_test:
+        runs-on: ubuntu-latest
+
+        defaults:
+          run:
+            working-directory: client-app
+
+        steps:
+            - name: Checkout the repository
+              uses: actions/checkout@v6
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v6
+              with:
+                node-version: '24.0.x'
+
+            - name: Install Dependencies
+              run: npm install
+
+            - name: Install Playwright browsers
+              run: npx playwright install
+
+            - name: Build Project
+              run: npm run build &
+
+            - name: Start app
+              run: npm run dev &
+
+            - name: Start Server
+              run: npm run server &
+
+            # - name: Start tests
+            #   run: npm run tests
+  
+    deploy:
+        runs-on: ubuntu-latest
+        needs: build_test
+
+        steps:
+            - name: Deploy Back-End to Render
+              uses: JorgeLNJunior/render-deploy@v1.5.0
+              with:
+                service_id: ${{ secrets.BE_SERVICE_ID}}
+                api_key: ${{ secrets.BE_RENDER_TOKEN }}
+                wait_deploy: true
+
+            - name: Deploy Front-End to Render
+              uses: JorgeLNJunior/render-deploy@v1.5.0
+              with:
+                service_id: ${{ secrets.FE_SERVICE_ID}}
+                api_key: ${{ secrets. FE_RENDER_TOKEN }}
+                wait_deploy: true
