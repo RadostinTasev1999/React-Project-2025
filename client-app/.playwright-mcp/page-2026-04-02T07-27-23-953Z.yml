@@ -1,0 +1,51 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - navigation "Global" [ref=e5]:
+      - link "Teams Devices Forum navigation-logo" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e8]: Teams Devices Forum
+        - img "navigation-logo" [ref=e55]
+      - link "All Posts" [ref=e10] [cursor=pointer]:
+        - /url: /posts
+      - generic [ref=e11]:
+        - link "Log out" [ref=e74] [cursor=pointer]:
+          - /url: /create
+        - link "Create Post" [active] [ref=e75] [cursor=pointer]:
+          - /url: /create
+        - link "Admin" [ref=e76] [cursor=pointer]:
+          - /url: /admin
+  - main [ref=e14]:
+    - generic [ref=e114]:
+      - generic [ref=e115]:
+        - img "Your Company" [ref=e116]
+        - heading "Start a discussion" [level=2] [ref=e117]
+      - generic [ref=e119]:
+        - generic [ref=e120]:
+          - generic [ref=e121]: Title
+          - textbox "Title" [ref=e123]
+        - generic [ref=e124]:
+          - generic [ref=e125]: Image URL
+          - textbox "Image URL" [ref=e127]
+        - generic [ref=e128]:
+          - generic [ref=e130]: Description
+          - textbox "Description" [ref=e132]
+        - generic [ref=e133]:
+          - button "Publish" [ref=e134]
+          - button "Cancel" [ref=e135]
+  - region "Notifications Alt+T"
+  - contentinfo [ref=e40]:
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - heading "TechForum" [level=3] [ref=e44]
+          - paragraph [ref=e45]: Your trusted forum for all things tech and gadgets.
+        - generic [ref=e46]:
+          - heading "Quick Links" [level=4] [ref=e47]
+          - list [ref=e48]:
+            - listitem [ref=e49]:
+              - link "Home" [ref=e50] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e51]:
+              - link "Privacy Policy" [ref=e52] [cursor=pointer]:
+                - /url: /policy
+      - paragraph [ref=e54]: © 2025 TechForum. All rights reserved.

@@ -24,6 +24,7 @@ export default function PostDetails(){
 
     const [key, setKey] = useState(0)
     const { comments,addComment } = useComments(postId, key)
+    const [imageError, setImageError] = useState(false)
     
    
     console.log('Comments in PostDetals component are:', comments)
@@ -122,43 +123,59 @@ export default function PostDetails(){
 
     return (
         <>
-        <div className="overflow-hidden w-[85%] m-auto bg-white py-24 sm:py-32">
-          <div className="bg-white shadow-md p-6 rounded-lg border">
-            <div className="mx-auto max-w-7xl px-6 ml-26 lg:px-8">
-              <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-56 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
-                <div className="lg:pt-4 lg:pr-8">
-                  <div className="lg:max-w-lg">
-                    {/* <h2 className="text-base/7 font-semibold text-indigo-600">{email}</h2> */}
-                    <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">
-                      {post.title}
-                    </p>
-                    <p className="mt-6 text-lg/8 text-gray-600">
-                      {post.description}
-                    </p>
-
-                  </div>
-                </div>
-                <img
-                  alt="Product screenshot"
-                  aria-label="product image"
-                  src={post.image}
-
-                  className="w-[14rem] max-w-none rounded-xl ring-1 shadow-xl ring-gray-400/10 sm:w-[28.5rem] md:-ml-4 lg:-ml-0"
-                />
-              </div>
-            </div>
-            {
-              isOwner ? (
-                <div className="ml-30 mt-16 flex gap-4 justify-start">
-                  <Link to={`/posts/${postId}/edit`} aria-label="Edit post" className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+        <div className="w-[85%] m-auto py-16">
+          <div className="bg-white shadow-lg rounded-2xl border border-gray-200 overflow-hidden">
+            {/* Card header: title + owner actions */}
+            <div className="px-8 pt-8 pb-6 flex items-start justify-between gap-6">
+              <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl leading-tight">
+                {post.title}
+              </h1>
+              {isOwner && (
+                <div className="flex gap-2 flex-shrink-0">
+                  <Link
+                    to={`/posts/${postId}/edit`}
+                    aria-label="Edit post"
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg transition-colors text-sm"
+                  >
                     Edit
                   </Link>
-                  <Link onClick={onDelete} aria-label="Delete post" className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                  <Link
+                    onClick={onDelete}
+                    aria-label="Delete post"
+                    className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-5 rounded-lg transition-colors text-sm"
+                  >
                     Delete
                   </Link>
                 </div>
-              ) : null
-            }
+              )}
+            </div>
+
+            <hr className="border-gray-100 mx-8" />
+
+            {/* Card body: description + image */}
+            <div className="px-8 py-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+              <p className="text-gray-700 text-lg leading-relaxed">
+                {post.description}
+              </p>
+              <div className="rounded-xl overflow-hidden bg-gray-100 flex items-center justify-center min-h-[240px]">
+                {imageError ? (
+                  <div className="flex flex-col items-center justify-center gap-2 text-gray-400 py-12 px-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span className="text-sm font-medium">No image available</span>
+                  </div>
+                ) : (
+                  <img
+                    alt={post.title || "Post image"}
+                    aria-label="product image"
+                    src={post.image}
+                    onError={() => setImageError(true)}
+                    className="w-full h-auto object-cover rounded-xl"
+                  />
+                )}
+              </div>
+            </div>
           </div>
           <CommentsShow comments={optimisticComments} setKey={setKey}/>
           {
