@@ -123,11 +123,11 @@ export default function PostDetails(){
 
     return (
         <>
-        <div className="w-[85%] m-auto py-16">
+        <div className="max-w-3xl mx-auto py-10">
           <div className="bg-white shadow-lg rounded-2xl border border-gray-200 overflow-hidden">
             {/* Card header: title + owner actions */}
-            <div className="px-8 pt-8 pb-6 flex items-start justify-between gap-6">
-              <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl leading-tight">
+            <div className="px-6 pt-6 pb-4 flex items-start justify-between gap-4">
+              <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl leading-tight">
                 {post.title}
               </h1>
               {isOwner && (
@@ -153,11 +153,11 @@ export default function PostDetails(){
             <hr className="border-gray-100 mx-8" />
 
             {/* Card body: description + image */}
-            <div className="px-8 py-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-              <p className="text-gray-700 text-lg leading-relaxed">
+            <div className="px-6 py-6 grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+              <p className="text-gray-700 text-base leading-relaxed">
                 {post.description}
               </p>
-              <div className="rounded-xl overflow-hidden bg-gray-100 flex items-center justify-center min-h-[240px]">
+              <div className="rounded-xl overflow-hidden bg-gray-100 flex items-center justify-center min-h-[160px]">
                 {imageError ? (
                   <div className="flex flex-col items-center justify-center gap-2 text-gray-400 py-12 px-8">
                     <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
