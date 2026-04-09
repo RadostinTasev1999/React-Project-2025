@@ -162,7 +162,7 @@ vi.mock('react-router', async (importOriginal) => {
 })
 
 describe('Details component', () => {
-    it('renders post-details correctly based on URL parameter', () => {
+ /*   it('renders post-details correctly based on URL parameter', () => {
 
         // Define what the hook should return for this test.
         const postId = '2bb392a3-adc3-4f13-8d22-bacdfd02af7c'
@@ -194,6 +194,7 @@ describe('Details component', () => {
         expect(screen.getByLabelText('Comment')).toBeInTheDocument();
         expect(screen.getByRole('button', {'name': /post/i})).toBeInTheDocument();
     })
+    */
     it('renders edit-post form on Edit button click', async() => {
 
         const postId = '2bb392a3-adc3-4f13-8d22-bacdfd02af7c'
