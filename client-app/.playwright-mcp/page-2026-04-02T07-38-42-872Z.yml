@@ -1,0 +1,57 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - navigation "Global" [ref=e5]:
+      - link "Teams Devices Forum navigation-logo" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e8]: Teams Devices Forum
+        - img "navigation-logo" [ref=e9]
+      - link "All Posts" [ref=e11] [cursor=pointer]:
+        - /url: /posts
+      - generic [ref=e12]:
+        - link "Log out" [ref=e13] [cursor=pointer]:
+          - /url: /posts/f674b86d-7281-47e9-b1be-ece8d64d5d0d/details
+        - link "Create Post" [ref=e14] [cursor=pointer]:
+          - /url: /create
+        - link "Admin" [ref=e15] [cursor=pointer]:
+          - /url: /admin
+  - main [ref=e16]:
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - heading [level=1]
+        - separator [ref=e20]
+        - generic [ref=e21]:
+          - paragraph
+          - img "product image" [ref=e23]
+      - generic [ref=e24]:
+        - generic [ref=e25]:
+          - heading "Comments" [level=2] [ref=e26]
+          - separator [ref=e27]
+        - paragraph [ref=e28]:
+          - generic [ref=e29]: No comments on this post yet...
+        - separator [ref=e30]
+      - generic [ref=e31]:
+        - generic [ref=e33]:
+          - heading "Post a Comment" [level=2] [ref=e34]
+          - paragraph [ref=e35]: Share your experience and thoughts on the topic.
+          - generic [ref=e37]:
+            - generic [ref=e38]: Comment
+            - textbox "Comment" [ref=e40]
+        - button "Post" [ref=e42]
+  - region "Notifications Alt+T"
+  - contentinfo [ref=e43]:
+    - generic [ref=e44]:
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - heading "TechForum" [level=3] [ref=e47]
+          - paragraph [ref=e48]: Your trusted forum for all things tech and gadgets.
+        - generic [ref=e49]:
+          - heading "Quick Links" [level=4] [ref=e50]
+          - list [ref=e51]:
+            - listitem [ref=e52]:
+              - link "Home" [ref=e53] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e54]:
+              - link "Privacy Policy" [ref=e55] [cursor=pointer]:
+                - /url: /policy
+      - paragraph [ref=e57]: © 2025 TechForum. All rights reserved.

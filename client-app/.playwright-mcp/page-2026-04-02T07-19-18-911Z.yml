@@ -1,0 +1,47 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - navigation "Global" [ref=e5]:
+      - link "Teams Devices Forum navigation-logo" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e8]: Teams Devices Forum
+        - img "navigation-logo"
+      - link "All Posts" [ref=e10] [cursor=pointer]:
+        - /url: /posts
+      - generic [ref=e11]:
+        - link "Log in" [ref=e12] [cursor=pointer]:
+          - /url: /login
+        - link "Register" [ref=e13] [cursor=pointer]:
+          - /url: /register
+  - main [ref=e14]:
+    - generic [ref=e17]:
+      - heading "Where Tech Minds Meet and Grow" [level=2] [ref=e18]
+      - paragraph [ref=e19]: Community space for sharing user experience.
+      - article [ref=e20]:
+        - generic [ref=e21]:
+          - heading "Topic Categories" [level=2] [ref=e22]
+          - list [ref=e23]:
+            - listitem [ref=e24]:
+              - paragraph [ref=e27]: Headsets
+            - listitem [ref=e28]:
+              - paragraph [ref=e31]: Speakerphones
+            - listitem [ref=e32]:
+              - paragraph [ref=e35]: Control Panels
+            - listitem [ref=e36]:
+              - paragraph [ref=e39]: Collaboration Devices
+  - region "Notifications Alt+T"
+  - contentinfo [ref=e40]:
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - heading "TechForum" [level=3] [ref=e44]
+          - paragraph [ref=e45]: Your trusted forum for all things tech and gadgets.
+        - generic [ref=e46]:
+          - heading "Quick Links" [level=4] [ref=e47]
+          - list [ref=e48]:
+            - listitem [ref=e49]:
+              - link "Home" [ref=e50] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e51]:
+              - link "Privacy Policy" [ref=e52] [cursor=pointer]:
+                - /url: /policy
+      - paragraph [ref=e54]: © 2025 TechForum. All rights reserved.

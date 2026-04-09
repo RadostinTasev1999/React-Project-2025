@@ -1,0 +1,63 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - navigation "Global" [ref=e5]:
+      - link "Teams Devices Forum navigation-logo" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e8]: Teams Devices Forum
+        - img "navigation-logo" [ref=e55]
+      - link "All Posts" [ref=e10] [cursor=pointer]:
+        - /url: /posts
+      - generic [ref=e11]:
+        - link "Log out" [ref=e74] [cursor=pointer]:
+          - /url: /posts/f674b86d-7281-47e9-b1be-ece8d64d5d0d/details
+        - link "Create Post" [ref=e75] [cursor=pointer]:
+          - /url: /create
+        - link "Admin" [ref=e76] [cursor=pointer]:
+          - /url: /admin
+  - main [ref=e14]:
+    - generic [ref=e181]:
+      - generic [ref=e182]:
+        - generic [ref=e184]:
+          - generic [ref=e186]:
+            - paragraph [ref=e187]: Logitech Zone Wireless Headset Review
+            - paragraph [ref=e188]: The Logitech Zone Wireless 2 is a premium business headset featuring advanced noise-canceling microphone, all-day comfort, and seamless wireless connectivity. Perfect for hybrid work environments.
+          - img "product image" [ref=e189]
+        - generic [ref=e190]:
+          - link "Edit post" [ref=e191] [cursor=pointer]:
+            - /url: /posts/f674b86d-7281-47e9-b1be-ece8d64d5d0d/edit
+            - text: Edit
+          - link "Delete post" [ref=e192] [cursor=pointer]:
+            - /url: /posts/f674b86d-7281-47e9-b1be-ece8d64d5d0d/details
+            - text: Delete
+      - generic [ref=e193]:
+        - generic [ref=e194]:
+          - heading "Comments" [level=2] [ref=e195]
+          - separator [ref=e196]
+        - paragraph [ref=e197]:
+          - generic [ref=e198]: No comments on this post yet...
+        - separator [ref=e199]
+      - generic [ref=e200]:
+        - generic [ref=e202]:
+          - heading "Post a Comment" [level=2] [ref=e203]
+          - paragraph [ref=e204]: Share your experience and thoughts on the topic.
+          - generic [ref=e206]:
+            - generic [ref=e207]: Comment
+            - textbox "Comment" [ref=e209]
+        - button "Post" [ref=e211]
+  - region "Notifications Alt+T"
+  - contentinfo [ref=e40]:
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - heading "TechForum" [level=3] [ref=e44]
+          - paragraph [ref=e45]: Your trusted forum for all things tech and gadgets.
+        - generic [ref=e46]:
+          - heading "Quick Links" [level=4] [ref=e47]
+          - list [ref=e48]:
+            - listitem [ref=e49]:
+              - link "Home" [ref=e50] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e51]:
+              - link "Privacy Policy" [ref=e52] [cursor=pointer]:
+                - /url: /policy
+      - paragraph [ref=e54]: © 2025 TechForum. All rights reserved.

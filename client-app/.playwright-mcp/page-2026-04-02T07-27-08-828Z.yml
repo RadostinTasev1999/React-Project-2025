@@ -1,0 +1,55 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - navigation "Global" [ref=e5]:
+      - link "Teams Devices Forum navigation-logo" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e8]: Teams Devices Forum
+        - img "navigation-logo" [ref=e55]
+      - link "All Posts" [ref=e10] [cursor=pointer]:
+        - /url: /posts
+      - generic [ref=e11]:
+        - link "Log out" [ref=e74] [cursor=pointer]:
+          - /url: /
+        - link "Create Post" [ref=e75] [cursor=pointer]:
+          - /url: /create
+        - link "Admin" [ref=e76] [cursor=pointer]:
+          - /url: /admin
+  - main [ref=e14]:
+    - generic [ref=e79]:
+      - heading "Where Tech Minds Meet and Grow" [level=2] [ref=e80]
+      - paragraph [ref=e81]: Community space for sharing user experience.
+      - article [ref=e83]:
+        - generic [ref=e84]:
+          - heading "Topic Categories" [level=2] [ref=e85]
+          - list [ref=e86]:
+            - listitem [ref=e87]:
+              - paragraph [ref=e90]: Headsets
+            - listitem [ref=e91]:
+              - paragraph [ref=e94]: Speakerphones
+            - listitem [ref=e95]:
+              - paragraph [ref=e98]: Control Panels
+            - listitem [ref=e99]:
+              - paragraph [ref=e102]: Collaboration Devices
+  - region "Notifications Alt+T":
+    - alert [ref=e104]:
+      - img [ref=e106]
+      - text: Welcome peter@abv.bg
+      - button "close" [ref=e108] [cursor=pointer]:
+        - img [ref=e109]
+      - progressbar [ref=e113]
+  - contentinfo [ref=e40]:
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - heading "TechForum" [level=3] [ref=e44]
+          - paragraph [ref=e45]: Your trusted forum for all things tech and gadgets.
+        - generic [ref=e46]:
+          - heading "Quick Links" [level=4] [ref=e47]
+          - list [ref=e48]:
+            - listitem [ref=e49]:
+              - link "Home" [ref=e50] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e51]:
+              - link "Privacy Policy" [ref=e52] [cursor=pointer]:
+                - /url: /policy
+      - paragraph [ref=e54]: © 2025 TechForum. All rights reserved.
