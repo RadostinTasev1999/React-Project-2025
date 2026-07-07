@@ -123,11 +123,11 @@ export default function PostDetails(){
 
     return (
         <>
-        <div className="max-w-3xl mx-auto py-10">
-          <div className="bg-white shadow-lg rounded-2xl border border-gray-200 overflow-hidden">
+        <div className="max-w-5xl mx-auto px-6 py-10">
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200">
             {/* Card header: title + owner actions */}
-            <div className="px-6 pt-6 pb-4 flex items-start justify-between gap-4">
-              <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl leading-tight">
+            <div className="border-b border-gray-200 px-8 py-6">
+              <h1 className="text-2xl font-bold">
                 {post.title}
               </h1>
               {isOwner && (
@@ -154,7 +154,7 @@ export default function PostDetails(){
 
             {/* Card body: description + image */}
             <div className="px-6 py-6 grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-              <p className="text-gray-700 text-base leading-relaxed">
+              <p className="text-gray-500 mt-1">
                 {post.description}
               </p>
               <div className="rounded-xl overflow-hidden bg-gray-100 flex items-center justify-center min-h-[160px]">

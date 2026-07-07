@@ -5,7 +5,7 @@ export default function CommentsCreate(
 
     return (
         <>
-            <form action={createHandler} className="w-1/2 ml-36 pt-12 p-8 bg-white shadow-lg rounded-lg border-2">
+            <form action={createHandler} className="max-w-2xl mx-auto space-y-6">
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">
                         <h2 className="text-base/7 font-semibold text-gray-900">Post a Comment</h2>
