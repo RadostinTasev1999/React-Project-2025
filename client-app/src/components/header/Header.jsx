@@ -60,7 +60,7 @@ export default function Header() {
             { accessToken
                   ?
                   (
-              <div className="lg:flex ml-8 lg:gap-x-4">
+              <div className="flex ml-8 gap-x-4">
                 <Link id='logout' onClick={onLogout} className="text-white hover:text-teal-200 transition-colors duration-300 text-[21px]">
                   Log out
                 </Link>
