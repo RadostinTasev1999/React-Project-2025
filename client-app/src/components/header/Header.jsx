@@ -39,8 +39,8 @@ export default function Header() {
 
     return (
         <header className="bg-white">
-          <nav aria-label="Global" id='nav-bar' className=" mx-auto flex w-full items-center justify-between p-3 lg:px-8 bg-gradient-to-r from-teal-500 via-blue-500 to-purple-500 border-b-4 border-teal-500">
-            <div className="flex lg:flex-1 ml-2">
+          <nav aria-label="Global" id='nav-bar' className=" mx-auto flex w-full items-center justify-end p-3 px-8 bg-gradient-to-r from-teal-500 via-blue-500 to-purple-500 border-b-4 border-teal-500">
+            <div className="flex flex-1 ml-2">
               <Link to="/" className="-m-1.5 p-1.5">
                 <span className="sr-only">Teams Devices Forum</span>
                 <img
@@ -51,7 +51,7 @@ export default function Header() {
               </Link>
             </div>
             
-            <PopoverGroup className="hidden lg:flex lg:gap-x-12">
+            <PopoverGroup className="flex gap-x-12">
               <Link to="/posts" className="text-white hover:text-teal-200 transition-colors duration-300 text-[21px]">
                 All Posts
               </Link>
@@ -60,7 +60,7 @@ export default function Header() {
             { accessToken
                   ?
                   (
-              <div className="hidden lg:flex ml-8 lg:gap-x-4">
+              <div className="lg:flex ml-8 lg:gap-x-4">
                 <Link id='logout' onClick={onLogout} className="text-white hover:text-teal-200 transition-colors duration-300 text-[21px]">
                   Log out
                 </Link>
@@ -74,7 +74,7 @@ export default function Header() {
                   )
                   :
                   (
-              <div className="hidden lg:flex ml-8 mr-6 lg:gap-x-4">
+              <div className="flex ml-8 mr-6 gap-x-4">
                 <Link to="/login" className="text-white hover:text-teal-200 transition-colors duration-300 text-[21px]">
                   Log in
                 </Link>
