@@ -127,9 +127,10 @@ export default function PostDetails(){
           <div className="bg-white rounded-2xl shadow-lg border border-gray-200">
             {/* Card header: title + owner actions */}
             <div className="border-b border-gray-200 px-8 py-6">
-              <h1 className="text-2xl font-bold">
+              <h1 className="text-2xl font-bold mb-4">
                 {post.title}
               </h1>
+              {/* <br /> */}
               {isOwner && (
                 <div className="flex gap-2 flex-shrink-0">
                   <Link

@@ -109,7 +109,7 @@ export default function  CommentsShow(
 
     return (
         <>
-            <div className="max-w-4xl mx-auto py-8 ml-36 mt-16">
+            <div className="max-w-4xl mx-auto py-8 px-6 mt-16">
                 <div className="mb-8">
                     <h2 className="text-2xl font-semibold text-gray-800 mb-4">Comments</h2>
                     <hr className="max-w-2xl border-t-2 border-[rgba(0,0,0,0.2)] my-4" />
