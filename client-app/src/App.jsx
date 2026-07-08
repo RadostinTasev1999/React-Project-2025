@@ -17,7 +17,6 @@ import { ToastContainer, Bounce } from 'react-toastify'
 import { Suspense, lazy } from 'react'
 import PrivacyPolicy from './components/policy/PrivacyPolicy'
 import NotFoundPage from './components/not_found/404page'
-import HeaderSection from './components/test/Test'
 
 const Admin = lazy(() => import('./components/admin/Admin'))
 // this expression will be invoked asynchronously, when compiler gets to this row.
