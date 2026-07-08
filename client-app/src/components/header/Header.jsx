@@ -43,10 +43,15 @@ export default function Header() {
    const {userLogoutHandler} = useContext(UserContext)
 
 
+  const cancelMobileNav = () => {
+      setMobileMenuOpen(false)
+   }
+
    const onLogout = () => {
       try {
         userLogoutHandler() // update local storage state
         toast('Logout successfull', { type: 'success' })
+        cancelMobileNav();
         navigate('/posts')
       } catch (error) {
         toast(error.message, { type: 'error' })
@@ -58,6 +63,8 @@ export default function Header() {
       
 
    }
+
+   
 
 
     return (
@@ -138,7 +145,7 @@ export default function Header() {
               </a>
               <button
                 type="button"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={cancelMobileNav}
                 className="-m-2.5 rounded-md p-2.5 text-gray-700"
               >
                 <span className="sr-only">Close menu</span>
@@ -149,7 +156,7 @@ export default function Header() {
               <div className="-my-6 divide-y divide-gray-500/10">
                 <div className="space-y-2 py-6">
 
-                  <Link to="/posts" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
+                  <Link to="/posts" onClick={cancelMobileNav} className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
                     All Posts
                   </Link>
                   <hr className='my-2 border-gray-200'/>
@@ -157,10 +164,10 @@ export default function Header() {
                     ?
                     (
                       <div>
-                        <Link to="/admin" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
+                        <Link to="/admin" onClick={cancelMobileNav} className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
                           Admin
                         </Link>
-                        <Link to="/create" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
+                        <Link to="/create" onClick={cancelMobileNav} className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
                           Create Post
                         </Link>
                         <Link id='logout' onClick={onLogout} className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
@@ -173,11 +180,11 @@ export default function Header() {
                     :
                     (
                       <div>
-                        <Link to="/login" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
+                        <Link to="/login" onClick={cancelMobileNav} className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
                           Log in 
                         </Link>
                         
-                        <Link to="/register" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
+                        <Link to="/register" onClick={cancelMobileNav} className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
                           Register 
                         </Link>
                       </div>
